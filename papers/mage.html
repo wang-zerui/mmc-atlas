@@ -102,7 +102,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <script>var BASE="../";
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
- var inFam=/\\/(papers|families)\\//.test(location.pathname);
+ var inFam=/\/(papers|families)\//.test(location.pathname);
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!inFam)?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">Overview</a>';
