@@ -22,7 +22,8 @@ a{color:var(--accent);text-decoration:none}
 .sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
 .sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
 .sb-fam{margin:2px 0}
-.sb-fam>summary{list-style:none;cursor:pointer;padding:7px 12px;border-radius:7px;font-size:12px;font-family:var(--mono);letter-spacing:.03em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary .fname{line-height:1.25}
 .sb-fam>summary::-webkit-details-marker{display:none}
 .sb-fam>summary:hover{background:var(--panel);color:var(--ink)}
 .sb-fam[open]>summary{color:var(--ink)}
@@ -101,20 +102,21 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <script>var BASE="../";
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
- var inFam=/\/(papers|families)\//.test(location.pathname);
+ var inFam=/\\/(papers|families)\\//.test(location.pathname);
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!inFam)?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">Overview</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
-   var summ='<li><a class="summ" href="'+BASE+'families/'+code+'.html"'+((cur===code+'.html')?' class="summ active"':'')+'>▸ '+f.code+' — overview</a></li>';
+   var name=f.code.replace(/^[A-Z]\.\s*/,'');
+   var summ='<li><a class="summ" href="'+BASE+'families/'+code+'.html"'+((cur===code+'.html')?' class="summ active"':'')+'>▸ overview</a></li>';
    var items=f.items.map(function(p){
      var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
      var act=(p.slug+'.html'===cur)?' class="active"':'';
      return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
    }).join('');
    var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
-   return '<details class="sb-fam"'+open+'><summary><span>'+code+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
  }).join('');
  side.innerHTML=html;
  var box=document.getElementById('sb-search');
