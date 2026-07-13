@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇关于优化 LLM 智能体方法的综述，将其分为参数驱动（fine-tuning、RL、混合）与免参数（prompt engineering、外部知识）两类。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# A Survey on the Optimization of LLM-based Agents
+<div class="mm-wrap"><div class="markmap"># A Survey on the Optimization of LLM-based Agents
 ## 一句话 
 - 一篇关于优化 LLM 智能体方法的综述，将其分为参数驱动（fine-tuning、RL、混合）与免参数（prompt engineering、外部知识）两类。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 讨论了将智能体优化推向长程规划与复杂决策的主要挑战与有前景的未来方向。
 ## 局限
-- 这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。
-</script></div>
+- 这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 智能体被广泛用于自主决策，但多数工作依赖对原始 LLM 的提示设计或微调，在复杂智能体环境中效果有限。</p></div><div class="field"><h3>问题</h3><p>通用 LLM 优化缺乏针对长期规划、动态环境交互与复杂决策等关键智能体功能的专门优化，且缺乏整体比较智能体优化方法的综述。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一篇系统综述，从统一视角比较针对 LLM 智能体的优化策略。</p></div><div class="field"><h3>关键洞见</h3><p>智能体优化可清晰分为改变模型的参数驱动方法与从外部塑造行为的免参数方法，从而给出全面的分类体系。</p></div><div class="field"><h3>挑战</h3><p>讨论了将智能体优化推向长程规划与复杂决策的主要挑战与有前景的未来方向。</p></div><div class="field"><h3>方法</h3><p>综述内容：将 LLM 智能体优化分为参数驱动优化（基于 fine-tuning、基于 reinforcement learning、混合策略），并从轨迹数据构建、微调技术、奖励函数设计与优化算法等方面分析，另加免参数策略（prompt engineering、外部知识检索）。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：一份全面综述，汇总用于评估与调优的数据集与基准，并维护参考文献仓库；未开展新实验。</p></div><div class="field"><h3>结果</h3><p>在参数驱动与免参数的分类体系下组织智能体优化方法，并综述其关键应用及用于评估的数据集/基准。</p></div><div class="field"><h3>局限</h3><p>这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。</p></div><div class="field"><h3>与领域的关系</h3><p>为本图谱中的智能体提供优化/训练视角，以更宽泛的参数驱动与免参数分类体系补充了 RL-for-LLM-MAS 编排综述（M165/M214）。</p></div>
 <div class="nav"><a href="ai-agents-vs-agentic-ai.html">← AI Agents vs. Agentic AI: A Conceptual</a><span class="sp"></span><a href="evaluation-benchmarking-llm-agents-survey.html">Evaluation and Benchmarking of LLM Age →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

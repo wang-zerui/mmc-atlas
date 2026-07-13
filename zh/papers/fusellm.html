@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">FuseLLM 通过轻量级持续训练蒸馏多个预训练源 LLM 的生成式概率分布，将它们的能力整合进单一目标模型，即使架构不同也可行。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# FuseLLM / Knowledge Fusion of LLMs
+<div class="mm-wrap"><div class="markmap"># FuseLLM / Knowledge Fusion of LLMs
 ## 一句话 
 - FuseLLM 通过轻量级持续训练蒸馏多个预训练源 LLM 的生成式概率分布，将它们的能力整合进单一目标模型，即使架构不同也可行。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 跨异质词表/架构对齐 token，并确保融合后的目标能够超越（而不只是追平）最佳源模型。
 ## 局限
-- 需要持续训练（并非完全免训练）并需访问源模型的分布；摘要报告的是定性增益而非标志性指标。
-</script></div>
+- 需要持续训练（并非完全免训练）并需访问源模型的分布；摘要报告的是定性增益而非标志性指标。</div></div></div>
 <div class="field"><h3>背景</h3><p>从头训练 LLM 代价高昂且冗余，而当架构不同时，直接合并模型权重又不切实际。</p></div><div class="field"><h3>问题</h3><p>如何在不合并权重或完全重训练的情况下，将多个现有 LLM 各自的独特优势迁移并整合到一个模型中。</p></div><div class="field"><h3>动机 / 分析</h3><p>源 LLM 的生成式概率分布外化了它们的集体知识，这些知识可以被蒸馏进一个有可能超越每个源模型的目标模型。</p></div><div class="field"><h3>关键洞见</h3><p>通过概率分布进行知识融合，并配合跨词表的 token 对齐，能让单一目标继承互补的优势，而不仅仅是模仿某一个教师。</p></div><div class="field"><h3>挑战</h3><p>跨异质词表/架构对齐 token，并确保融合后的目标能够超越（而不只是追平）最佳源模型。</p></div><div class="field"><h3>方法</h3><p>利用多个源 LLM（例如 Llama-2、MPT、OpenLLaMA）的生成式分布，对齐它们的 token，并通过轻量级持续训练将组合后的知识蒸馏进一个目标模型。</p></div><div class="field"><h3>实验设置</h3><p>通过融合三个架构各异的 LLM（Llama-2、MPT、OpenLLaMA），在多种基准和任务上进行验证。</p></div><div class="field"><h3>结果</h3><p>融合在推理、常识和代码生成方面提升了目标模型，且预期目标能超越源模型（不同于标准的单教师蒸馏）；已在摘要中确认，未给出单一标志性数字。</p></div><div class="field"><h3>局限</h3><p>需要持续训练（并非完全免训练）并需访问源模型的分布；摘要报告的是定性增益而非标志性指标。</p></div><div class="field"><h3>与领域的关系</h3><p>一种「ensemble-before-inference」的知识融合方法（按综述 M041），区别于推理时融合器 DeePEn (M037) 和 PackLLM (M038)；它将多个模型收拢为一个，而非像 MoA (M001) 那样在查询时聚合。</p></div>
 <div class="nav"><a href="packllm.html">← PackLLM (Mavromatis et al. 2024)</a><span class="sp"></span><a href="are-more-llm-calls-all-you-need.html">Are More LLM Calls All You Need? (Chen →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">GPTSwarm（《Language Agents as Optimizable Graphs》）将 LLM agent 及多智能体社会建模为计算图，并引入自动优化器，联合优化节点提示词与边的连接结构。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# GPTSwarm
+<div class="mm-wrap"><div class="markmap"># GPTSwarm
 ## 一句话 
 - GPTSwarm（《Language Agents as Optimizable Graphs》）将 LLM agent 及多智能体社会建模为计算图，并引入自动优化器，联合优化节点提示词与边的连接结构。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在图拓扑的组合空间上进行优化的同时还要调优节点级提示词，并保持框架足够通用以涵盖众多已有 agent 设计。
 ## 局限
-- 公开摘要给出的是定性而非数值增益；对图拓扑的优化搜索开销大，其对超大规模 agent 社会的可扩展性在摘要中未量化。
-</script></div>
+- 公开摘要给出的是定性而非数值增益；对图拓扑的优化搜索开销大，其对超大规模 agent 社会的可扩展性在摘要中未量化。</div></div></div>
 <div class="field"><h3>背景</h3><p>人工设计的提示词工程与多智能体编排技术数量众多但彼此割裂，每种都针对特定任务手工调优，缺乏可供自动改进的统一表示。</p></div><div class="field"><h3>问题</h3><p>此前没有一种统一抽象既能表达多样化的 agent 设计，又能对提示词和智能体间结构进行端到端的自动优化。</p></div><div class="field"><h3>动机 / 分析</h3><p>将 agent 统一到同一套图形式化框架下，可以让一组优化器开发、集成并自动改进任意 LLM agent 系统。</p></div><div class="field"><h3>关键洞见</h3><p>将每个 agent 表示为计算图，其节点是函数（LLM 查询或数据处理），边是信息流；图可递归组合为 agent 层级结构，从而使提示词（节点）与编排（边）都成为类可微分的优化目标。</p></div><div class="field"><h3>挑战</h3><p>在图拓扑的组合空间上进行优化的同时还要调优节点级提示词，并保持框架足够通用以涵盖众多已有 agent 设计。</p></div><div class="field"><h3>方法</h3><p>两个自动优化器：节点优化用于精炼各 LLM 节点内部的提示词；边优化通过学习图连接性（对边进行 RL）来改进 agent 编排；单个 agent 图可递归组合为更大的协作结构。</p></div><div class="field"><h3>实验设置</h3><p>在多个 benchmark 任务上评估该框架开发、集成并自动改进各类 LLM agent 的能力（摘要报告的是定性有效性，而非单一的标志性数字）。</p></div><div class="field"><h3>结果</h3><p>摘要指出该框架能高效开发、集成并自动改进多样化的 LLM agent；经核实的贡献是在可组合 agent 图上的节点优化加基于 RL 的边优化机制。摘要中未给出单一的定量标志性结果。</p></div><div class="field"><h3>局限</h3><p>公开摘要给出的是定性而非数值增益；对图拓扑的优化搜索开销大，其对超大规模 agent 社会的可扩展性在摘要中未量化。</p></div><div class="field"><h3>与领域的关系</h3><p>一项奠基性的&quot;agent 即图&quot;工作；后续的通信图方法（AgentPrune、MAGE）与联合拓扑优化器（HieraMAS、Maestro）在其可优化图形式化的基础上构建或与之对比。</p></div>
 <div class="nav"><a href="maestro.html">← Maestro / CLPO (Yang et al. 2025)</a><span class="sp"></span><a href="dspy.html">DSPy (Khattab et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

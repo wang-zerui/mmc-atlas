@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">Optima improves both effectiveness and communication efficiency of LLM multi-agent systems via an iterative generate-rank-select-train loop (SFT/DPO plus MCTS-inspired data generation) with a reward balancing task success, token cost, and readability.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Optima
+<div class="mm-wrap"><div class="markmap"># Optima
 ## TL;DR 
 - Optima improves both effectiveness and communication efficiency of LLM multi-agent systems via an iterative generate-rank-select-train loop (SFT/DPO plus…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Generating high-quality training data for multi-turn agent conversations, choosing among SFT/DPO/hybrid RL algorithms, and balancing competing…
 ## Limitations
-- Demonstrated on Llama-3-8B and specific task families; the multi-objective reward requires tuning and the iterative training loop adds compute…
-</script></div>
+- Demonstrated on Llama-3-8B and specific task families; the multi-objective reward requires tuning and the iterative training loop adds compute…</div></div></div>
 <div class="field"><h3>Background</h3><p>LLM-based multi-agent systems promise collaborative problem-solving but suffer from low communication efficiency, weak scalability, and lack of parameter-updating optimization.</p></div><div class="field"><h3>Problem</h3><p>Multi-agent systems exchange many tokens, inflating cost and latency, and prior work rarely trains the models themselves to communicate efficiently.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Training LLMs to communicate concisely while staying effective would cut cost and improve inference-time scaling of multi-agent systems.</p></div><div class="field"><h3>Key Insight</h3><p>A reward that jointly balances task performance, token efficiency, and readability, optimized through iterative data generation and model training, can make agents both effective and token-economical.</p></div><div class="field"><h3>Challenges</h3><p>Generating high-quality training data for multi-turn agent conversations, choosing among SFT/DPO/hybrid RL algorithms, and balancing competing objectives (accuracy vs token cost vs readability).</p></div><div class="field"><h3>Method</h3><p>An iterative generate-rank-select-train paradigm on Llama-3-8B: candidate conversations are generated, ranked by the composite reward, selected, and used to train via SFT, DPO, and hybrids; DPO data is produced with a Monte Carlo Tree Search-inspired scheme treating conversation turns as tree nodes.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on multi-agent tasks requiring heavy information exchange (information-asymmetric QA) and complex reasoning, against single-agent baselines and vanilla multi-agent systems on Llama-3-8B.</p></div><div class="field"><h3>Results</h3><p>Achieves up to 2.8x performance gain while using less than 10% of the tokens on information-exchange-heavy tasks, consistently improves over single-agent and vanilla MAS baselines, and yields better inference-time scaling laws.</p></div><div class="field"><h3>Limitations</h3><p>Demonstrated on Llama-3-8B and specific task families; the multi-objective reward requires tuning and the iterative training loop adds compute overhead.</p></div><div class="field"><h3>Relation to the Field</h3><p>A training-based approach to efficient multi-agent communication, complementary to AgentPrune&#x27;s inference-time graph pruning and to MAPoRL&#x27;s collaboration co-training.</p></div>
 <div class="nav"><a href="dspy.html">← DSPy (Khattab et al. 2023)</a><span class="sp"></span><a href="agentprune.html">AgentPrune / &#x27;Cut the Crap&#x27; (Zhang et  →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

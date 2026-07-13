@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">SeqRoute 让预算感知的 LLM 路由变为序列化的，把多轮会话建模为一个用 offline RL 求解的有限时域 MDP，使 router 学会“延迟满足”，避免过早花光预算。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# SeqRoute
+<div class="mm-wrap"><div class="markmap"># SeqRoute
 ## 一句话 
 - SeqRoute 让预算感知的 LLM 路由变为序列化的，把多轮会话建模为一个用 offline RL 求解的有限时域 MDP，使 router 学会“延迟满足”，避免过早花光预算。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 从有限的会话日志做 offline RL 很消耗数据；论文引入 Hindsight Budget Relabeling 来大幅扩充训练 transition。
 ## 局限
-- offline RL 依赖于日志数据的覆盖度；尚无同行评审 venue；增益随预算区间波动很大（6-73.5%）。
-</script></div>
+- offline RL 依赖于日志数据的覆盖度；尚无同行评审 venue；增益随预算区间波动很大（6-73.5%）。</div></div></div>
 <div class="field"><h3>背景</h3><p>大多数 router 都是孤立地对每条查询做决策，但真实助手是在多轮会话中、在一个跨轮共享的全局预算下提供服务的。</p></div><div class="field"><h3>问题</h3><p>逐查询路由忽视了这样一点：在早期简单一轮上花费，会导致后期困难一轮无钱可用，造成会话结束前的“预算破产”。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个全局预算感知的策略应在整个会话中配给花费，而非贪婪地优化每一轮，但这类数据稀缺且是长时域的。</p></div><div class="field"><h3>关键洞见</h3><p>把剩余预算放入 RL state，路由就变成一个有限时域 MDP，策略可以学会把昂贵模型推迟到最需要时才使用。</p></div><div class="field"><h3>挑战</h3><p>从有限的会话日志做 offline RL 很消耗数据；论文引入 Hindsight Budget Relabeling 来大幅扩充训练 transition。</p></div><div class="field"><h3>方法</h3><p>将路由建模为一个 state 中含剩余预算的有限时域 MDP，并用 Conservative Q-Learning（offline RL）求解；Hindsight Budget Relabeling 在多种预算水平下对已记录的会话进行重标注，从而生成多得多的训练 transition。</p></div><div class="field"><h3>实验设置</h3><p>在多轮会话数据上做 offline-RL 训练；Hindsight Budget Relabeling 将 10K 会话扩展为 2.38M transition。就成本降低和破产率进行评测。</p></div><div class="field"><h3>结果</h3><p>报告 6.0-73.5% 的成本降低，预算破产率低于 1%（已在 claim_checked 中核实）；提交于 2026 年 5 月 25 日，未声称任何会议 venue。</p></div><div class="field"><h3>局限</h3><p>offline RL 依赖于日志数据的覆盖度；尚无同行评审 venue；增益随预算区间波动很大（6-73.5%）。</p></div><div class="field"><h3>与领域的关系</h3><p>将 bandit/RL 路由（MetaLLM、NeuralUCB、dueling-feedback）扩展到序列化的多轮、全局预算场景，超越了逐查询 router。</p></div>
 <div class="nav"><span></span><span class="sp"></span><a href="llmrouterbench.html">LLMRouterBench (Li et al. 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

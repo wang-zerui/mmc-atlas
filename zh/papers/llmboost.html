@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个 boosting 风格的集成微调框架，在误差抑制的链式训练目标下，通过 cross-model attention 融合前序模型的隐状态，并采用近乎并行的逐层流水线推理，超越了黑盒的输出投票。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# LLMBoost
+<div class="mm-wrap"><div class="markmap"># LLMBoost
 ## 一句话 
 - 一个 boosting 风格的集成微调框架，在误差抑制的链式训练目标下，通过 cross-model attention 融合前序模型的隐状态，并采用近乎并行的逐层流水线推理，超越了黑盒的输出投票。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 高效地对齐并跨模型 attend 隐状态，同时避免顺序模型链带来的延迟激增。
 ## 局限
-- 需要微调以及白盒的隐状态访问（不适用于仅 API 的模型）；摘要未给出数值结果，且其 ICLR 2026 投稿的录用情况未经确认，故不宣称任何 venue。
-</script></div>
+- 需要微调以及白盒的隐状态访问（不适用于仅 API 的模型）；摘要未给出数值结果，且其 ICLR 2026 投稿的录用情况未经确认，故不宣称任何 venue。</div></div></div>
 <div class="field"><h3>背景</h3><p>当前的 LLM 集成方法把模型当作黑盒，仅组合输入或最终输出，而忽略了内部表示。</p></div><div class="field"><h3>问题</h3><p>黑盒组合丢弃了中间隐状态中丰富的信息，限制了模型之间能够转移的互补知识量。</p></div><div class="field"><h3>动机 / 分析</h3><p>boosting 范式（每个学习器纠正其前序者的错误）可以适配到 LLM 上，方法是让后继模型去 attend 前序模型的隐状态。</p></div><div class="field"><h3>关键洞见</h3><p>在隐状态上的 cross-model attention 加上一个链式训练的误差抑制目标，能实现分层的误差纠正与知识转移，并在有界纠正的假设下具备理论上的单调改进。</p></div><div class="field"><h3>挑战</h3><p>高效地对齐并跨模型 attend 隐状态，同时避免顺序模型链带来的延迟激增。</p></div><div class="field"><h3>方法</h3><p>三个组件：cross-model attention 让后继模型合并前序者的隐状态；一个链式训练范式以误差抑制目标逐步微调相互链接的模型；以及一种近乎并行的推理，逐层流水线化隐状态以逼近单模型的解码速度。</p></div><div class="field"><h3>实验设置</h3><p>在常识推理和算术推理任务上进行评测。</p></div><div class="field"><h3>结果</h3><p>LLMBoost 在降低推理延迟的同时持续提升准确率，并宣称在有界纠正假设下具有单调改进的保证（已与摘要核实；于 2025 年 12 月 26 日提交；摘要中无具体数值分数）。</p></div><div class="field"><h3>局限</h3><p>需要微调以及白盒的隐状态访问（不适用于仅 API 的模型）；摘要未给出数值结果，且其 ICLR 2026 投稿的录用情况未经确认，故不宣称任何 venue。</p></div><div class="field"><h3>与领域的关系</h3><p>一种白盒、基于训练的融合，与黑盒投票（M017、M018）以及推理时融合器（DeePEn M037、PackLLM M038）形成对照；它与 FuseLLM 的隐性知识转移精神 (M039) 相通，但走的是 boosting 而非蒸馏的路线。</p></div>
 <div class="nav"><a href="beyond-majority-voting.html">← Beyond Majority Voting (Ai et al. 2026</a><span class="sp"></span><a href="mixture-of-agents.html">Mixture-of-Agents (Wang et al. 2024) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

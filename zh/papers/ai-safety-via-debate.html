@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一项奠基性的对齐提案：两个智能体就某一问题展开 debate，由一位较弱的人类裁判选出更真实/更有用的一方；其对抗性结构使得撒谎比揭穿谎言更困难。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AI Safety via Debate
+<div class="mm-wrap"><div class="markmap"># AI Safety via Debate
 ## 一句话 
 - 一项奠基性的对齐提案：两个智能体就某一问题展开 debate，由一位较弱的人类裁判选出更真实/更有用的一方；其对抗性结构使得撒谎比揭穿谎言更困难。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 真实的（人类或模型）裁判能否被可靠地引导向真相，以及 debater 能力扩展后可能出现的失败模式（例如有说服力但错误的论证）。
 ## 局限
-- 仅为一个玩具式 MNIST 演示；在真实复杂任务上以及面对真实人类裁判时的有效性仍是待解的开放实证问题，且面对强说服力智能体时的稳健性尚未解决。
-</script></div>
+- 仅为一个玩具式 MNIST 演示；在真实复杂任务上以及面对真实人类裁判时的有效性仍是待解的开放实证问题，且面对强说服力智能体时的稳健性尚未解决。</div></div></div>
 <div class="field"><h3>背景</h3><p>对齐智能体的常见方式是让人类评判其行为，但当任务过于复杂、人类无法直接评估时，这种方式便会失效。本工作先于现代 LLM，将对齐问题框定为一个监督（oversight）问题。</p></div><div class="field"><h3>问题</h3><p>当任务超出人类直接评判答案的能力时，人类如何训练 AI 正确地追求复杂目标？</p></div><div class="field"><h3>动机 / 分析</h3><p>如果人类单靠自己无法核验一个答案，或许可以借助一个具有竞争关系、其激励在于揭露对方论证缺陷的智能体来帮助核验。</p></div><div class="field"><h3>关键洞见</h3><p>将其框定为一个零和 debate 博弈，说真话会更占优势，因为对着一个有能力的对手为谎言辩护，比指出该谎言更困难；最优的 debate 能让一个能力有限的裁判判定远比直接评判更难的问题。</p></div><div class="field"><h3>挑战</h3><p>真实的（人类或模型）裁判能否被可靠地引导向真相，以及 debater 能力扩展后可能出现的失败模式（例如有说服力但错误的论证）。</p></div><div class="field"><h3>方法</h3><p>两个智能体就某一问题或拟议行动交替做简短陈述，直至达到上限，然后由一位人类裁判判定哪个智能体最真实、最有用；智能体通过在该零和博弈上的 self-play 进行训练。</p></div><div class="field"><h3>实验设置</h3><p>一个概念验证式的 MNIST &#x27;sparse classifier&#x27;（稀疏分类器）博弈——两个智能体各自揭示有限数量的像素以说服一个分类器裁判，另加理论/复杂度分析。</p></div><div class="field"><h3>结果</h3><p>理论上，在最优对弈下，debate 能让多项式时间的裁判回答任何属于 PSPACE 的问题，而直接评判仅能覆盖 NP。实验上，在 debate 下稀疏分类器裁判的准确率从 59.4% 升至 88.9%（6 个像素）、从 48.2% 升至 85.2%（4 个像素）。</p></div><div class="field"><h3>局限</h3><p>仅为一个玩具式 MNIST 演示；在真实复杂任务上以及面对真实人类裁判时的有效性仍是待解的开放实证问题，且面对强说服力智能体时的稳健性尚未解决。</p></div><div class="field"><h3>与领域的关系</h3><p>debate-as-oversight（以 debate 作监督）的概念起源，后来由 Khan et al.（M061）与 Kenton et al.（M062）用 LLM 加以实证检验；其裁判居中调解的框定使之区别于共识式 debate（M002）。</p></div>
 <div class="nav"><a href="chateval.html">← ChatEval (Chan et al. 2023)</a><span class="sp"></span><a href="reliability-without-validity.html">Reliability without Validity (Norman e →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

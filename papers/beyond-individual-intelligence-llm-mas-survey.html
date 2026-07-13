@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A unified 2026 survey of LLM-based multi-agent systems that links collaboration, failure attribution, and self-evolution into a single causal &#x27;LIFE progression&#x27; toward closed-loop, self-organizing collective intelligence.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Beyond Individual Intelligence: Surveying Collaboration, Failure Attribution, and Self-Evolution in LLM-based Multi-Agent Systems
+<div class="mm-wrap"><div class="markmap"># Beyond Individual Intelligence: Surveying Collaboration, Failure Attribution, and Self-Evolution in LLM-based Multi-Agent Systems
 ## TL;DR 
 - A unified 2026 survey of LLM-based multi-agent systems that links collaboration, failure attribution, and self-evolution into a single causal &#x27;LIFE…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - It flags that dependencies between adjacent stages are under-examined, that error propagation makes failure diagnosis difficult, and that closing the…
 ## Limitations
-- As a survey it offers organization and a research agenda but no new empirical measurements; an arXiv preprint with no confirmed venue.
-</script></div>
+- As a survey it offers organization and a research agenda but no new empirical measurements; an arXiv preprint with no confirmed venue.</div></div></div>
 <div class="field"><h3>Background</h3><p>LLM-based agents excel at reasoning, planning, and tool use, and multi-agent systems layer structured collaboration on top of them, but sustained coordination remains fragile.</p></div><div class="field"><h3>Problem</h3><p>In multi-agent systems errors propagate across agents and interaction rounds into failures that are hard to diagnose, and prior surveys treat individual agents, collaboration, and self-evolution separately, leaving the causal dependencies among them unexamined.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A unified review is needed to connect how agents collaborate, how their failures are attributed, and how they evolve, so the field can move toward closed-loop systems rather than isolated capabilities.</p></div><div class="field"><h3>Key Insight</h3><p>Collaboration, failure attribution, and self-evolution are not independent topics but causally linked stages: capability enables collaboration, collaboration produces failures that must be attributed, and attribution feeds self-improvement.</p></div><div class="field"><h3>Challenges</h3><p>It flags that dependencies between adjacent stages are under-examined, that error propagation makes failure diagnosis difficult, and that closing the loop toward self-organizing collective intelligence is still open.</p></div><div class="field"><h3>Method</h3><p>It organizes the field into the four-stage LIFE progression, Lay the capability foundation, Integrate agents through collaboration, Find faults through attribution, and Evolve through autonomous self-improvement, providing a taxonomy for each stage and characterizing the dependencies between adjacent stages.</p></div><div class="field"><h3>Experimental Setup</h3><p>As a survey it synthesizes and categorizes prior LLM-MAS work across the four stages rather than running new experiments; coverage centers on collaboration, failure-attribution, and self-evolution literature.</p></div><div class="field"><h3>Results</h3><p>Delivers a cross-stage research agenda for closed-loop multi-agent systems, reframing collaboration, attribution, and evolution as one causal pipeline toward self-organizing collective intelligence.</p></div><div class="field"><h3>Limitations</h3><p>As a survey it offers organization and a research agenda but no new empirical measurements; an arXiv preprint with no confirmed venue.</p></div><div class="field"><h3>Relation to the Field</h3><p>Umbrella 2026 reference tying together the collaboration, failure-attribution (cf. area Z), and self-evolution strands of this atlas, complementing the 2024-2025 LLM-MAS surveys M300-M303.</p></div>
 <div class="nav"><a href="reinforcement-learning-for-llm-based-multi-agent.html">← Reinforcement Learning for LLM-based M</a><span class="sp"></span><a href="model-merging-era-llm-survey.html">Model Merging in the Era of Large Lang →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

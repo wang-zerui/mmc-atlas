@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">这篇 ICML 2026 立场论文主张，协作式 agentic AI 需要最小化的共享标准以避免碎片化为互不兼容的生态系统，并提出以四个组件构建的“Web of Agents”作为最小化的架构基础。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Position: Collaborative Agentic AI Needs Interoperability Across Ecosystems
+<div class="mm-wrap"><div class="markmap"># Position: Collaborative Agentic AI Needs Interoperability Across Ecosystems
 ## 一句话 
 - 这篇 ICML 2026 立场论文主张，协作式 agentic AI 需要最小化的共享标准以避免碎片化为互不兼容的生态系统，并提出以四个组件构建的“Web of Agents”作为最小化的架构基础。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 定义一个既足够最小以便被广泛采用、又足够完整以支持真正的跨生态系统协作的基础，涵盖消息传递、交互、状态和发现。
 ## 局限
-- 作为一篇立场论文，它论证并勾勒了一个架构，但没有实现或对其进行实证验证。
-</script></div>
+- 作为一篇立场论文，它论证并勾勒了一个架构，但没有实现或对其进行实证验证。</div></div></div>
 <div class="field"><h3>背景</h3><p>协作式 agentic AI——即 agent 在数字环境中自主感知、规划和行动的系统——预计将重塑各行各业，但各类解决方案正在被独立开发。</p></div><div class="field"><h3>问题</h3><p>独立、缺乏协调的开发正将该领域推向一个由碎片化、互不兼容的 agent 生态系统构成的格局。</p></div><div class="field"><h3>动机 / 分析</h3><p>现在就采用最小化的共享标准，是在碎片化根深蒂固之前构建开放、安全、web 规模且被广泛采用的 agentic 生态系统的必要条件。</p></div><div class="field"><h3>关键洞见</h3><p>互操作性应复用现有的标准和基础设施，而非重新发明它们，并且可以由一小组架构组件来刻画，而不需要一个重量级的新技术栈。</p></div><div class="field"><h3>挑战</h3><p>定义一个既足够最小以便被广泛采用、又足够完整以支持真正的跨生态系统协作的基础，涵盖消息传递、交互、状态和发现。</p></div><div class="field"><h3>方法</h3><p>提出“Web of Agents”，一个最小化的架构基础，包含四个组件：agent 到 agent 的消息传递、交互互操作性、状态管理和 agent 发现，并刻意在可能之处采用现有标准。</p></div><div class="field"><h3>实验设置</h3><p>一篇立场论文；它呈现的是论点和架构，而非实证实验或 benchmark。</p></div><div class="field"><h3>结果</h3><p>没有定量结果；已验证的贡献是互操作性论点和四组件的 Web of Agents 架构，将其定位为迈向可互操作 agentic 系统的第一个关键步骤。已被 ICML 2026 接收。</p></div><div class="field"><h3>局限</h3><p>作为一篇立场论文，它论证并勾勒了一个架构，但没有实现或对其进行实证验证。</p></div><div class="field"><h3>与领域的关系</h3><p>与 Ehtesham 等人 protocol 综述共享反碎片化的动机，并通过主张在 A2A 和 MCP 等具体 protocol 之上设立一个最小化的共享标准层来对其形成补充。</p></div>
 <div class="nav"><a href="protocolbench.html">← ProtocolBench / ProtocolRouter (Du, Zh</a><span class="sp"></span><a href="mesh-memory-protocol.html">Mesh Memory Protocol (Xu 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

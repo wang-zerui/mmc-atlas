@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">In judge-mediated debate for scalable oversight, optimizing debaters to be more persuasive raises a non-expert judge&#x27;s accuracy, and adversarial debate beats non-adversarial consultancy and naive baselines.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Debating with More Persuasive LLMs Leads to More Truthful Answers
+<div class="mm-wrap"><div class="markmap"># Debating with More Persuasive LLMs Leads to More Truthful Answers
 ## TL;DR 
 - In judge-mediated debate for scalable oversight, optimizing debaters to be more persuasive raises a non-expert judge&#x27;s accuracy, and adversarial debate beats…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Constructing genuine information asymmetry (experts have evidence, judges do not), optimizing debaters for persuasiveness unsupervised, and comparing…
 ## Limitations
-- Task is a constructed information-asymmetric QA setting; results may not transfer to domains where persuasiveness and truth diverge, and LLM judges…
-</script></div>
+- Task is a constructed information-asymmetric QA setting; results may not transfer to domains where persuasiveness and truth diverge, and LLM judges…</div></div></div>
 <div class="field"><h3>Background</h3><p>As models surpass human expertise, oversight shifts to &#x27;non-experts overseeing experts&#x27;. Debate (Irving et al. 2018) proposed adversarial argument as a mechanism, but empirical evidence with LLMs was limited.</p></div><div class="field"><h3>Problem</h3><p>Can a weaker/non-expert judge (LLM or human) that lacks the underlying information reliably identify the correct answer by watching stronger expert models debate, and does optimizing debaters for persuasiveness help or hurt truth?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If more persuasive debaters made judges less accurate, debate would be a dangerous oversight tool; the authors test whether persuasiveness and truthfulness align in an information-asymmetric setting.</p></div><div class="field"><h3>Key Insight</h3><p>Under information asymmetry, adversarial structure ties persuasiveness to truth: optimizing experts (higher Elo) for persuasiveness increases the non-expert judge&#x27;s accuracy, so debate is a viable oversight mechanism even without ground truth.</p></div><div class="field"><h3>Challenges</h3><p>Constructing genuine information asymmetry (experts have evidence, judges do not), optimizing debaters for persuasiveness unsupervised, and comparing LLM vs human judges fairly.</p></div><div class="field"><h3>Method</h3><p>Two LLM &#x27;expert&#x27; debaters each argue for a different answer on reading-comprehension-style questions where they have access to the source text and the judge does not; a non-expert judge (LLM or human) picks the winner. Debaters are optimized for persuasiveness in an unsupervised way, compared against consultancy and naive baselines.</p></div><div class="field"><h3>Experimental Setup</h3><p>Information-asymmetric QA with LLM judges and human judges, comparing debate vs. naive baselines and consultancy, and measuring effect of debater Elo/persuasiveness on judge accuracy.</p></div><div class="field"><h3>Results</h3><p>Non-expert LLM judges reach 76% accuracy with debate vs. 48% naive baseline; human judges reach 88% with debate vs. 60% baseline. Higher-Elo (more persuasive) debaters yield more truthful judgments, and debate/interactive-debate beats consultancy; humans still outperform LLM judges.</p></div><div class="field"><h3>Limitations</h3><p>Task is a constructed information-asymmetric QA setting; results may not transfer to domains where persuasiveness and truth diverge, and LLM judges remain below humans.</p></div><div class="field"><h3>Relation to the Field</h3><p>Positive empirical evidence for debate-as-oversight (M060); contrasted with the more cautious weak-judge results of Kenton et al. (M062), and relevant to adversarial-peer risks in M160.</p></div>
 <div class="nav"><a href="llms-cannot-self-correct-reasoning-yet.html">← LLMs Cannot Self-Correct Reasoning Yet</a><span class="sp"></span><a href="on-scalable-oversight-with-weak-llms-judging-str.html">On Scalable Oversight with Weak LLMs J →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

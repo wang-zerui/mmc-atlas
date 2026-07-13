@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">GraphRouter 构建一个归纳式的异构 task-query-LLM 图，通过边预测来预测每条响应的效果与成本，无需重训练即可泛化到新的 LLM。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# GraphRouter
+<div class="mm-wrap"><div class="markmap"># GraphRouter
 ## 一句话 
 - GraphRouter 构建一个归纳式的异构 task-query-LLM 图，通过边预测来预测每条响应的效果与成本，无需重训练即可泛化到新的 LLM。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 设计一个异构图以及一种边预测机制，既能预测效果又能预测成本，并能归纳式地泛化到未见的 LLM 节点。
 ## 局限
-- 需要构建并维护交互图；基准/模型细节不在摘要中；归纳式泛化仍受训练覆盖范围的限制。
-</script></div>
+- 需要构建并维护交互图；基准/模型细节不在摘要中；归纳式泛化仍受训练覆盖范围的限制。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 选择必须权衡性能与成本，但现有的选择器未能充分利用任务、查询与模型之间的上下文关系。</p></div><div class="field"><h3>问题</h3><p>以往的 router 依赖直推式（transductive）学习，无法在不重训练的情况下泛化到此前未见的 LLM 或任务。</p></div><div class="field"><h3>动机 / 分析</h3><p>把路由建模为关系式/上下文式的，而非孤立的逐查询分类，应能捕捉交互关系并实现对新模型的归纳式泛化。</p></div><div class="field"><h3>关键洞见</h3><p>将任务、查询和 LLM 表示为节点、把它们的交互表示为边，就把模型选择转化为边属性预测，于是一个新 LLM 只是一个训练好的模型可以为之打分的新节点。</p></div><div class="field"><h3>挑战</h3><p>设计一个异构图以及一种边预测机制，既能预测效果又能预测成本，并能归纳式地泛化到未见的 LLM 节点。</p></div><div class="field"><h3>方法</h3><p>一个包含 task、query 和 LLM 节点及交互边的异构图；一个基于 GNN 的边预测机制预测某个 LLM 回答某查询的效果与成本，新的 LLM 作为新节点加入而无需重训练。</p></div><div class="field"><h3>实验设置</h3><p>在三种效果-成本权重场景下测试，并测试对新 LLM 设定与多样任务的泛化能力；基线为现有 router。具体模型名称见完整论文。</p></div><div class="field"><h3>结果</h3><p>在三种效果-成本权重场景下相比现有 router 至少有 12.3% 的最低性能提升（已在 claim_checked 中核实），并在多样任务上带来至少 9.5% 的效果提升以及更低的计算量。</p></div><div class="field"><h3>局限</h3><p>需要构建并维护交互图；基准/模型细节不在摘要中；归纳式泛化仍受训练覆盖范围的限制。</p></div><div class="field"><h3>与领域的关系</h3><p>将可学习路由推进到归纳式泛化，与直推式 router（RouterDC、Zooter）形成对照；其无需为新模型重训练的目标与 Arch-Router 一致。</p></div>
 <div class="nav"><a href="routellm.html">← RouteLLM (Ong et al. 2024)</a><span class="sp"></span><a href="arch-router.html">Arch-Router (Tran et al. 2025) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">AgentVerse 通过一个由 recruit/decide/act/evaluate 四阶段构成的循环动态组建专家 agent 团队，实现了“整体大于部分之和”的系统，其表现优于单个 agent，并展现出涌现的社会行为。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AgentVerse
+<div class="mm-wrap"><div class="markmap"># AgentVerse
 ## 一句话 
 - AgentVerse 通过一个由 recruit/decide/act/evaluate 四阶段构成的循环动态组建专家 agent 团队，实现了“整体大于部分之和”的系统，其表现优于单个 agent，并展现出涌现的社会行为。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 自动决定团队组成、协调共同决策，并在鼓励正面涌现行为的同时抑制负面涌现行为。
 ## 局限
-- 负面的涌现行为需要加以缓解；摘要以定性方式报告了“团队 &gt; 单 agent”，而非给出标志性准确率数字。
-</script></div>
+- 负面的涌现行为需要加以缓解；摘要以定性方式报告了“团队 &gt; 单 agent”，而非给出标志性准确率数字。</div></div></div>
 <div class="field"><h3>背景</h3><p>人类群体通过动态招募成员并加以协调，在解决问题上优于个体；而 LLM agent 团队通常采用固定的组成。</p></div><div class="field"><h3>问题</h3><p>静态的多 agent 设置无法根据任务调整其成员构成，限制了协作收益，也使涌现行为未被充分考察。</p></div><div class="field"><h3>动机 / 分析</h3><p>模仿人类群体动态——招募合适的专家、共同决策、行动并评估——有望释放出“整体大于部分之和”的协作。</p></div><div class="field"><h3>关键洞见</h3><p>迭代运行 recruit/decide/act/evaluate 循环，使框架能在每一轮重新组建专家团队；而这种协作会浮现出涌现的社会行为（既有有益的，也有有害的）。</p></div><div class="field"><h3>挑战</h3><p>自动决定团队组成、协调共同决策，并在鼓励正面涌现行为的同时抑制负面涌现行为。</p></div><div class="field"><h3>方法</h3><p>一条四阶段流水线：专家招募、协作决策、行动执行与评估，反复迭代直至任务解决；agent 角色按任务动态组建。</p></div><div class="field"><h3>实验设置</h3><p>在文本理解、推理、编程、工具使用与具身任务上进行评估，将团队与单个 agent 对比；并分析涌现行为。</p></div><div class="field"><h3>结果</h3><p>已核实的贡献：recruit/decide/act/evaluate 循环，多 agent 团队在推理/编程/工具/具身任务上均优于单个 agent；摘要以定性方式陈述，未给出单一标志性数字。</p></div><div class="field"><h3>局限</h3><p>负面的涌现行为需要加以缓解；摘要以定性方式报告了“团队 &gt; 单 agent”，而非给出标志性准确率数字。</p></div><div class="field"><h3>与领域的关系</h3><p>对固定角色系统（MetaGPT/ChatDev）而言，是一个动态团队组建的对照；与 MacNet 同属 OpenBMB 谱系，并先于后来的自组织团队工作。</p></div>
 <div class="nav"><a href="chatdev.html">← ChatDev (Qian et al. 2023/ACL 2024)</a><span class="sp"></span><a href="dylan.html">DyLAN (Liu et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

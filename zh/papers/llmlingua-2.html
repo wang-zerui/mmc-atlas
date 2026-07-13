@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">将 GPT-4 的压缩知识蒸馏进一个小型双向 encoder，以 token classification 的方式进行 prompt 压缩，比 LLMLingua 更快、更忠实。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# LLMLingua-2
+<div class="mm-wrap"><div class="markmap"># LLMLingua-2
 ## 一句话 
 - 将 GPT-4 的压缩知识蒸馏进一个小型双向 encoder，以 token classification 的方式进行 prompt 压缩，比 LLMLingua 更快、更忠实。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 通过蒸馏 GPT-4 构建 extractive 压缩数据集；确保对原始内容的忠实性；保持 compressor 小而快。
 ## 局限
-- lossy 压缩；质量受蒸馏出的 GPT-4 标签与小型 encoder 容量所限；仅 extractive（无法改写）。
-</script></div>
+- lossy 压缩；质量受蒸馏出的 GPT-4 标签与小型 encoder 容量所限；仅 extractive（无法改写）。</div></div></div>
 <div class="field"><h3>背景</h3><p>task-agnostic 的 prompt 压缩很有价值，但先前方法依赖单向 causal-LM 的信息熵，这是一个与压缩目标不对齐的间接指标。</p></div><div class="field"><h3>问题</h3><p>以 task-agnostic、忠实且快速的方式压缩 prompt，不依赖 causal LM 的熵。</p></div><div class="field"><h3>动机 / 分析</h3><p>causal LM 的熵只用左侧上下文且与压缩目标不对齐；一个基于蒸馏数据训练、有监督的双向表述应更忠实、更高效。</p></div><div class="field"><h3>关键洞见</h3><p>将压缩表述为对完整双向上下文的 token classification，并在从 GPT-4 蒸馏的数据上训练，直接以保留正确 token 为优化目标，且运行成本低得多。</p></div><div class="field"><h3>挑战</h3><p>通过蒸馏 GPT-4 构建 extractive 压缩数据集；确保对原始内容的忠实性；保持 compressor 小而快。</p></div><div class="field"><h3>方法</h3><p>提示 GPT-4 压缩文本，形成 extractive 压缩数据集；训练一个小型 Transformer encoder（如 XLM-RoBERTa-large、mBERT）用双向上下文将每个 token 分类为保留/丢弃。</p></div><div class="field"><h3>实验设置</h3><p>在域内与域外基准上评估，与 LLMLingua 及基线在压缩质量、compressor 速度和端到端延迟上对比。</p></div><div class="field"><h3>结果</h3><p>2x-5x 压缩；compressor 比先前 prompt-compression 方法快 3x-6x，端到端延迟加速 1.6x-2.9x（已在 claim_checked 中核实）。该方法是 lossy 的（extractive 地丢弃 token），但设计上忠实地保持任务性能。</p></div><div class="field"><h3>局限</h3><p>lossy 压缩；质量受蒸馏出的 GPT-4 标签与小型 encoder 容量所限；仅 extractive（无法改写）。</p></div><div class="field"><h3>与领域的关系</h3><p>直接改进 LLMLingua，用蒸馏出的双向 token-classifier 取代基于熵的 causal 压缩；一种将压缩后上下文喂给大模型的 strong-weak delegation 方法。</p></div>
 <div class="nav"><a href="acon.html">← ACON: Agent Context Optimization (Kang</a><span class="sp"></span><a href="big-little-decoder.html">Big Little Decoder (Kim et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

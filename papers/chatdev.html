@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">ChatDev is a chat-powered software-development framework where role-specialized LLM agents (CEO/CTO/programmer/tester) collaborate along a &#x27;chat chain&#x27; with communicative dehallucination to build software end-to-end.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# ChatDev
+<div class="mm-wrap"><div class="markmap"># ChatDev
 ## TL;DR 
 - ChatDev is a chat-powered software-development framework where role-specialized LLM agents (CEO/CTO/programmer/tester) collaborate along a &#x27;chat chain&#x27; with…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Preventing coding hallucinations and inconsistencies propagating across phases while keeping the pipeline autonomous.
 ## Limitations
-- Generated software is small-scale and may contain bugs; the role script and waterfall structure are fixed rather than adaptively composed.
-</script></div>
+- Generated software is small-scale and may contain bugs; the role script and waterfall structure are fixed rather than adaptively composed.</div></div></div>
 <div class="field"><h3>Background</h3><p>Software development needs collaboration among people with different skills, but prior deep-learning approaches targeted individual waterfall phases with distinct designs.</p></div><div class="field"><h3>Problem</h3><p>Phase-specific designs cause technical inconsistencies across design, coding, and testing, fragmenting the development process.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Using natural language as a unifying medium across all phases could keep the process coherent and let a single framework span the whole lifecycle.</p></div><div class="field"><h3>Key Insight</h3><p>A &#x27;chat chain&#x27; structures what agents communicate (dividing each phase into ordered subtask dialogues), while &#x27;communicative dehallucination&#x27; structures how they communicate to catch and correct errors; natural language aids design and programming-language communication aids debugging.</p></div><div class="field"><h3>Challenges</h3><p>Preventing coding hallucinations and inconsistencies propagating across phases while keeping the pipeline autonomous.</p></div><div class="field"><h3>Method</h3><p>LLM-driven agents in specialized roles (CEO, CTO, programmer, reviewer, tester) proceed through design, coding, and testing via multi-turn role-played dialogues organized as a chat chain, with a dehallucination protocol for reliable exchanges.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on autonomous software-generation tasks; case studies of full application generation with cost/time reporting.</p></div><div class="field"><h3>Results</h3><p>Verified claim: chat-chain + communicative-dehallucination design; ChatDev can complete a full software application in under 7 minutes for under $1 (headline efficiency figures from the paper/ACL 2024).</p></div><div class="field"><h3>Limitations</h3><p>Generated software is small-scale and may contain bugs; the role script and waterfall structure are fixed rather than adaptively composed.</p></div><div class="field"><h3>Relation to the Field</h3><p>A flagship role-specialized software-team system alongside MetaGPT; its authors later scaled agent collaboration into graph topologies (MacNet).</p></div>
 <div class="nav"><a href="metagpt.html">← MetaGPT (Hong et al. 2023)</a><span class="sp"></span><a href="agentverse.html">AgentVerse (Chen et al. 2023/ICLR 2024 →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

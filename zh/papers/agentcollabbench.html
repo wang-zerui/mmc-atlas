@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个包含 900 个任务、经人工验证的 benchmark，在固定协议下诊断进程级 MAS 失败，隔离出四种行为风险，并揭示了收敛型 DAG 拓扑特有的综合瓶颈。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AgentCollabBench
+<div class="mm-wrap"><div class="markmap"># AgentCollabBench
 ## 一句话 
 - 一个包含 900 个任务、经人工验证的 benchmark，在固定协议下诊断进程级 MAS 失败，隔离出四种行为风险，并揭示了收敛型 DAG 拓扑特有的综合瓶颈。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 构建能暴露特定行为失败的人工验证任务，并保持协作协议固定，使观察到的失败可归因于行为与拓扑，而非编排差异。
 ## 局限
-- 覆盖范围限于三个技术任务领域和一种固定协议下的四种失败模式；该 benchmark 衡量失败倾向，但本身并不给出架构修复方案。
-</script></div>
+- 覆盖范围限于三个技术任务领域和一种固定协议下的四种失败模式；该 benchmark 衡量失败倾向，但本身并不给出架构修复方案。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体流水线即便某个中间智能体悄然破坏了推理链，仍可能产出看似正确的最终输出，而基于结果的评估无法检测这些隐蔽的多跳进程失败。</p></div><div class="field"><h3>问题</h3><p>现有评估只衡量最终答案的正确性，遗漏了多跳进程失败，因此结构性可靠性问题在部署前一直不可见。</p></div><div class="field"><h3>动机 / 分析</h3><p>让隐蔽的进程失败在部署前变得可衡量，从而能够诊断可靠性究竟来自模型能力还是通信架构。</p></div><div class="field"><h3>关键洞见</h3><p>MAS 可靠性从根本上是结构性的：失败集中在收敛型 DAG 节点，那里的智能体在平衡相互竞争的父输入时会丢弃少数分支的约束，因此单靠扩展模型智能无法替代架构。</p></div><div class="field"><h3>挑战</h3><p>构建能暴露特定行为失败的人工验证任务，并保持协作协议固定，使观察到的失败可归因于行为与拓扑，而非编排差异。</p></div><div class="field"><h3>方法</h3><p>在固定协议下，这个包含 900 个任务（software engineering、DevOps、data engineering）的 benchmark 探测四种行为失败模式：instruction decay、false-belief contagion、context leakage 和 tracer durability。</p></div><div class="field"><h3>实验设置</h3><p>跨多种通信拓扑评估了 GPT-4.1-mini、Gemini 2.5 Flash Lite、Qwen-3.5-35B-A3B 和 Llama 3.1 8B Instruct。</p></div><div class="field"><h3>结果</h3><p>没有单一模型全面领先：Qwen-3.5-35B-A3B 在 tracer durability 与指令稳定性上领先，而 GPT-4.1-mini 在泄漏抑制与抗错误信念上领先；通信拓扑解释了多跳信息存活率 7-40% 的方差，收敛型 DAG 节点处存在一个在线性 chain 中不出现的综合瓶颈。</p></div><div class="field"><h3>局限</h3><p>覆盖范围限于三个技术任务领域和一种固定协议下的四种失败模式；该 benchmark 衡量失败倾向，但本身并不给出架构修复方案。</p></div><div class="field"><h3>与领域的关系</h3><p>一个将 MAST 分类法扩展为可衡量行为测试的失败模式 benchmark；其对结构（拓扑）的强调补充了 TraceElephant/DRIFT 的归因工作，并强化了 Tran &amp; Kiela「架构重于能力」的质疑。</p></div>
 <div class="nav"><a href="single-agent-llms-outperform-mas-under-equal-tok.html">← Single-Agent LLMs Outperform MAS under</a><span class="sp"></span><a href="when-kv-cache-reuse-fails-in-multi-agent-systems.html">When KV Cache Reuse Fails in Multi-Age →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

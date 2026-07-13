@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">Maestro 在结构上将探索（并行的 Execution Agent）与综合（一个 Central Agent）解耦，并用 Conditional Listwise Policy Optimization（CLPO）训练它们——CLPO 将&quot;选哪个输出&quot;的策略决策与对理由的列表式排序分离，以实现更清晰的信用分配。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Maestro / CLPO
+<div class="mm-wrap"><div class="markmap"># Maestro / CLPO
 ## 一句话 
 - Maestro 在结构上将探索（并行的 Execution Agent）与综合（一个 Central Agent）解耦，并用 Conditional Listwise Policy Optimization（CLPO）训练它们——CLPO 将&quot;选哪个输出&quot;的策略决策与对理由的列表式排序分离，以实现更清晰的信用分配。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在众多 agent 间正确分配信用、避免奖励看似合理但实则错误的论证，并将决策与排序信号结合为稳定的 RL 目标。
 ## 局限
-- 增益在推理与通用问题求解 benchmark 上报告；RL 目标增加了训练复杂度，摘要未详述成本或对大量 execution agent 的扩展性。
-</script></div>
+- 增益在推理与通用问题求解 benchmark 上报告；RL 目标增加了训练复杂度，摘要未详述成本或对大量 execution agent 的扩展性。</div></div></div>
 <div class="field"><h3>背景</h3><p>基于 LLM 的多智能体系统能够超越单一模型，但必须在广泛探索解空间与收敛综合出最终答案之间取得平衡。</p></div><div class="field"><h3>问题</h3><p>现有方法存在过早达成共识、错误传播，以及无法区分真正推理与表面合理论证的信用分配问题。</p></div><div class="field"><h3>动机 / 分析</h3><p>显式区分探索与综合这两种认知模式，并为各自提供清晰的学习信号，应能减少错误传播并改善信用分配。</p></div><div class="field"><h3>关键洞见</h3><p>将策略决策（选择哪个候选输出）与战术理由（为何选择）解耦，使列表式排序损失能对论证提供强有力的比较监督，同时由聚焦决策的策略梯度处理选择。</p></div><div class="field"><h3>挑战</h3><p>在众多 agent 间正确分配信用、避免奖励看似合理但实则错误的论证，并将决策与排序信号结合为稳定的 RL 目标。</p></div><div class="field"><h3>方法</h3><p>Maestro 框架运行并行的 Execution Agent 进行多样化探索，并用一个 Central Agent 进行评估式综合；CLPO 将聚焦决策的策略梯度与对理由的列表式排序损失结合起来训练它们。</p></div><div class="field"><h3>实验设置</h3><p>在数学推理与通用问题求解 benchmark 上评估，与包括 Debate、GPTSwarm、AgentPrune 和 AFlow 在内的最先进多智能体方法对比。</p></div><div class="field"><h3>结果</h3><p>相较最先进多智能体方法（Debate/GPTSwarm/AgentPrune/AFlow），平均带来 6% 的绝对准确率增益，最高达 10%。</p></div><div class="field"><h3>局限</h3><p>增益在推理与通用问题求解 benchmark 上报告；RL 目标增加了训练复杂度，摘要未详述成本或对大量 execution agent 的扩展性。</p></div><div class="field"><h3>与领域的关系</h3><p>一种 RL 信用分配方法，与 MAPoRL 和 Optima 同属训练-优化家族，并直接与图/工作流优化器 GPTSwarm、AgentPrune、AFlow 进行 benchmark 对比。</p></div>
 <div class="nav"><a href="maporl.html">← MAPoRL (Park et al. 2025)</a><span class="sp"></span><a href="gptswarm.html">GPTSwarm (Zhuge et al. 2024) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

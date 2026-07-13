@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">AutoScientists is a decentralized multi-agent system (no central planner) where agents read a shared experimental state, self-organize into teams around promising hypotheses, critique proposals before spending compute, and share wins and failures.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AutoScientists: Self-Organizing Agent Teams for Long-Running Scientific Experimentation
+<div class="mm-wrap"><div class="markmap"># AutoScientists: Self-Organizing Agent Teams for Long-Running Scientific Experimentation
 ## TL;DR 
 - AutoScientists is a decentralized multi-agent system (no central planner) where agents read a shared experimental state, self-organize into teams around…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Coordinating without a central planner, deciding when to commit expensive experimental compute, and retaining knowledge across long-running runs.
 ## Limitations
-- arXiv preprint with no venue; the reported magnitudes are from the abstract and not independently audited.
-</script></div>
+- arXiv preprint with no venue; the reported magnitudes are from the abstract and not independently audited.</div></div></div>
 <div class="field"><h3>Background</h3><p>Scientific research proceeds via repeated cycles of hypothesis generation, experiment design, execution, and revision, over long horizons.</p></div><div class="field"><h3>Problem</h3><p>Existing AI approaches follow a single trajectory or rely on a central planner with fixed goals, limiting parallel exploration and knowledge retention.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Decentralized self-organization around a shared state could enable parallel hypothesis exploration while avoiding redundant compute.</p></div><div class="field"><h3>Key Insight</h3><p>Agents that interpret a shared experimental state can self-organize into teams around promising hypotheses and gate compute via peer critique, propagating both successes and failures to prevent duplicated work.</p></div><div class="field"><h3>Challenges</h3><p>Coordinating without a central planner, deciding when to commit expensive experimental compute, and retaining knowledge across long-running runs.</p></div><div class="field"><h3>Method</h3><p>Decentralized agents read/write a shared experimental state, form teams around hypotheses, review proposals before using compute, and broadcast outcomes (successes and failures) across the team.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on BioML-Bench (24 tasks), a GPT-training optimization task, and ProteinGym fitness prediction (217 assays).</p></div><div class="field"><h3>Results</h3><p>Reports 74.4% mean leaderboard percentile on BioML-Bench (+8.33% over the strongest competing agent), reaches target validation bits-per-byte 1.9x faster than Autoresearch (7 accepted improvements vs 0 for single-agent), and improves ProteinGym Spearman by +6.5% overall (+12.5% on ACE2-Spike). arXiv only, not independently audited.</p></div><div class="field"><h3>Limitations</h3><p>arXiv preprint with no venue; the reported magnitudes are from the abstract and not independently audited.</p></div><div class="field"><h3>Relation to the Field</h3><p>A decentralized, self-organizing alternative to central orchestrator-worker designs (Magentic-One, Anthropic research system), applied to autonomous science.</p></div>
 <div class="nav"><a href="multi-agent-teams-hold-experts-back.html">← Multi-Agent Teams Hold Experts Back (P</a><span class="sp"></span><a href="hera.html">HERA / Experience as a Compass: Multi- →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

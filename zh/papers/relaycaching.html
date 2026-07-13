@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">RelayCaching是一种training-free方法，将较早agent在decoding阶段的KV cache回收进较晚agent的prefill，只对偏离的稀疏位置进行选择性重算，从而削减LLM协作流水线中级联的上下文冗余开销。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# RelayCaching
+<div class="mm-wrap"><div class="markmap"># RelayCaching
 ## 一句话 
 - RelayCaching是一种training-free方法，将较早agent在decoding阶段的KV cache回收进较晚agent的prefill，只对偏离的稀疏位置进行选择性重算，从而削减LLM协作流水线中级联的上下文冗余开销。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 识别哪些层/位置发生偏差，只对其重算以约束开销，并在training-free的前提下做到这一点、同时保持对agent生成内容的准确率。
 ## 局限
-- 复用假设共享内容在跨阶段间有很强的KV一致性；收益取决于agent间共享内容的多少；尚无同行评审venue且数字未经审计。
-</script></div>
+- 复用假设共享内容在跨阶段间有很强的KV一致性；收益取决于agent间共享内容的多少；尚无同行评审venue且数字未经审计。</div></div></div>
 <div class="field"><h3>背景</h3><p>任务复杂度的增长将该领域从单一模型推向多agent LLM系统，其中较晚的agent会重新处理较早agent已生成的内容。</p></div><div class="field"><h3>问题</h3><p>这会对共享的、先前已生成的内容造成冗余的prefill计算，抬高KV-cache内存和time-to-first-token（TTFT）；现有的KV-cache reuse方法要么在agent生成的输出上损失准确率，要么因约束僵化而复用率低。</p></div><div class="field"><h3>动机 / 分析</h3><p>对于相同内容，其KV cache在各阶段之间基本一致，因此一个agent在decoding阶段的cache可以直接在下一个agent的prefill中复用。</p></div><div class="field"><h3>关键洞见</h3><p>被复用的decoding KV cache与全新prefill之间由prefix引起的偏差是稀疏且局部的，集中在有限范围的层和token位置内，因此只需对这些位置重算即可保持准确率。</p></div><div class="field"><h3>挑战</h3><p>识别哪些层/位置发生偏差，只对其重算以约束开销，并在training-free的前提下做到这一点、同时保持对agent生成内容的准确率。</p></div><div class="field"><h3>方法</h3><p>一种training-free的推理技术，将先前agent在decoding阶段的KV cache复用到后续agent的prefill中，只在受影响的稀疏位置选择性地重算KV。</p></div><div class="field"><h3>实验设置</h3><p>在涵盖数学推理、通用知识和代码生成的协作任务上，与标准的多agent流水线进行对比评估。</p></div><div class="field"><h3>结果</h3><p>报告KV-cache复用率超过80%、相比标准流水线TTFT降低最高4.7x，且准确率退化可忽略；arXiv 2026年2月，未注明venue，量级未经独立审计。</p></div><div class="field"><h3>局限</h3><p>复用假设共享内容在跨阶段间有很强的KV一致性；收益取决于agent间共享内容的多少；尚无同行评审venue且数字未经审计。</p></div><div class="field"><h3>与领域的关系</h3><p>是PrefillShare经训练的跨模型prefill共享的training-free对应物；将prefix KV reuse（vLLM/SGLang）扩展到被复用内容由不同agent生成的情形。</p></div>
 <div class="nav"><a href="prefillshare.html">← PrefillShare (Woo et al. 2026)</a><span class="sp"></span><a href="herasys.html">HeraSys (Li et al. 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

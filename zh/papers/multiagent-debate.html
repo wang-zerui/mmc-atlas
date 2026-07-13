@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">多个 LLM 实例各自独立提出答案，然后经过若干轮 debate 相互协商，直至收敛到一致的最终答案，从而在无需任何训练的情况下提升事实性与推理能力。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Multiagent Debate
+<div class="mm-wrap"><div class="markmap"># Multiagent Debate
 ## 一句话 
 - 多个 LLM 实例各自独立提出答案，然后经过若干轮 debate 相互协商，直至收敛到一致的最终答案，从而在无需任何训练的情况下提升事实性与推理能力。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 需管理多轮 debate 累积的上下文长度，确保智能体真正进行修正而非盲目附和，并让同一套 prompt/流程在多样化任务上保持通用。
 ## 局限
-- debate 的推理成本随智能体数量与轮数成倍增加；摘要未量化各任务上的收益，且后续工作（Huang et al.
-</script></div>
+- debate 的推理成本随智能体数量与轮数成倍增加；摘要未量化各任务上的收益，且后续工作（Huang et al.</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 在单次推理上已相当强大，但仍会产生幻觉和推理错误；此前的测试时方法（CoT、self-consistency）都依赖单一模型自身的采样。本工作借鉴 Minsky 的 &#x27;society of minds&#x27;（心智社会）思想，将多个模型实例作为相互交互的智能体。</p></div><div class="field"><h3>问题</h3><p>如何在不进行微调、也不借助外部工具的前提下，于推理阶段提升黑盒 LLM 在数学、策略与事实类任务上的表现？</p></div><div class="field"><h3>动机 / 分析</h3><p>如果多个模型实例先各自独立推理、再相互批判，那么只出现在某一条推理链上的特异性错误应能在 debate 过程中被纠正，从而得到更稳健的共识答案。</p></div><div class="field"><h3>关键洞见</h3><p>让每个智能体在多轮中接触到其他智能体的推理，能促使其修正并收敛；该流程可跨模型工作（例如 ChatGPT + Bard），并随智能体数量与轮数增加而扩展提升。</p></div><div class="field"><h3>挑战</h3><p>需管理多轮 debate 累积的上下文长度，确保智能体真正进行修正而非盲目附和，并让同一套 prompt/流程在多样化任务上保持通用。</p></div><div class="field"><h3>方法</h3><p>N 个模型实例各自生成一个初始回答；在随后的每一轮中，每个智能体都会看到其他智能体的答案与推理，并据此产出更新后的回答；经过固定轮数后取收敛的答案。所有任务都使用完全相同的流程与 prompt，且可直接应用于现有的黑盒模型。</p></div><div class="field"><h3>实验设置</h3><p>在数学推理、策略推理以及事实有效性/幻觉类任务上进行评测；对智能体数量与轮数进行消融，并展示了跨模型 debate。</p></div><div class="field"><h3>结果</h3><p>摘要报告称 debate &#x27;显著增强了数学与策略推理能力&#x27;，并提升事实准确性、减少错误/幻觉答案；性能随智能体数量与轮数增加而提升，且在不同模型间（ChatGPT+Bard）均成立。各基准上的具体数值见正文，而非摘要。</p></div><div class="field"><h3>局限</h3><p>debate 的推理成本随智能体数量与轮数成倍增加；摘要未量化各任务上的收益，且后续工作（Huang et al. 2023）质疑在与 self-consistency 匹配采样预算的条件下这些收益是否仍然成立。</p></div><div class="field"><h3>与领域的关系</h3><p>本族群中奠基性的 debate 方法；被 &#x27;LLMs Cannot Self-Correct Reasoning Yet&#x27;（M059）以及 2026 年的负面结果论文（M158、M159）直接复现与批判，并被 Sparse Communication Topology（M063）在效率上加以扩展。</p></div>
 <div class="nav"><a href="epistemic-gain-aleatoric-cost.html">← Epistemic Gain, Aleatoric Cost: Uncert</a><span class="sp"></span><a href="reconcile.html">ReConcile (Chen et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个校准的 cascade router，通过 isotonic regression 将 token-margin 不确定性映射为每条查询的错误概率，再通过带约束的成本最小化来选取升级阈值。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# UCCI: Calibrated Uncertainty for Cost-Optimal Cascade Routing
+<div class="mm-wrap"><div class="markmap"># UCCI: Calibrated Uncertainty for Cost-Optimal Cascade Routing
 ## 一句话 
 - 一个校准的 cascade router，通过 isotonic regression 将 token-margin 不确定性映射为每条查询的错误概率，再通过带约束的成本最小化来选取升级阈值。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 可靠地校准原始 margin（降低 ECE），并在大规模工作负载上求解错误约束下的成本最小化。
 ## 局限
-- 仅在单一 NER 工作负载、4B/12B 组合上验证；isotonic 校准需要留出的校准数据；为预印本。
-</script></div>
+- 仅在单一 NER 工作负载、4B/12B 组合上验证；isotonic 校准需要留出的校准数据；为预印本。</div></div></div>
 <div class="field"><h3>背景</h3><p>cascade 会把不确定的查询升级给更强的模型，但原始的模型置信度校准不良，导致升级阈值选取不当。</p></div><div class="field"><h3>问题</h3><p>在未校准的不确定性会导致不必要或漏掉升级的情况下，如何有原则地设定 cascade 中的升级阈值。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果不确定性被校准为真实的错误概率，就可以选取阈值以在准确率约束下最小化成本，而非启发式地调参。</p></div><div class="field"><h3>关键洞见</h3><p>token-margin 不确定性可通过 isotonic regression 校准为一个真正的每条查询错误概率，从而把阈值选取转化为一个带约束的优化问题。</p></div><div class="field"><h3>挑战</h3><p>可靠地校准原始 margin（降低 ECE），并在大规模工作负载上求解错误约束下的成本最小化。</p></div><div class="field"><h3>方法</h3><p>UCCI 为每条查询计算一个 token-margin 不确定性，通过 isotonic regression 将其校准为错误概率，再通过带约束的成本最小化（在目标错误率约束下最小化成本）选取弱到强的升级阈值。</p></div><div class="field"><h3>实验设置</h3><p>在一个 75K 查询的命名实体识别（named-entity-recognition）工作负载上，在一个 4B 模型和一个 12B 模型之间路由；与 FrugalGPT 风格的学习阈值 baseline 对比。</p></div><div class="field"><h3>结果</h3><p>在削减 31% 成本的同时将期望校准误差（ECE）从 0.12 降到 0.03，胜过 FrugalGPT 风格的学习阈值（已在 claim_checked 中核实）；提交于 2026 年 5 月 11 日，未声称 venue。</p></div><div class="field"><h3>局限</h3><p>仅在单一 NER 工作负载、4B/12B 组合上验证；isotonic 校准需要留出的校准数据；为预印本。</p></div><div class="field"><h3>与领域的关系</h3><p>以一个有原则的校准不确定性阈值，深化了 cascade 的校准/deferral 主线（FrugalGPT、AutoMix、Gatekeeper）。</p></div>
 <div class="nav"><a href="switchcraft.html">← Switchcraft (Agarwal et al. 2026)</a><span class="sp"></span><a href="twinrouterbench.html">TwinRouterBench (Yang et al. 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">Parrot通过“Semantic Variable”将应用层的dataflow暴露给LLM服务，用其标注请求的I/O，从而在相关请求之间进行数据流分析，实现DAG感知调度、跨请求批处理和prefix共享。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Parrot / Semantic Variable
+<div class="mm-wrap"><div class="markmap"># Parrot / Semantic Variable
 ## 一句话 
 - Parrot通过“Semantic Variable”将应用层的dataflow暴露给LLM服务，用其标注请求的I/O，从而在相关请求之间进行数据流分析，实现DAG感知调度、跨请求批处理和prefix共享。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 设计一个既足够通用以适配多样应用、又保持API简单的抽象，并从恢复出的dataflow中导出有用的优化（批处理、并行化、prefix共享）。
 ## 局限
-- 需要应用为请求标注Semantic Variable；一个数量级的收益是针对有利的多请求workload而言的，对single-shot请求可能不成立。
-</script></div>
+- 需要应用为请求标注Semantic Variable；一个数量级的收益是针对有利的多请求workload而言的，对single-shot请求可能不成立。</div></div></div>
 <div class="field"><h3>背景</h3><p>基于LLM的应用（AI agent、co-pilot）将LLM与传统软件结合，构建出跨多个租户的复杂多请求工作流。</p></div><div class="field"><h3>问题</h3><p>当今request-level的LLM API丢弃了应用层上下文，迫使服务盲目地优化单个请求，从而使多次调用应用的端到端性能欠佳。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果服务能够看到工作流中各请求之间的关联关系，就能应用经典的dataflow分析来解锁单请求层面看不到的跨请求优化。</p></div><div class="field"><h3>关键洞见</h3><p>一个统一的“Semantic Variable”抽象，通过标注prompt的输入/输出变量来重建跨相连请求的数据流水线，暴露出服务可据以优化的关联关系。</p></div><div class="field"><h3>挑战</h3><p>设计一个既足够通用以适配多样应用、又保持API简单的抽象，并从恢复出的dataflow中导出有用的优化（批处理、并行化、prefix共享）。</p></div><div class="field"><h3>方法</h3><p>Semantic Variable标注请求的I/O并将请求连接成数据流水线；ServeCore/Engine执行dataflow分析，从而实现DAG感知调度、跨请求并行化/批处理和prefix共享。</p></div><div class="field"><h3>实验设置</h3><p>在具有代表性的实际LLM应用用例（多agent/多次调用工作流）上进行评估。</p></div><div class="field"><h3>结果</h3><p>报告在常见的实际LLM应用用例上端到端性能最高提升约一个数量级；OSDI 2024。经USENIX/摘要验证；逐benchmark的详细数字未经审计。</p></div><div class="field"><h3>局限</h3><p>需要应用为请求标注Semantic Variable；一个数量级的收益是针对有利的多请求workload而言的，对single-shot请求可能不成立。</p></div><div class="field"><h3>与领域的关系</h3><p>通过增加应用层dataflow感知能力来补充request-level引擎（vLLM、SGLang）；是HeraSys等工作流感知serving系统和agentic-serving框架的前身。</p></div>
 <div class="nav"><a href="faster-cascades-via-speculative-decoding.html">← Faster Cascades via Speculative Decodi</a><span class="sp"></span><a href="distserve.html">DistServe (Zhong et al. 2024) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

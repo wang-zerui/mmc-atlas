@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">对每一步推理进行打分的 process reward model，是比 outcome reward model 更强的 best-of-N 选择 verifier。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Let&#x27;s Verify Step by Step / PRM800K
+<div class="mm-wrap"><div class="markmap"># Let&#x27;s Verify Step by Step / PRM800K
 ## 一句话 
 - 对每一步推理进行打分的 process reward model，是比 outcome reward model 更强的 best-of-N 选择 verifier。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 过程监督需要昂贵的步骤级人工标注；作者还表明，需要借助主动学习才能使标注变得高效。
 ## 局限
-- 需要昂贵的步骤级人工标注；结果主要在 MATH 上得到验证，若无新标注未必能迁移到所有推理领域。
-</script></div>
+- 需要昂贵的步骤级人工标注；结果主要在 MATH 上得到验证，若无新标注未必能迁移到所有推理领域。</div></div></div>
 <div class="field"><h3>背景</h3><p>大语言模型生成的多步推理链往往并不可靠，而用于对候选解排序的 reward model 既可以基于最终结果训练，也可以基于每个中间步骤训练。</p></div><div class="field"><h3>问题</h3><p>此前尚不清楚，监督每一步推理的正确性（过程监督）是否能产生比仅监督最终答案（结果监督）更好的 verifier。</p></div><div class="field"><h3>动机 / 分析</h3><p>更好的 verifier 能够支持 best-of-N 选择和更安全的推理，而逐步反馈更具可解释性，并且可能捕捉到仅靠结果信号会遗漏的错误。</p></div><div class="field"><h3>关键洞见</h3><p>对每一步的正确推理进行奖励，能提供比单一结果标签更密集、更可靠的训练信号，从而产生一个能选出远为优质解的 process reward model（PRM）。</p></div><div class="field"><h3>挑战</h3><p>过程监督需要昂贵的步骤级人工标注；作者还表明，需要借助主动学习才能使标注变得高效。</p></div><div class="field"><h3>方法</h3><p>他们在 MATH 数据集上训练了一个 outcome reward model 和一个 process reward model，用二者分别对采样得到的解进行重排序（best-of-N），并发布了 PRM800K，即约 800K 条步骤级人工反馈标注。</p></div><div class="field"><h3>实验设置</h3><p>在 MATH 基准上进行评估，比较 PRM、ORM 与多数投票在解选择上的表现，并辅以主动学习的消融实验。</p></div><div class="field"><h3>结果</h3><p>经过过程监督的 PRM 解决了 MATH 代表性测试子集中 78% 的问题，显著优于结果监督；800K 条步骤级标注（PRM800K）已发布（摘要中已确认）。</p></div><div class="field"><h3>局限</h3><p>需要昂贵的步骤级人工标注；结果主要在 MATH 上得到验证，若无新标注未必能迁移到所有推理领域。</p></div><div class="field"><h3>与领域的关系</h3><p>process reward model verifier 的标杆之作；下游工作（Generative Verifiers、Scaling Test-Time Compute、DataPRM、AgentV-RL）在其 PRM verifier 基础上进行构建或推广，用于把关生成质量。</p></div>
 <div class="nav"><a href="scaling-llm-test-time-compute-optimally.html">← Scaling LLM Test-Time Compute Optimall</a><span class="sp"></span><a href="self-taught-evaluators.html">Self-Taught Evaluators (Wang et al. 20 →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

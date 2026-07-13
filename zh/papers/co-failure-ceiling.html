@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇跨 67 个前沿模型的批评性研究，主张 routing、voting、cascades 和 MoA 的收益受限于 &#x27;beta&#x27;，即所有模型在同一 query 上一起失败的比率；平均成对误差相关性无法识别 beta，且在没有强的 query 级路由信号时，组合很少能超过单个最优模型。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Co-Failure Ceiling: When Does Combining Models Help?
+<div class="mm-wrap"><div class="markmap"># Co-Failure Ceiling: When Does Combining Models Help?
 ## 一句话 
 - 一篇跨 67 个前沿模型的批评性研究，主张 routing、voting、cascades 和 MoA 的收益受限于 &#x27;beta&#x27;，即所有模型在同一 query 上一起失败的比率；平均成对误差相关性无法识别 beta，且在没有强的 query 级路由信号时，组合很少能超过单个最优模型。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在有限样本下估计 beta，并区分真正的互补性与格式诱发的共同失败。
 ## 局限
-- 这是一篇 2026 年的预印本（cs.AI/cs.LG，无 venue）；结论以可核查任务为中心，并取决于其估计与评判设置。
-</script></div>
+- 这是一篇 2026 年的预印本（cs.AI/cs.LG，无 venue）；结论以可核查任务为中心，并取决于其估计与评判设置。</div></div></div>
 <div class="field"><h3>背景</h3><p>多模型系统（routing、voting、cascades、fusion、mixture-of-agents）被广泛宣称优于单个模型。</p></div><div class="field"><h3>问题</h3><p>尚不清楚组合模型何时真正有帮助，且常用的诊断指标（平均成对误差相关性 rho）可能会对可达到的收益产生误导。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个能在构建 router 之前就计算出来的、有原则的上限指标，可以告诉从业者可达到的最大收益，并防止在组合上过度投入。</p></div><div class="field"><h3>关键洞见</h3><p>beta，即所有模型都错的比率，将任何单一答案策略的准确率上限约束在 1 - beta；rho 无法识别 beta，因为具有相同边缘分布和成对相关性的分布可以有不同的全错比率，因此单因子模型低估了全错的尾部。</p></div><div class="field"><h3>挑战</h3><p>在有限样本下估计 beta，并区分真正的互补性与格式诱发的共同失败。</p></div><div class="field"><h3>方法</h3><p>引入 beta 作为上限指标，提供一个关于 beta 的 Clopper-Pearson 有限样本界作为训练 router 之前的证书，并与一个经 tetrachoric 校准的单因子模型以及一个 67 模型的 Gaussian copula 进行对比。</p></div><div class="field"><h3>实验设置</h3><p>来自 21 家提供方的 67 个模型，在开放式数学、执行判定的代码，以及一个 GPQA-Diamond 格式测试（选择题 vs 自由作答）上进行评测，并使用一个五评委面板（kappa 0.73-0.92）。</p></div><div class="field"><h3>结果</h3><p>在开放式数学上观测到 beta = 0.052，而预测为 0.023（约 2.5x 的低估，90% CI 为 1.7-3.4）；代码的 beta = 0.079；将 GPQA-Diamond 改为自由作答重新提问后 beta 升至 0.127；在质量匹配的条件下，低 rho 的异质集成击败了高 rho 的 Self-MoA，而在可核查的任务上，缺乏路由信号时组合很少能超过单个最优模型（已与摘要核实）。</p></div><div class="field"><h3>局限</h3><p>这是一篇 2026 年的预印本（cs.AI/cs.LG，无 venue）；结论以可核查任务为中心，并取决于其估计与评判设置。</p></div><div class="field"><h3>与领域的关系</h3><p>一个对 MoA (M001)、voting（M017、M018、M040）和 Self-MoA (M036) 予以限定的理论上限；其“低相关性胜过高相关性”的发现支持了 Heter-MAD (M043) 以及 Beyond Majority Voting 的相关性感知 (M132)。</p></div>
 <div class="nav"><a href="attention-moa.html">← Attention-MoA (Wen et al. 2026)</a><span class="sp"></span><a href="self-moa.html">Self-MoA / Rethinking Mixture-of-Agent →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

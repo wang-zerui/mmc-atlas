@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">面向冗长 deep-research 智能体轨迹的跨度级错误定位：TELBench 是一个含 1,000 个实例、用于识别有害错误跨度的 benchmark，DRIFT 是一个以断言为中心的审计框架，将定位能力提升最多 30 个百分点。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Where Do Deep-Research Agents Go Wrong? / TELBench + DRIFT
+<div class="mm-wrap"><div class="markmap"># Where Do Deep-Research Agents Go Wrong? / TELBench + DRIFT
 ## 一句话 
 - 面向冗长 deep-research 智能体轨迹的跨度级错误定位：TELBench 是一个含 1,000 个实例、用于识别有害错误跨度的 benchmark，DRIFT 是一个以断言为中心的审计框架，将定位能力提升最多 30 个百分点。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 收集并标注冗长的真实轨迹，将原始日志转化为语义跨度，并标注哪些跨度是真正有害的、哪些只是无害噪声。
 ## 局限
-- 研究范围专门针对 deep-research 智能体；标注依赖 LLM 辅助的专家评审，可能带有偏差，且标志性收益尚未经独立验证。
-</script></div>
+- 研究范围专门针对 deep-research 智能体；标注依赖 LLM 辅助的专家评审，可能带有偏差，且标志性收益尚未经独立验证。</div></div></div>
 <div class="field"><h3>背景</h3><p>deep-research 智能体运行冗长的搜索、工具使用和答案合成轨迹，最终答案评估只能说明它们是否成功，却无法指出轨迹的哪些部分使答案变得不可靠。</p></div><div class="field"><h3>问题</h3><p>仅看结果的评估无法定位错误在冗长轨迹中的起源，尤其是在正常探索、失败搜索、试探性假设和无害噪声之间。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一种能精确定位有害错误跨度的进程级视角，以在通过/失败指标之外诊断并改善 deep-research 智能体的可靠性。</p></div><div class="field"><h3>关键洞见</h3><p>跟踪智能体的断言并对照轨迹证据加以验证，能隔离出那些无支撑或相互冲突的断言真正污染答案路径的跨度，从而将有害错误与良性探索区分开。</p></div><div class="field"><h3>挑战</h3><p>收集并标注冗长的真实轨迹，将原始日志转化为语义跨度，并标注哪些跨度是真正有害的、哪些只是无害噪声。</p></div><div class="field"><h3>方法</h3><p>作者收集了 2,790 条真实轨迹（两个 agent 框架、三个骨干模型、三个 benchmark），借助 LLM 辅助的专家标注将日志转化为语义跨度以构建 TELBench（1,000 个实例），并提出 DRIFT——一个以断言为中心、标记含无支撑或相互冲突断言跨度的审计框架。</p></div><div class="field"><h3>实验设置</h3><p>在 TELBench 上跨多个模型家族与审计框架评估 DRIFT 的跨度级错误定位和首个错误定位准确率。</p></div><div class="field"><h3>结果</h3><p>DRIFT 跨多个模型家族与审计框架将跨度级错误定位和首个错误定位准确率提升最多 30 个百分点。+30pp 这一数据取自摘要，未经独立审计（状态 verified_pending_audit）。</p></div><div class="field"><h3>局限</h3><p>研究范围专门针对 deep-research 智能体；标注依赖 LLM 辅助的专家评审，可能带有偏差，且标志性收益尚未经独立验证。</p></div><div class="field"><h3>与领域的关系</h3><p>TraceElephant 智能体/步骤归因在单条 deep-research 轨迹上的跨度级对应工作；是 family Z 从结果指标转向进程级失败诊断的一部分。</p></div>
 <div class="nav"><a href="seeing-the-whole-elephant.html">← Seeing the Whole Elephant / TraceEleph</a><span class="sp"></span><a href="more-capable-less-cooperative.html">More Capable, Less Cooperative? When L →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个面向 Agent-as-a-Judge 的环境感知基准，覆盖搜索、数据和 GUI 领域，通过工具与环境交互来测试裁判的信息获取、状态验证和过程验证能力。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AJ-Bench
+<div class="mm-wrap"><div class="markmap"># AJ-Bench
 ## 一句话 
 - 一个面向 Agent-as-a-Judge 的环境感知基准，覆盖搜索、数据和 GUI 领域，通过工具与环境交互来测试裁判的信息获取、状态验证和过程验证能力。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在异构领域中采集并标注真实的智能体轨迹，并为交互式验证定义 ground truth。
 ## 局限
-- 仅覆盖三个特定领域和适中的任务数量；交互式裁判比静态裁判成本更高。
-</script></div>
+- 仅覆盖三个特定领域和适中的任务数量；交互式裁判比静态裁判成本更高。</div></div></div>
 <div class="field"><h3>背景</h3><p>人们提出 agentic 裁判来克服静态 LLM 裁判的局限，但目前尚无在交互式、使用工具的环境中评估裁判的基准。</p></div><div class="field"><h3>问题</h3><p>现有的裁判基准呈现的是静态文本对，无法衡量裁判能否获取信息、验证环境状态或核查智能体的过程。</p></div><div class="field"><h3>动机 / 分析</h3><p>对真实的智能体轨迹进行裁判需要与环境交互，因此评估必须是环境感知的，而非仅限文本。</p></div><div class="field"><h3>关键洞见</h3><p>围绕三种交互式能力——信息获取、状态验证和过程验证——在多样化环境中组织裁判，能揭示 agentic 裁判在何处胜过静态 LLM 裁判。</p></div><div class="field"><h3>挑战</h3><p>在异构领域中采集并标注真实的智能体轨迹，并为交互式验证定义 ground truth。</p></div><div class="field"><h3>方法</h3><p>AJ-Bench 提供了跨三个领域（搜索、数据、GUI）的 155 个任务和 516 条带标注的轨迹，并在三种验证能力上将 agentic 裁判与 LLM-as-Judge 基线进行对比。</p></div><div class="field"><h3>实验设置</h3><p>在 155 个任务/516 条轨迹上对比 agentic 裁判与 LLM-as-Judge 基线，按领域和能力测量裁判准确率。</p></div><div class="field"><h3>结果</h3><p>环境感知的 agentic 裁判在三个领域上相较 LLM-as-Judge 基线取得一致的提升；共 155 个任务和 516 条带标注轨迹（verified vs abstract；ACL 2026 Findings）。</p></div><div class="field"><h3>局限</h3><p>仅覆盖三个特定领域和适中的任务数量；交互式裁判比静态裁判成本更高。</p></div><div class="field"><h3>与领域的关系</h3><p>是 Agent-as-a-Judge 综述的实证基准对应工作，也是 JudgeBench 在交互式环境中的类比；并推动了 DataPRM 这类环境感知 verifier 的发展。</p></div>
 <div class="nav"><a href="agent-as-a-judge-survey.html">← Agent-as-a-Judge Survey (You et al. 20</a><span class="sp"></span><a href="dataprm.html">DataPRM (Qiu et al. 2026, KDD&#x27;26) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

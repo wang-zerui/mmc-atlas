@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇 2026 年关于 LLM 智能体通信协议的技术性分类体系，跨九个开源协议迭代推导，并沿五个维度分类：counterparty、payload、interaction state、discovery mechanism 与 schema flexibility。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# A Technical Taxonomy of LLM Agent Communication Protocols
+<div class="mm-wrap"><div class="markmap"># A Technical Taxonomy of LLM Agent Communication Protocols
 ## 一句话 
 - 一篇 2026 年关于 LLM 智能体通信协议的技术性分类体系，跨九个开源协议迭代推导，并沿五个维度分类：counterparty、payload、interaction state、discovery mechanism 与 schema flexibility。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 它指出在隐私与策略执行方面的开放缺口，以及短期内向统一 agent-to-agent 与 agent-to-context 通信的协议收敛的压力，与长期走向 federated、分层协议栈之间的张力。
 ## 局限
-- 是针对九个开源协议的分类体系，而非详尽综述或实证基准；为无确认发表场所的 arXiv preprint（cs.MA/cs.AI/cs.NI）。
-</script></div>
+- 是针对九个开源协议的分类体系，而非详尽综述或实证基准；为无确认发表场所的 arXiv preprint（cs.MA/cs.AI/cs.NI）。</div></div></div>
 <div class="field"><h3>背景</h3><p>随着 LLM 与多智能体系统走向成熟，可靠的通信协议正成为分布式智能体网络的关键基础设施。</p></div><div class="field"><h3>问题</h3><p>协议格局碎片化，造成互操作性问题，且缺乏一个原则性的技术分类来比较协议或指导选型。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个严谨推导的分类体系来对架构模式分类、识别收敛趋势、指导协议选型并揭示研究缺口。</p></div><div class="field"><h3>关键洞见</h3><p>应用系统化分类揭示出结构性规律：所有被采样的 agent-to-agent 协议都将 hybrid payload 与会话状态持久化配对，多数支持多个预定义 schema 而仅有两个在运行时协商，且去中心化发现仍属罕见。</p></div><div class="field"><h3>挑战</h3><p>它指出在隐私与策略执行方面的开放缺口，以及短期内向统一 agent-to-agent 与 agent-to-context 通信的协议收敛的压力，与长期走向 federated、分层协议栈之间的张力。</p></div><div class="field"><h3>方法</h3><p>它以迭代方法构建分类体系（先定义目的、meta-characteristic 与终止条件，再进行五轮迭代，三轮 empirical-to-conceptual、两轮 conceptual-to-empirical），跨九个开源协议，得出五个维度：counterparty、payload、interaction state、discovery mechanism、schema flexibility。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：九个持续维护且有可证明采用度的开源协议，经五轮分类体系开发迭代分析，而非基准实验。</p></div><div class="field"><h3>结果</h3><p>发现 agent-to-agent 协议普遍将 hybrid payload 与会话状态配对、多为预定义 schema、去中心化发现罕见，并预测近期收敛、随后走向 federated 分层栈。</p></div><div class="field"><h3>局限</h3><p>是针对九个开源协议的分类体系，而非详尽综述或实证基准；为无确认发表场所的 arXiv preprint（cs.MA/cs.AI/cs.NI）。</p></div><div class="field"><h3>与领域的关系</h3><p>本图谱中的 2026 年协议互操作性综述，以技术性五维分类更新了 2024-2025 的协议综述 M096 与 M305。</p></div>
 <div class="nav"><a href="layered-attack-surface-llm-agents-survey.html">← A Systematic Survey of Security Threat</a><span class="sp"></span><a href="workflow-optimization-llm-agents-survey.html">From Static Templates to Dynamic Runti →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

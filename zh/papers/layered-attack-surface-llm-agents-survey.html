@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇 2026 年关于 LLM 智能体安全的系统性综述，提出 Layered Attack Surface Model (LASM)：一个覆盖七个 agentic 栈层与四种威胁时间尺度的 7x4 框架。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# A Systematic Survey of Security Threats and Defenses in LLM-Based AI Agents: A Layered Attack Surface Framework
+<div class="mm-wrap"><div class="markmap"># A Systematic Survey of Security Threats and Defenses in LLM-Based AI Agents: A Layered Attack Surface Framework
 ## 一句话 
 - 一篇 2026 年关于 LLM 智能体安全的系统性综述，提出 Layered Attack Surface Model (LASM)：一个覆盖七个 agentic 栈层与四种威胁时间尺度的 7x4 框架。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 它指出部分有记载的攻击领域缺乏相应防御、基准未覆盖跨会话/sub-session-stack 失败、以及授权与策略执行仍薄弱。
 ## 局限
-- 是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CR/cs.LG）。
-</script></div>
+- 是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CR/cs.LG）。</div></div></div>
 <div class="field"><h3>背景</h3><p>Agentic AI 系统呈现出与无状态 LLM 根本不同的安全挑战，因为它们保留记忆、调用外部工具、与其他智能体协作并跨会话运行。</p></div><div class="field"><h3>问题</h3><p>现有分类体系按攻击类型（prompt injection、jailbreaking）组织威胁，这掩盖了威胁在 agentic 栈中出现的位置及其表现的时间尺度。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个与威胁发生的地点和时间挂钩的结构化分类体系，以映射覆盖情况并暴露当前防御与基准中的盲点。</p></div><div class="field"><h3>关键洞见</h3><p>按栈层与时间性定位每一威胁，揭示出上层栈层被明显欠研究，且跨会话与 sub-session-stack 失败在基准中覆盖不足。</p></div><div class="field"><h3>挑战</h3><p>它指出部分有记载的攻击领域缺乏相应防御、基准未覆盖跨会话/sub-session-stack 失败、以及授权与策略执行仍薄弱。</p></div><div class="field"><h3>方法</h3><p>它提出 Layered Attack Surface Model (LASM)：七个 agentic 栈层（Foundation、Cognitive、Memory、Tool Execution、Multi-Agent Coordination、Ecosystem、Governance）与四类时间性（instantaneous、session-persistent、cross-session cumulative、sub-session-stack）交叉，构成 7x4 映射，并给出跨层防御分类体系、防御方案与依赖 DAG。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：对 2021-2026 年间 116 篇论文的系统性分析（58 页、8 图、15 表），并发布逐篇论文的编码、鲁棒性脚本与一份参考性 Agent Bill of Materials schema。</p></div><div class="field"><h3>结果</h3><p>将文献映射到 7x4 网格，显示上层栈层欠研究、若干有记载攻击缺乏防御、以及针对跨会话/sub-session-stack 威胁的基准盲点。</p></div><div class="field"><h3>局限</h3><p>是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CR/cs.LG）。</p></div><div class="field"><h3>与领域的关系</h3><p>本图谱中的 2026 年安全/安全性综述，为多智能体协调与协议综述 M314/M320 增添威胁与防御的维度。</p></div>
 <div class="nav"><a href="agent-system-harness-design-survey.html">← From Question Answering to Task Comple</a><span class="sp"></span><a href="technical-taxonomy-agent-communication-protocols.html">A Technical Taxonomy of LLM Agent Comm →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

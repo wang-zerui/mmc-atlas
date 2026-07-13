@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">迄今规模最大的 LLM-as-judge 审计表明，相比经机遇校正的一致性，exact-match 一致性会夸大裁判的表面质量，因此一个裁判可能可靠却无效。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Reliability without Validity
+<div class="mm-wrap"><div class="markmap"># Reliability without Validity
 ## 一句话 
 - 迄今规模最大的 LLM-as-judge 审计表明，相比经机遇校正的一致性，exact-match 一致性会夸大裁判的表面质量，因此一个裁判可能可靠却无效。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在众多裁判和提供方之间进行一致的审计，并把一致性（可重复性）与有效性（正确性）作为两个独立的维度加以区分。
 ## 局限
-- 这是一篇尚无确认发表场所的 arXiv preprint；审计仅覆盖特定的基准和裁判配置，可能无法涵盖所有部署场景。
-</script></div>
+- 这是一篇尚无确认发表场所的 arXiv preprint；审计仅覆盖特定的基准和裁判配置，可能无法涵盖所有部署场景。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM-as-Judge 如今已成为评估模型的标准做法，其质量通常以与人工标注的 exact-match 一致性来报告。</p></div><div class="field"><h3>问题</h3><p>exact-match 一致性未经机遇校正，因此即便裁判的一致性在很大程度上是偶然的，也可能显得准确，并且会掩盖系统性偏差。</p></div><div class="field"><h3>动机 / 分析</h3><p>可信的评估基础设施需要判断裁判分数究竟反映真实的有效性，还是仅仅是表面的可靠性。</p></div><div class="field"><h3>关键洞见</h3><p>用经机遇校正的 kappa 取代 exact-match，会揭示出巨大的质量差距，而高自一致性可能与强烈的位置偏差同时存在，即可靠却无效。</p></div><div class="field"><h3>挑战</h3><p>在众多裁判和提供方之间进行一致的审计，并把一致性（可重复性）与有效性（正确性）作为两个独立的维度加以区分。</p></div><div class="field"><h3>方法</h3><p>作者在 MT-Bench、JudgeBench 和 RewardBench 上审计了来自 9 家提供方的 21 个裁判，共 118 次运行、约 541k 条判断，将 exact-match 一致性与 Cohen&#x27;s kappa 进行对比，并测量一致性与位置偏差。</p></div><div class="field"><h3>实验设置</h3><p>在三个基准和 21 个裁判上共约 541k 条判断，分析一致性指标、排名稳定性以及偏差的共现情况。</p></div><div class="field"><h3>结果</h3><p>在 MT-Bench 上 kappa 与 exact-match 的差距达到 33-41 个百分点，模型排名依指标不同最多变动 14 位，且高于 0.95 的一致性与高于 0.10 的位置偏差同时出现（verified vs abstract）。</p></div><div class="field"><h3>局限</h3><p>这是一篇尚无确认发表场所的 arXiv preprint；审计仅覆盖特定的基准和裁判配置，可能无法涵盖所有部署场景。</p></div><div class="field"><h3>与领域的关系</h3><p>是 Fair-Evaluators 和 JudgeBench 的实证后继工作，大规模量化了促使去偏（Judging-the-Judges）和 agentic judging 出现的偏差/可靠性局限。</p></div>
 <div class="nav"><a href="ai-safety-via-debate.html">← AI Safety via Debate (Irving, Christia</a><span class="sp"></span><a href="judging-the-judges.html">Judging the Judges (Soumik 2026, TMLR) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

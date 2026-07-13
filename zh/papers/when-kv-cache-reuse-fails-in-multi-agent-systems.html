@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">加速生成型智能体的 KV cache 复用技巧会破坏 LLM judge：它们削弱了跨候选注意力，使 judge 的选择与 dense prefill 不一致，即便任务准确率看似稳定。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# When KV Cache Reuse Fails in Multi-Agent Systems
+<div class="mm-wrap"><div class="markmap"># When KV Cache Reuse Fails in Multi-Agent Systems
 ## 一句话 
 - 加速生成型智能体的 KV cache 复用技巧会破坏 LLM judge：它们削弱了跨候选注意力，使 judge 的选择与 dense prefill 不一致，即便任务准确率看似稳定。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 诊断一个对准确率指标不可见的失败，需要一个新的一致性度量和消融实验，以隔离跨候选交互的作用。
 ## 局限
-- 结论在三个推理/编程 benchmark 上得到验证；摘要未给出标志性数字，且缓解措施虽有动机，但论文主要是识别而非完全解决该失败模式。
-</script></div>
+- 结论在三个推理/编程 benchmark 上得到验证；摘要未给出标志性数字，且缓解措施虽有动机，但论文主要是识别而非完全解决该失败模式。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体 LLM 系统常生成多个候选回复并用一个 LLM judge 加以聚合；跨共享上下文的 KV cache 复用被推崇为削减 prefill 成本、加速生成型智能体的手段。</p></div><div class="field"><h3>问题</h3><p>人们假定 KV cache 复用带来的效率收益能跨角色迁移，但其对以 judge 为中心的推理（在候选间做选择）的影响此前未被考察。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果复用悄然破坏了 judge 的决策，系统可能看似准确却做出不一致的选择，因此 judge 这一场景需要对缓存有风险意识的理解。</p></div><div class="field"><h3>关键洞见</h3><p>judge 推理是一种独特的场景：它依赖跨候选注意力，而 KV cache 复用会系统性地削弱这种注意力（对靠后的候选块尤甚），因此对执行型智能体安全的加速会扰动 judge。</p></div><div class="field"><h3>挑战</h3><p>诊断一个对准确率指标不可见的失败，需要一个新的一致性度量和消融实验，以隔离跨候选交互的作用。</p></div><div class="field"><h3>方法</h3><p>作者引入 Judge Consistency Rate（JCR）度量及诊断方法，将复用策略与 judge 的 dense prefill 进行比较，并对显式跨候选交互做消融。</p></div><div class="field"><h3>实验设置</h3><p>在 GSM8K、MMLU 和 HumanEval 上评估，衡量 KV cache 复用相对 dense prefill 的 judge 选择一致性。</p></div><div class="field"><h3>结果</h3><p>复用策略使准确率表面上保持稳定，却让 judge 选择与 dense prefill 高度不一致；复用削弱了跨候选注意力（对靠后的候选块更差），消融显示显式的跨候选交互对保持 dense-prefill 决策至关重要。摘要未报告具体的 JCR 百分比。</p></div><div class="field"><h3>局限</h3><p>结论在三个推理/编程 benchmark 上得到验证；摘要未给出标志性数字，且缓解措施虽有动机，但论文主要是识别而非完全解决该失败模式。</p></div><div class="field"><h3>与领域的关系</h3><p>一个系统层面的负面结果，揭示了 judge 型聚合所特有的推理优化失败模式；从基础设施侧补充了行为层面的 MAS 失败分类法（MAST、AgentCollabBench）。</p></div>
 <div class="nav"><a href="agentcollabbench.html">← AgentCollabBench (2026)</a><span class="sp"></span><a href="seeing-the-whole-elephant.html">Seeing the Whole Elephant / TraceEleph →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

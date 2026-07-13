@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A NEGATIVE analysis showing the standard &#x27;answer flip rate&#x27; conflates spontaneous instability, stance-induced conformity, and reasoning-induced persuasion; strict conformity (29%) is mostly harmful (57-77% correct-to-wrong) and even empty reasoning drives 20-39% error adoption, but harmful conformity is predictable at Round 0 (AUC 0.79).</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Not All Flips Are Conformity: Decomposing Stance Convergence in Multi-Agent LLM Debate
+<div class="mm-wrap"><div class="markmap"># Not All Flips Are Conformity: Decomposing Stance Convergence in Multi-Agent LLM Debate
 ## TL;DR 
 - A NEGATIVE analysis showing the standard &#x27;answer flip rate&#x27; conflates spontaneous instability, stance-induced conformity, and reasoning-induced persuasion;…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Isolating each flip source via controlled counterfactual conditions, and the fact that without correctness labels or self-reflection controls,…
 ## Limitations
-- arXiv-only; interventions reduce harmful conformity but cannot raise accuracy absent correctness labels or self-reflection controls, since beneficial…
-</script></div>
+- arXiv-only; interventions reduce harmful conformity but cannot raise accuracy absent correctness labels or self-reflection controls, since beneficial…</div></div></div>
 <div class="field"><h3>Background</h3><p>Answer convergence in multi-agent debate is often read as beneficial consensus, and &#x27;answer flip rate&#x27; is used as a summary metric, but it mixes together very different underlying mechanisms.</p></div><div class="field"><h3>Problem</h3><p>When agents change their answers during debate, how much reflects genuine reasoning versus social compliance, and is the aggregate flip rate a meaningful signal?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If most flips are harmful conformity rather than persuasion, then naively reducing flips or trusting convergence could hurt accuracy; the components must be disentangled.</p></div><div class="field"><h3>Key Insight</h3><p>Flips decompose into three distinct sources — spontaneous instability, stance-induced conformity, and reasoning-induced persuasion — and strict conformity is predominantly harmful, so convergence is not evidence of correctness; harmful conformity can be predicted from Round-0 features.</p></div><div class="field"><h3>Challenges</h3><p>Isolating each flip source via controlled counterfactual conditions, and the fact that without correctness labels or self-reflection controls, beneficial and harmful influence cannot be distinguished so cutting adoption does not improve accuracy.</p></div><div class="field"><h3>Method</h3><p>A three-source decomposition framework separating flips into spontaneous instability, stance-induced conformity, and reasoning-induced persuasion, each isolated via controlled counterfactual conditions; builds a Round-0 predictor of harmful conformity and a risk-targeted intervention.</p></div><div class="field"><h3>Experimental Setup</h3><p>Primary setting MMLU-Pro, robustness on GPQA-Diamond, across three model families.</p></div><div class="field"><h3>Results</h3><p>NEGATIVE: 37% of observations flip under self-reflection alone (spontaneous instability); strict conformity is 29% and predominantly harmful (57-77% correct-to-wrong); even vacuous/empty reasoning drives 20-39% error adoption among resistant agents. Harmful conformity is predictable from Round-0 features (AUC 0.79), and a risk-targeted intervention cuts harmful conformity by 13.6 percentage points (p&lt;0.001). Caveat: without labels/controls, reducing peer adoption does not improve accuracy.</p></div><div class="field"><h3>Limitations</h3><p>arXiv-only; interventions reduce harmful conformity but cannot raise accuracy absent correctness labels or self-reflection controls, since beneficial and harmful influence are entangled.</p></div><div class="field"><h3>Relation to the Field</h3><p>Refines the &#x27;sycophantic conformity&#x27; pathway of M158 into distinct mechanisms and complements the diversity-collapse view of M163; consistent with M161&#x27;s detection-without-correction account.</p></div>
 <div class="nav"><a href="detection-without-correction.html">← Detection Without Correction: A Two-Pa</a><span class="sp"></span><a href="diversity-collapse-in-multi-agent-llm-systems.html">Diversity Collapse in Multi-Agent LLM  →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

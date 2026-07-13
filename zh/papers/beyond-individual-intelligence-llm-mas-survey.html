@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇 2026 年关于 LLM 多智能体系统的统一综述，将协作、失败归因与自我进化串联为单一的因果性 &#x27;LIFE 递进&#x27;，指向闭环、自组织的集体智能。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Beyond Individual Intelligence: Surveying Collaboration, Failure Attribution, and Self-Evolution in LLM-based Multi-Agent Systems
+<div class="mm-wrap"><div class="markmap"># Beyond Individual Intelligence: Surveying Collaboration, Failure Attribution, and Self-Evolution in LLM-based Multi-Agent Systems
 ## 一句话 
 - 一篇 2026 年关于 LLM 多智能体系统的统一综述，将协作、失败归因与自我进化串联为单一的因果性 &#x27;LIFE 递进&#x27;，指向闭环、自组织的集体智能。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 它指出相邻阶段之间的依赖关系尚未被充分审视，错误传播使失败诊断困难，向自组织集体智能闭合回路仍是开放问题。
 ## 局限
-- 作为综述，它提供组织框架与研究议程，但无新的实证测量；为尚无确认发表场所的 arXiv preprint。
-</script></div>
+- 作为综述，它提供组织框架与研究议程，但无新的实证测量；为尚无确认发表场所的 arXiv preprint。</div></div></div>
 <div class="field"><h3>背景</h3><p>基于 LLM 的智能体在推理、规划与工具使用上表现出色，多智能体系统在其上叠加结构化协作，但持续的协调仍然脆弱。</p></div><div class="field"><h3>问题</h3><p>在多智能体系统中，错误会跨智能体、跨交互轮次传播，形成难以诊断的失败；而以往综述将单体智能体、协作与自我进化分开处理，未审视三者之间的因果依赖。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一篇统一综述来串联智能体如何协作、其失败如何归因、以及它们如何进化，使该领域能迈向闭环系统而非孤立的能力。</p></div><div class="field"><h3>关键洞见</h3><p>协作、失败归因与自我进化并非彼此独立的主题，而是因果相连的阶段：能力使协作成为可能，协作产生必须被归因的失败，归因又反哺自我改进。</p></div><div class="field"><h3>挑战</h3><p>它指出相邻阶段之间的依赖关系尚未被充分审视，错误传播使失败诊断困难，向自组织集体智能闭合回路仍是开放问题。</p></div><div class="field"><h3>方法</h3><p>它将该领域组织为四阶段 LIFE 递进：Lay the capability foundation（奠定能力基础）、Integrate agents through collaboration（通过协作整合智能体）、Find faults through attribution（通过归因发现故障）、Evolve through autonomous self-improvement（通过自主自我改进进化），为每个阶段给出分类体系并刻画相邻阶段间的依赖。</p></div><div class="field"><h3>实验设置</h3><p>作为综述，它跨四个阶段对既有 LLM-MAS 工作进行综合与归类，而非开展新实验；覆盖范围聚焦协作、失败归因与自我进化文献。</p></div><div class="field"><h3>结果</h3><p>给出面向闭环多智能体系统的跨阶段研究议程，将协作、归因与进化重构为一条通向自组织集体智能的因果流水线。</p></div><div class="field"><h3>局限</h3><p>作为综述，它提供组织框架与研究议程，但无新的实证测量；为尚无确认发表场所的 arXiv preprint。</p></div><div class="field"><h3>与领域的关系</h3><p>本图谱中把协作、失败归因（参见 Z 领域）与自我进化各条脉络联系起来的 2026 年总纲性参考，与 2024-2025 的 LLM-MAS 综述 M300-M303 互补。</p></div>
 <div class="nav"><a href="reinforcement-learning-for-llm-based-multi-agent.html">← Reinforcement Learning for LLM-based M</a><span class="sp"></span><a href="model-merging-era-llm-survey.html">Model Merging in the Era of Large Lang →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

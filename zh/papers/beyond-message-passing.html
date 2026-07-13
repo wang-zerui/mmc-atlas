@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">本文将 agent 通信 protocol 组织为受 Shannon-Weaver 和 Grice 语用学启发的三层分类体系（communication、syntactic、semantic），并指出当前 protocol 在传输/语法层已趋成熟，但对澄清与修复等语义对齐的支持严重不足。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Beyond Message Passing: A Semantic View of Agent Communication Protocols
+<div class="mm-wrap"><div class="markmap"># Beyond Message Passing: A Semantic View of Agent Communication Protocols
 ## 一句话 
 - 本文将 agent 通信 protocol 组织为受 Shannon-Weaver 和 Grice 语用学启发的三层分类体系（communication、syntactic、semantic），并指出当前 protocol 在传输/语法层已趋成熟，但对澄清与修复等语义对齐的支持严重不足。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 系统性地将异构 protocol 映射到统一的分层框架上，并刻画它们所带来的语义缺口和维护成本。
 ## 局限
-- 这项工作是概念性和诊断性的；它识别缺口并提供选型指导，但没有实现或评估新的语义层 protocol 机制。
-</script></div>
+- 这项工作是概念性和诊断性的；它识别缺口并提供选型指导，但没有实现或评估新的语义层 protocol 机制。</div></div></div>
 <div class="field"><h3>背景</h3><p>agent 通信 protocol 正成为 LLM 系统的核心基础设施，这些系统会使用工具、与其他 agent 协调，并在多样的环境中运行。</p></div><div class="field"><h3>问题</h3><p>现有的 protocol 设计与对比聚焦于传输层和消息格式，掩盖了 protocol 是否真正帮助 agent 达成共同理解这一问题。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个受人类交流启发的视角，以揭示 protocol 在意义层面上——而不仅是字节和 schema 层面——支持了什么、又缺失了什么。</p></div><div class="field"><h3>关键洞见</h3><p>存在明显的失衡：由于 protocol 对澄清、上下文对齐和验证几乎没有原生支持，这些语义职责被推入 prompt、wrapper 和编排逻辑中，形成了隐性的技术债。</p></div><div class="field"><h3>挑战</h3><p>系统性地将异构 protocol 映射到统一的分层框架上，并刻画它们所带来的语义缺口和维护成本。</p></div><div class="field"><h3>方法</h3><p>一个三层框架——communication（可靠传输）、syntactic（结构化交互）和 semantic（意义层面的协调）——以 Shannon-Weaver 和 Grice 为理论基础，用于系统性地分析和对比 protocol。</p></div><div class="field"><h3>实验设置</h3><p>一项分析性研究：系统性地分析并跨三层对比了 18 个代表性 protocol，而非进行实证 benchmark。</p></div><div class="field"><h3>结果</h3><p>没有定量 benchmark；已验证的发现是三层分类体系、对 18 个 protocol 的分析，以及“语义对齐职责被卸载到 prompt/wrapper 中形成技术债”的结论，并给出了迈向语义健壮生态系统的研究议程。</p></div><div class="field"><h3>局限</h3><p>这项工作是概念性和诊断性的；它识别缺口并提供选型指导，但没有实现或评估新的语义层 protocol 机制。</p></div><div class="field"><h3>与领域的关系</h3><p>作为 Ehtesham 等人 protocol 综述和 ProtocolBench 实证研究的语义侧补充；其“共同理解”议程为 Mesh Memory Protocol 等 memory/语义 protocol 提供了动机。</p></div>
 <div class="nav"><a href="orca.html">← Orca (Mukherjee et al. 2023)</a><span class="sp"></span><a href="protocolbench.html">ProtocolBench / ProtocolRouter (Du, Zh →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A Bayesian framework splitting debate predictive uncertainty into epistemic &#x27;gain&#x27; vs aleatoric &#x27;cost&#x27;, showing effective debate needs high epistemic gain under controlled aleatoric cost, and builds an uncertainty-guided MARL method for math reasoning.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Epistemic Gain, Aleatoric Cost: Uncertainty Decomposition in Multi-Agent Debate
+<div class="mm-wrap"><div class="markmap"># Epistemic Gain, Aleatoric Cost: Uncertainty Decomposition in Multi-Agent Debate
 ## TL;DR 
 - A Bayesian framework splitting debate predictive uncertainty into epistemic &#x27;gain&#x27; vs aleatoric &#x27;cost&#x27;, showing effective debate needs high epistemic gain…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Estimating the two uncertainty components in practice and turning the decomposition into a training signal that improves both individual accuracy and…
 ## Limitations
-- Abstract gives no concrete numeric results; scoped to math reasoning, and the approach requires estimating uncertainty components and additional MARL…
-</script></div>
+- Abstract gives no concrete numeric results; scoped to math reasoning, and the approach requires estimating uncertainty components and additional MARL…</div></div></div>
 <div class="field"><h3>Background</h3><p>Multi-agent debate shows unexplained behaviors, such as accuracy rising with token entropy and marked differences between homogeneous and heterogeneous agent groupings, that lack a principled account.</p></div><div class="field"><h3>Problem</h3><p>How does information sharing in multi-agent debate affect individual reasoning, and when does exchanging information help rather than hurt an agent?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Without a principled measure of what an agent gains vs. loses from peer information, debate design stays heuristic; uncertainty decomposition can make the tradeoff operational.</p></div><div class="field"><h3>Key Insight</h3><p>Debate&#x27;s predictive uncertainty decomposes into epistemic uncertainty (potential gain from peers&#x27; information) and aleatoric uncertainty (cost/noise introduced), and effective debate means maximizing epistemic gain while keeping aleatoric cost controlled.</p></div><div class="field"><h3>Challenges</h3><p>Estimating the two uncertainty components in practice and turning the decomposition into a training signal that improves both individual accuracy and debate productivity.</p></div><div class="field"><h3>Method</h3><p>Proposes a Bayesian framework separating answer-level predictive uncertainty into epistemic and aleatoric components mapped to debate gain and cost, then introduces an uncertainty-guided multi-agent reinforcement learning (MARL) algorithm that reduces aleatoric cost while better exploiting epistemic information.</p></div><div class="field"><h3>Experimental Setup</h3><p>Math reasoning debate settings, examining homogeneous vs. heterogeneous agent groupings and the token-entropy/accuracy relationship (specific benchmark numbers not in the abstract).</p></div><div class="field"><h3>Results</h3><p>Shows effective debate requires high epistemic gain under controlled aleatoric cost; the uncertainty-guided MARL method improves individual agent accuracy and makes the debate process more productive, offering an operational Bayesian perspective on MAD. Specific numeric metrics are not reported in the abstract.</p></div><div class="field"><h3>Limitations</h3><p>Abstract gives no concrete numeric results; scoped to math reasoning, and the approach requires estimating uncertainty components and additional MARL training.</p></div><div class="field"><h3>Relation to the Field</h3><p>A constructive, uncertainty-theoretic complement to the negative debate analyses (M158, M159, M161); its epistemic/aleatoric split formalizes when heterogeneity helps (cf. M160) versus when peer noise dominates.</p></div>
 <div class="nav"><a href="diversity-collapse-in-multi-agent-llm-systems.html">← Diversity Collapse in Multi-Agent LLM </a><span class="sp"></span><a href="multiagent-debate.html">Multiagent Debate (Du et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

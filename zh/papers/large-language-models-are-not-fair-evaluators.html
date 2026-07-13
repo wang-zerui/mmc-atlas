@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">LLM-as-judge 的裁决存在强烈的位置偏见，仅重排候选项的顺序就能翻转结果；多证据校准与位置平衡校准可缓解这一问题。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Large Language Models are not Fair Evaluators
+<div class="mm-wrap"><div class="markmap"># Large Language Models are not Fair Evaluators
 ## 一句话 
 - LLM-as-judge 的裁决存在强烈的位置偏见，仅重排候选项的顺序就能翻转结果；多证据校准与位置平衡校准可缓解这一问题。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 位置偏见与内容质量相互交织，若不进行重复推理便难以消除；校准过程也不能引入新的伪影。
 ## 局限
-- 校准需要额外的推理开销；该研究聚焦于成对的 ChatGPT 式评判以及特定的模型对。
-</script></div>
+- 校准需要额外的推理开销；该研究聚焦于成对的 ChatGPT 式评判以及特定的模型对。</div></div></div>
 <div class="field"><h3>背景</h3><p>在成对评估中，ChatGPT 等 LLM 被广泛用于判断两个候选回复中哪一个更好。</p></div><div class="field"><h3>问题</h3><p>这些成对裁决的可靠性值得怀疑，因为 judge 可能受候选项呈现顺序的影响，而非其真实质量。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果仅改变呈现顺序就能翻转裁决，那么基于 LLM 的排行榜和比较就不可信，需要加以修正。</p></div><div class="field"><h3>关键洞见</h3><p>LLM judge 存在很大的位置偏见：仅交换两个答案的顺序就可能反转胜负，而这可以通过校准流程来抵消。</p></div><div class="field"><h3>挑战</h3><p>位置偏见与内容质量相互交织，若不进行重复推理便难以消除；校准过程也不能引入新的伪影。</p></div><div class="field"><h3>方法</h3><p>作者通过实证展示了该偏见，并提出多证据校准（MEC）与位置平衡校准（BPC），二者分别在多份证据上以及在两种答案排序上聚合判断。</p></div><div class="field"><h3>实验设置</h3><p>进行成对评判实验，交换候选项顺序，在如 ChatGPT judge 下比较 Vicuna-13B 与 ChatGPT 等场景中测量，涵盖有无校准的情况。</p></div><div class="field"><h3>结果</h3><p>在 ChatGPT judge 下，重排候选项后 Vicuna-13B 在 80 个查询中的 66 个上击败了 ChatGPT，暴露出严重的位置偏见；MEC + BPC 校准可大幅缓解这一问题（已在摘要中确认）。</p></div><div class="field"><h3>局限</h3><p>校准需要额外的推理开销；该研究聚焦于成对的 ChatGPT 式评判以及特定的模型对。</p></div><div class="field"><h3>与领域的关系</h3><p>这是关于 LLM-as-Judge 的一篇关键偏见诊断论文；它推动了 Reliability-without-Validity 与 Judging-the-Judges 中的校准与审计工作，以及本系列中的去偏评审团研究。</p></div>
 <div class="nav"><a href="replacing-judges-with-juries.html">← Replacing Judges with Juries / Panel o</a><span class="sp"></span><a href="llm-as-a-judge.html">LLM-as-a-Judge / MT-Bench &amp; Chatbot Ar →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

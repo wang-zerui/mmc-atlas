@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个面向 LLM 多智能体协作与竞争的综合性 benchmark，采用基于里程碑的 KPI，不仅衡量任务完成度，还衡量跨多种通信拓扑的协调质量。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# MultiAgentBench
+<div class="mm-wrap"><div class="markmap"># MultiAgentBench
 ## 一句话 
 - 一个面向 LLM 多智能体协作与竞争的综合性 benchmark，采用基于里程碑的 KPI，不仅衡量任务完成度，还衡量跨多种通信拓扑的协调质量。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 设计能跨多样任务泛化的交互式场景及里程碑 KPI，并公平比较各协调协议（star、chain、tree、graph）与群体讨论、认知规划等策略。
 ## 局限
-- 结构/规划带来的协作收益很小（~3%），且状态为 verified_pending_audit；部分数字未对照完整论文独立确认。
-</script></div>
+- 结构/规划带来的协作收益很小（~3%），且状态为 verified_pending_audit；部分数字未对照完整论文独立确认。</div></div></div>
 <div class="field"><h3>背景</h3><p>现有 agent 基准聚焦于单智能体任务或狭窄领域，未能刻画协调与竞争等多智能体动态。</p></div><div class="field"><h3>问题</h3><p>此前缺乏标准化方式来评估 LLM 智能体协作或竞争的优劣，也无法在统一基准上比较各种协调协议。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个对协作质量（而不仅是最终任务成败）打分的 benchmark，能让研究者比较拓扑结构与协调策略，并诊断团队协作在何处起作用。</p></div><div class="field"><h3>关键洞见</h3><p>在执行过程中衡量基于里程碑的 KPI，能捕捉仅看结果的指标所遗漏的协作与竞争质量，揭示哪些协调结构真正改善了团队协作。</p></div><div class="field"><h3>挑战</h3><p>设计能跨多样任务泛化的交互式场景及里程碑 KPI，并公平比较各协调协议（star、chain、tree、graph）与群体讨论、认知规划等策略。</p></div><div class="field"><h3>方法</h3><p>MultiAgentBench（构建于 MARBLE 框架之上）定义了多样的交互式场景与基于里程碑的 KPI，评估 star/chain/tree/graph 拓扑以及群体讨论、认知规划等策略。</p></div><div class="field"><h3>实验设置</h3><p>在该 benchmark 的协作与竞争场景（含一个研究场景）中评估多个 LLM 与协调协议。</p></div><div class="field"><h3>结果</h3><p>gpt-4o-mini 取得最高平均任务得分；在研究场景中 graph 结构在各协调协议里表现最佳；认知规划将里程碑达成率提升了约 ~3%（提升幅度不大）。此标志性数据取自摘要/二手来源，未经完整审计。</p></div><div class="field"><h3>局限</h3><p>结构/规划带来的协作收益很小（~3%），且状态为 verified_pending_audit；部分数字未对照完整论文独立确认。</p></div><div class="field"><h3>与领域的关系</h3><p>一项衡量协作质量的正面基准工作；与以失败为焦点的基准（AgentCollabBench、TraceElephant）以及 Tran &amp; Kiela 对单智能体与多智能体的质疑形成对照。</p></div>
 <div class="nav"><a href="talk-isn-t-always-cheap.html">← Talk Isn&#x27;t Always Cheap: Understanding</a><span class="sp"></span><a href="reinforcement-learning-for-llm-based-multi-agent.html">Reinforcement Learning for LLM-based M →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

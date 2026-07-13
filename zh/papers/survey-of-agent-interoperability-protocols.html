@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇综述，从交互、发现、通信和安全四个维度对比四种新兴的 agent 互操作性 protocol——MCP、ACP、A2A 和 ANP——并提出一条分阶段的采用路线图，用于构建可互操作的 LLM-agent 生态系统。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Survey of Agent Interoperability Protocols
+<div class="mm-wrap"><div class="markmap"># Survey of Agent Interoperability Protocols
 ## 一句话 
 - 一篇综述，从交互、发现、通信和安全四个维度对比四种新兴的 agent 互操作性 protocol——MCP、ACP、A2A 和 ANP——并提出一条分阶段的采用路线图，用于构建可互操作的 LLM-agent 生态系统。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 将采用不同传输层、身份模型和发现机制的 protocol 调和进单一的对比框架和采用路径。
 ## 局限
-- 作为一篇综述，它提供的是框架和指导，而非对 protocol 性能或互操作性权衡的实证测量。
-</script></div>
+- 作为一篇综述，它提供的是框架和指导，而非对 protocol 性能或互操作性权衡的实证测量。</div></div></div>
 <div class="field"><h3>背景</h3><p>由 LLM 驱动的自主 agent 必须连接工具、共享上下文并跨系统协调，但临时性的集成难以规模化、难以保障安全，也难以跨领域泛化。</p></div><div class="field"><h3>问题</h3><p>多个相互竞争的 agent 通信标准已经出现，它们的适用范围相互重叠且不清晰，使得实践者缺乏在何时选用哪一个的指导。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个结构化的对比，以厘清每种 protocol 的优势和部署定位，并描绘出它们如何组合成一个连贯的技术栈。</p></div><div class="field"><h3>关键洞见</h3><p>这四种 protocol 是互补而非竞争关系，可以分层组合成一条从工具访问到开放去中心化 agent 网络的演进路径。</p></div><div class="field"><h3>挑战</h3><p>将采用不同传输层、身份模型和发现机制的 protocol 调和进单一的对比框架和采用路径。</p></div><div class="field"><h3>方法</h3><p>系统性地对比 MCP（JSON-RPC 工具调用）、ACP（基于 RESTful HTTP、采用 MIME multipart 消息与代理/DID 身份，源自 KQML/FIPA-ACL 谱系）、A2A（基于能力的 Agent Cards 用于对等任务委派）和 ANP（通过 W3C DIDs 和 JSON-LD 实现开放网络发现），涵盖交互模式、发现、通信模式和安全模型。</p></div><div class="field"><h3>实验设置</h3><p>这是一篇概念性/分析性综述而非实证研究；没有运行 benchmark 实验。</p></div><div class="field"><h3>结果</h3><p>没有定量结果；已验证的贡献是四种 protocol 的对比以及分层采用路线图：MCP（工具）-&gt; ACP（结构化、会话感知的消息传递）-&gt; A2A（协作式任务执行）-&gt; ANP（去中心化的 agent 市场）。</p></div><div class="field"><h3>局限</h3><p>作为一篇综述，它提供的是框架和指导，而非对 protocol 性能或互操作性权衡的实证测量。</p></div><div class="field"><h3>与领域的关系</h3><p>提供了将 MCP、A2A、ACP 和 ANP 联系起来的分类体系；其实证对应工作是 ProtocolBench，并与 ICML 2026 的“Web of Agents”立场论文共享对生态系统碎片化的关切。</p></div>
 <div class="nav"><a href="a2a-protocol.html">← A2A (Agent2Agent) Protocol (Google 202</a><span class="sp"></span><a href="a-mem.html">A-MEM: Agentic Memory for LLM Agents ( →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

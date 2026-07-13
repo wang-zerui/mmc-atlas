@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">AgentPrune 识别并形式化定义了 LLM 多智能体系统中的通信冗余，对时空消息传递图进行一次性剪枝，以移除冗余或恶意消息，得到一个 token 经济且高性能的拓扑。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AgentPrune / &#x27;Cut the Crap&#x27;
+<div class="mm-wrap"><div class="markmap"># AgentPrune / &#x27;Cut the Crap&#x27;
 ## 一句话 
 - AgentPrune 识别并形式化定义了 LLM 多智能体系统中的通信冗余，对时空消息传递图进行一次性剪枝，以移除冗余或恶意消息，得到一个 token 经济且高性能的拓扑。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 区分冗余/恶意边与有用边、将剪枝集成到多样化的现有框架中，并防御基于 agent 的对抗攻击。
 ## 局限
-- 一次性剪枝是在所评估的 benchmark 上推导的；批注指出上述具体量级未经独立审计，且剪枝后拓扑对新任务的泛化未被充分刻画。
-</script></div>
+- 一次性剪枝是在所评估的 benchmark 上推导的；批注指出上述具体量级未经独立审计，且剪枝后拓扑对新任务的泛化未被充分刻画。</div></div></div>
 <div class="field"><h3>背景</h3><p>得益于精心设计的智能体间通信拓扑，LLM agent 的群体智能往往优于单个个体。</p></div><div class="field"><h3>问题</h3><p>现有的多智能体流水线引入了大量 token 开销与经济成本，阻碍了大规模部署。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果大量智能体间通信是冗余的，剪除它们便能在保持性能的同时大幅降低成本，甚至提升对恶意消息的鲁棒性。</p></div><div class="field"><h3>关键洞见</h3><p>通信冗余可在时空消息传递图上被形式化定义，对低价值边的一次性剪枝可产生更廉价的拓扑，在保持质量的同时过滤对抗性内容。</p></div><div class="field"><h3>挑战</h3><p>区分冗余/恶意边与有用边、将剪枝集成到多样化的现有框架中，并防御基于 agent 的对抗攻击。</p></div><div class="field"><h3>方法</h3><p>AgentPrune 在 agent 交互上构建时空消息传递图，并通过可训练的通信掩码进行一次性剪枝，以消除冗余或恶意边；它可插入主流多智能体系统。</p></div><div class="field"><h3>实验设置</h3><p>在六个 benchmark 上开展大量实验，衡量成本、token 削减以及对两类基于 agent 的对抗攻击的鲁棒性。</p></div><div class="field"><h3>结果</h3><p>以 $5.6 的成本（对比 $43.7）匹配最先进拓扑，可集成到现有框架中并带来 28.1%-72.8% 的 token 削减，并在防御两类对抗攻击的同时带来 3.5%-10.8% 的性能提升。</p></div><div class="field"><h3>局限</h3><p>一次性剪枝是在所评估的 benchmark 上推导的；批注指出上述具体量级未经独立审计，且剪枝后拓扑对新任务的泛化未被充分刻画。</p></div><div class="field"><h3>与领域的关系</h3><p>一种推理时通信图优化器，与 GPTSwarm 的学习式静态图形成对照；是后续拓扑方法（Maestro、HieraMAS、MAGE）的常用基线，并与 Optima 基于训练的 token 节省互补。</p></div>
 <div class="nav"><a href="optima.html">← Optima (Chen et al. 2024)</a><span class="sp"></span><a href="online-speculative-decoding.html">Online Speculative Decoding (Liu et al →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

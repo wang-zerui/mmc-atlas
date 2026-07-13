@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A 2026 survey of memory for LLM agents that formalizes memory as a write-manage-read loop and introduces a three-dimensional taxonomy over temporal scope, representational substrate, and control policy.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers
+<div class="mm-wrap"><div class="markmap"># Memory for Autonomous LLM Agents: Mechanisms, Evaluation, and Emerging Frontiers
 ## TL;DR 
 - A 2026 survey of memory for LLM agents that formalizes memory as a write-manage-read loop and introduces a three-dimensional taxonomy over temporal scope,…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - It flags open frontiers, continual consolidation, causally grounded retrieval, trustworthy reflection, learned forgetting, and multimodal embodied…
 ## Limitations
-- A survey rather than an empirical study; an arXiv preprint (cs.AI) with no confirmed venue.
-</script></div>
+- A survey rather than an empirical study; an arXiv preprint (cs.AI) with no confirmed venue.</div></div></div>
 <div class="field"><h3>Background</h3><p>LLM agents increasingly operate where a single context window is too small to capture what happened, what was learned, and what should not be repeated, so memory is what turns a stateless generator into an adaptive agent.</p></div><div class="field"><h3>Problem</h3><p>Memory designs, implementations, and evaluations are scattered across systems and benchmarks with no structured account tying mechanisms to how they are evaluated.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A structured survey is needed to organize how memory is written, managed, and read, and to expose where current systems fail on multi-session agentic tasks.</p></div><div class="field"><h3>Key Insight</h3><p>Framing agent memory as a write-manage-read loop tightly coupled with perception and action lets otherwise disparate mechanisms be organized along temporal scope, representational substrate, and control policy.</p></div><div class="field"><h3>Challenges</h3><p>It flags open frontiers, continual consolidation, causally grounded retrieval, trustworthy reflection, learned forgetting, and multimodal embodied memory, plus engineering concerns like write-path filtering, contradiction handling, latency, and privacy.</p></div><div class="field"><h3>Method</h3><p>It surveys memory via a three-dimensional taxonomy (temporal scope, representational substrate, control policy) and examines five mechanism families: context-resident compression, retrieval-augmented stores, reflective self-improvement, hierarchical virtual context, and policy-learned management.</p></div><div class="field"><h3>Experimental Setup</h3><p>Coverage: work from 2022 through early 2026 across application domains (personal assistants, coding agents, open-world games, scientific reasoning, multi-agent teamwork); analyzes four recent multi-session memory benchmarks rather than running new experiments.</p></div><div class="field"><h3>Results</h3><p>Traces the evaluation shift from static recall benchmarks to multi-session agentic tests that interleave memory with decision-making, finding the four analyzed benchmarks expose stubborn gaps in current systems.</p></div><div class="field"><h3>Limitations</h3><p>A survey rather than an empirical study; an arXiv preprint (cs.AI) with no confirmed venue.</p></div><div class="field"><h3>Relation to the Field</h3><p>The 2026 agent-memory survey for this atlas, grounding the context-engineering/memory strand for multi-agent systems and complementing the workflow and harness surveys M318/M321.</p></div>
 <div class="nav"><a href="model-merging-era-llm-survey.html">← Model Merging in the Era of Large Lang</a><span class="sp"></span><a href="agent-system-harness-design-survey.html">From Question Answering to Task Comple →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

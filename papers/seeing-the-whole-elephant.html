@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A benchmark for failure attribution in LLM multi-agent systems that provides complete execution traces and reproducible environments to identify which agent and which step caused a failure.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Seeing the Whole Elephant / TraceElephant
+<div class="mm-wrap"><div class="markmap"># Seeing the Whole Elephant / TraceElephant
 ## TL;DR 
 - A benchmark for failure attribution in LLM multi-agent systems that provides complete execution traces and reproducible environments to identify which agent…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Capturing complete, reproducible execution traces for nondeterministic MAS and constructing environments that can be replayed to test attribution…
 ## Limitations
-- The benchmark measures attribution quality rather than preventing failures; requiring full traces and reproducible environments may be costly and not…
-</script></div>
+- The benchmark measures attribution quality rather than preventing failures; requiring full traces and reproducible environments may be costly and not…</div></div></div>
 <div class="field"><h3>Background</h3><p>Failure attribution in LLM multi-agent systems is hard because of natural-language reasoning, nondeterministic outputs, and complex interaction dynamics, and reliable benchmarks are needed to guide attribution methods.</p></div><div class="field"><h3>Problem</h3><p>Existing attribution benchmarks use only partially observable traces that capture agent outputs but omit the inputs and context developers actually rely on when debugging, obscuring true failure causes.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Attribution should be studied under full execution observability, matching real developer scenarios where complete traces are available, so that methods can be evaluated fairly.</p></div><div class="field"><h3>Key Insight</h3><p>Missing inputs, not just outputs, hide many failure causes; giving attribution methods full traces plus replayable environments dramatically improves their ability to localize the responsible agent and decisive step.</p></div><div class="field"><h3>Challenges</h3><p>Capturing complete, reproducible execution traces for nondeterministic MAS and constructing environments that can be replayed to test attribution techniques systematically.</p></div><div class="field"><h3>Method</h3><p>TraceElephant supplies full execution traces and reproducible environments, then systematically evaluates prompting-based and agent-based attribution techniques across configurations.</p></div><div class="field"><h3>Experimental Setup</h3><p>Attribution techniques are evaluated on TraceElephant comparing full-observability traces against a partial-observation counterpart.</p></div><div class="field"><h3>Results</h3><p>Full traces boost attribution accuracy by up to 76% versus the partial-observation setting, showing that missing inputs obscure many failure causes; the benchmark is offered as a foundation for follow-up failure-attribution research. Accepted by ACL 2026.</p></div><div class="field"><h3>Limitations</h3><p>The benchmark measures attribution quality rather than preventing failures; requiring full traces and reproducible environments may be costly and not always available in production MAS.</p></div><div class="field"><h3>Relation to the Field</h3><p>Provides the attribution counterpart to MAST&#x27;s failure taxonomy and AgentCollabBench&#x27;s failure detection; closely related to TELBench/DRIFT span-level localization for deep-research agents.</p></div>
 <div class="nav"><a href="when-kv-cache-reuse-fails-in-multi-agent-systems.html">← When KV Cache Reuse Fails in Multi-Age</a><span class="sp"></span><a href="where-do-deep-research-agents-go-wrong.html">Where Do Deep-Research Agents Go Wrong →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

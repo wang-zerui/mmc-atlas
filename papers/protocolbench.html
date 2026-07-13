@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">ProtocolBench isolates the effect of the agent communication protocol by holding LLM, prompts, and hardware constant while varying the protocol (A2A/ACP/ANP/Agora), and ProtocolRouter is a learnable per-module router that selects protocols from requirement and runtime signals.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# ProtocolBench / ProtocolRouter
+<div class="mm-wrap"><div class="markmap"># ProtocolBench / ProtocolRouter
 ## TL;DR 
 - ProtocolBench isolates the effect of the agent communication protocol by holding LLM, prompts, and hardware constant while varying the protocol…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Fairly comparing heterogeneous protocols under identical conditions, designing scenarios that stress different failure modes, and learning a routing…
 ## Limitations
-- Results are scenario-specific and depend on the tested protocol implementations; the router&#x27;s gains are relative to the evaluated baselines and…
-</script></div>
+- Results are scenario-specific and depend on the tested protocol implementations; the router&#x27;s gains are relative to the evaluated baselines and…</div></div></div>
 <div class="field"><h3>Background</h3><p>Multi-agent systems must choose a communication protocol, but this layer is under-studied and its impact on system behavior is rarely measured in isolation.</p></div><div class="field"><h3>Problem</h3><p>Protocol selection is intuition-driven and lacks standardized, quantitative guidance about how much the choice actually affects task success, latency, overhead, and robustness.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If the protocol layer measurably changes outcomes, teams need a benchmark that isolates its effect and, ideally, an automated way to pick the right protocol per scenario.</p></div><div class="field"><h3>Key Insight</h3><p>Holding everything else constant reveals that protocol choice alone has large, measurable effects, and that no single protocol is best everywhere - motivating a learnable router that adapts protocol selection per module and runtime condition.</p></div><div class="field"><h3>Challenges</h3><p>Fairly comparing heterogeneous protocols under identical conditions, designing scenarios that stress different failure modes, and learning a routing policy from requirement and runtime signals.</p></div><div class="field"><h3>Method</h3><p>ProtocolBench evaluates protocols across four dimensions (task success, end-to-end latency, message/byte overhead, robustness under failure) using scenarios like Streaming Queue and Fail-Storm Recovery; ProtocolRouter learns to pick per-scenario/per-module protocols from requirement and runtime signals.</p></div><div class="field"><h3>Experimental Setup</h3><p>Controlled benchmarking across multiple protocols (A2A, ACP, ANP, Agora) on the Streaming Queue and Fail-Storm Recovery scenarios plus GAIA-based tasks, with released ProtocolRouterBench and code (ulab-uiuc/AgentProtocols).</p></div><div class="field"><h3>Results</h3><p>Verified: in Streaming Queue, completion time varies by up to 36.5% across protocols and mean end-to-end latency differs by 3.48s; ProtocolRouter reduces Fail-Storm recovery time by up to 18.1% versus the best single-protocol baseline and raises GAIA success rates.</p></div><div class="field"><h3>Limitations</h3><p>Results are scenario-specific and depend on the tested protocol implementations; the router&#x27;s gains are relative to the evaluated baselines and benchmark conditions.</p></div><div class="field"><h3>Relation to the Field</h3><p>The empirical companion to protocol surveys (Ehtesham et al.) and the semantic-view analysis (Yuan et al.), turning qualitative protocol comparison into measured performance and an automated selection mechanism.</p></div>
 <div class="nav"><a href="beyond-message-passing.html">← Beyond Message Passing: A Semantic Vie</a><span class="sp"></span><a href="position.html">Position: Collaborative Agentic AI Nee →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

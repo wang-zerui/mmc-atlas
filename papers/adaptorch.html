@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">AdaptOrch argues that as provider LLMs converge on benchmarks the orchestration topology, not model choice, dominates, and dynamically routes each task DAG to a parallel/sequential/hierarchical/hybrid topology.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AdaptOrch: Task-Adaptive Multi-Agent Orchestration in the Era of LLM Performance Convergence
+<div class="mm-wrap"><div class="markmap"># AdaptOrch: Task-Adaptive Multi-Agent Orchestration in the Era of LLM Performance Convergence
 ## TL;DR 
 - AdaptOrch argues that as provider LLMs converge on benchmarks the orchestration topology, not model choice, dominates, and dynamically routes each task DAG to…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Mapping task dependency graphs to optimal topologies efficiently and synthesizing consistent outputs from parallel agents with termination guarantees.
 ## Limitations
-- arXiv preprint with no venue and single-author; the 12-23% range is not independently audited and relies on heuristic consistency scoring.
-</script></div>
+- arXiv preprint with no venue and single-author; the 12-23% range is not independently audited and relies on heuristic consistency scoring.</div></div></div>
 <div class="field"><h3>Background</h3><p>LLMs from different providers are converging to similar benchmark performance, reducing the payoff of picking a single best model per task.</p></div><div class="field"><h3>Problem</h3><p>When model capabilities converge, per-task model selection yields diminishing returns, yet most systems still fix a single orchestration topology.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If topology drives system-level performance more than model choice, orchestration design should be treated as a first-class optimization target.</p></div><div class="field"><h3>Key Insight</h3><p>A &#x27;Performance Convergence Scaling Law&#x27; defines when orchestration selection matters more than model selection, so routing each task&#x27;s decomposition DAG to the right topology beats any fixed topology.</p></div><div class="field"><h3>Challenges</h3><p>Mapping task dependency graphs to optimal topologies efficiently and synthesizing consistent outputs from parallel agents with termination guarantees.</p></div><div class="field"><h3>Method</h3><p>Three components: a Performance Convergence Scaling Law; a Topology Routing Algorithm mapping decomposition DAGs to parallel/sequential/hierarchical/hybrid patterns in O(|V|+|E|) time; and an Adaptive Synthesis Protocol with termination guarantees and heuristic consistency scoring.</p></div><div class="field"><h3>Experimental Setup</h3><p>Validated on coding (SWE-bench), reasoning (GPQA), and retrieval-augmented generation tasks using identical underlying models.</p></div><div class="field"><h3>Results</h3><p>Reports a 12-23% improvement over static single-topology baselines even with identical underlying models (title and method confirmed vs abstract; arXiv preprint only, numbers not audited).</p></div><div class="field"><h3>Limitations</h3><p>arXiv preprint with no venue and single-author; the 12-23% range is not independently audited and relies on heuristic consistency scoring.</p></div><div class="field"><h3>Relation to the Field</h3><p>Complements MacNet&#x27;s topology findings and AOrchestra&#x27;s dynamic composition, reframing model-convergence as motivation for topology-first orchestration.</p></div>
 <div class="nav"><a href="aorchestra.html">← AOrchestra: Automating Sub-Agent Creat</a><span class="sp"></span><a href="multi-agent-teams-hold-experts-back.html">Multi-Agent Teams Hold Experts Back (P →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

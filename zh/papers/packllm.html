@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">PackLLM（「Pack of LLMs」）在测试时融合任意用户指定的 LLM，根据每个模型在输入提示上最小化 perplexity 的程度对其加权，无需任何训练好的融合模块。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# PackLLM
+<div class="mm-wrap"><div class="markmap"># PackLLM
 ## 一句话 
 - PackLLM（「Pack of LLMs」）在测试时融合任意用户指定的 LLM，根据每个模型在输入提示上最小化 perplexity 的程度对其加权，无需任何训练好的融合模块。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在推理时高效求解 perplexity 最小化的加权，并在无需重训练的情况下支持任意异质模型池。
 ## 局限
-- 需要访问模型的 logits/perplexity（不适用于黑盒 API），且贪心优化只是对真正 perplexity 最小化权重的近似。
-</script></div>
+- 需要访问模型的 logits/perplexity（不适用于黑盒 API），且贪心优化只是对真正 perplexity 最小化权重的近似。</div></div></div>
 <div class="field"><h3>背景</h3><p>组合多个 LLM 的知识可以提升任务性能，但现有的融合器存在局限。</p></div><div class="field"><h3>问题</h3><p>基于学习的融合器无法泛化到新加入的模型，而其他测试时方法又忽略了每个 LLM 对给定输入的实际理解程度。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个 LLM 在输入提示上的 perplexity 反映了它对该输入的专长，从而提供了一个免训练的、可按查询对模型加权的信号。</p></div><div class="field"><h3>关键洞见</h3><p>求解一个最小化集成 perplexity 的逐提示优化问题，可得到反映各模型专长的重要性权重，从而实现对任意模型的即插即用融合。</p></div><div class="field"><h3>挑战</h3><p>在推理时高效求解 perplexity 最小化的加权，并在无需重训练的情况下支持任意异质模型池。</p></div><div class="field"><h3>方法</h3><p>两个变体：PackLLM-sim 直接以 perplexity 作为专长指标，PackLLM-opt 通过贪心算法近似求解 perplexity 最小化问题，以在推理时为 logit 级融合设定各模型的重要性权重。</p></div><div class="field"><h3>实验设置</h3><p>在总计超过 100 个 LLM 上，跨多样化的任务集进行实验，与测试时融合基线以及基于学习的融合方法进行对比。</p></div><div class="field"><h3>结果</h3><p>PackLLM 在准确率上比测试时融合基线高出 1.89 个百分点，在利用新 LLM 时比基于学习的融合提升 3.92-11.94%（已在摘要中确认）。</p></div><div class="field"><h3>局限</h3><p>需要访问模型的 logits/perplexity（不适用于黑盒 API），且贪心优化只是对真正 perplexity 最小化权重的近似。</p></div><div class="field"><h3>与领域的关系</h3><p>一种与 DeePEn (M037) 和 FuseLLM (M039) 同族的测试时 logit 融合方法；其按输入加权是 LLM-Blender 训练好的排序器 (M009) 的轻量替代方案；按集成综述 (M041) 属于「during-inference」方法。</p></div>
 <div class="nav"><a href="deepen.html">← DeePEn (Huang et al. 2024)</a><span class="sp"></span><a href="fusellm.html">FuseLLM / Knowledge Fusion of LLMs (Wa →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

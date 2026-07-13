@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个紧凑的 1.5B router 将查询映射到用户自定义的领域/动作偏好，把路由策略与模型分配解耦，从而无需重新训练即可加入新模型。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Arch-Router
+<div class="mm-wrap"><div class="markmap"># Arch-Router
 ## 一句话 
 - 一个紧凑的 1.5B router 将查询映射到用户自定义的领域/动作偏好，把路由策略与模型分配解耦，从而无需重新训练即可加入新模型。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 要用一个小巧、低延迟的模型可靠地把自由格式查询映射到用户自定义的领域和动作类型，同时匹配人类的偏好判断。
 ## 局限
-- 需要用户定义领域/动作；偏好匹配评测基于对话数据，可能无法反映原始的任务准确率。
-</script></div>
+- 需要用户定义领域/动作；偏好匹配评测基于对话数据，可能无法反映原始的任务准确率。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 路由需要在优势、风格、成本/延迟各不相同的模型之间做选择，但现有 benchmark 忽略了主观的人类偏好，并且往往只使用一个很小的模型池。</p></div><div class="field"><h3>问题</h3><p>现有 router 优化的是忽略主观偏好的 benchmark 准确率，而且新增或替换模型通常都要重新训练 router。</p></div><div class="field"><h3>动机 / 分析</h3><p>真实部署希望路由能反映人类/运营方的偏好（哪个模型应处理旅行类查询、图像编辑等），并且在模型阵容变化时易于重新配置。</p></div><div class="field"><h3>关键洞见</h3><p>将路由策略（查询到领域/动作偏好）与模型映射（偏好到具体模型）分离，运营方就能自由编码偏好并重新映射模型，而无需改动已训练好的 router。</p></div><div class="field"><h3>挑战</h3><p>要用一个小巧、低延迟的模型可靠地把自由格式查询映射到用户自定义的领域和动作类型，同时匹配人类的偏好判断。</p></div><div class="field"><h3>方法</h3><p>Arch-Router 是一个紧凑的 1.5B 模型，经训练可将查询映射到用户自定义的领域（如旅行）或动作类型（如图像编辑）；一张独立的可配置表将这些偏好映射到模型，因此新模型可以直接接入，无需重新训练或改动架构。</p></div><div class="field"><h3>实验设置</h3><p>在对话数据集上就偏好匹配与顶级专有 LLM 进行对比评测。模型已在 Hugging Face 发布（katanemo/Arch-Router-1.5B）。</p></div><div class="field"><h3>结果</h3><p>在偏好匹配上平均超越顶级专有 LLM 7.71%，在 51ms 延迟下达到 93.17% 准确率（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>需要用户定义领域/动作；偏好匹配评测基于对话数据，可能无法反映原始的任务准确率。</p></div><div class="field"><h3>与领域的关系</h3><p>与 GraphRouter 一样追求“新模型无需重新训练”的目标，但通过偏好解耦而非图归纳实现；是该家族中一个面向部署的实用 router。</p></div>
 <div class="nav"><a href="graphrouter.html">← GraphRouter (Feng et al. 2024, ICLR 20</a><span class="sp"></span><a href="gatekeeper.html">Gatekeeper / confidence tuning (Rabans →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

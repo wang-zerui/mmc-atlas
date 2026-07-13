@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">MemGPT 将操作系统的内存层级思想应用于 LLM，让模型通过 function call 自我管理分层 memory——固定的 main context（类似 RAM）加上外部存储（类似 disk）——从而表现得仿佛拥有远大于实际的 context window。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# MemGPT
+<div class="mm-wrap"><div class="markmap"># MemGPT
 ## 一句话 
 - MemGPT 将操作系统的内存层级思想应用于 LLM，让模型通过 function call 自我管理分层 memory——固定的 main context（类似 RAM）加上外部存储（类似 disk）——从而表现得仿佛拥有远大于实际的 context window。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 教会模型何时将信息分页进/出、在不丢失关键事实的前提下递归摘要，以及通过中断在模型与用户之间协调控制流。
 ## 局限
-- 其有效性取决于基础模型可靠调用 memory 管理函数的能力；摘要没有量化误分页带来的开销或错误率。
-</script></div>
+- 其有效性取决于基础模型可靠调用 memory 管理函数的能力；摘要没有量化误分页带来的开销或错误率。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 拥有固定的 context window，限制了它一次能关注的对话历史或文档文本的数量。</p></div><div class="field"><h3>问题</h3><p>这种有界的 context 使 LLM 无法维持长对话或对超出 window 的文档进行推理，限制了它在长时程任务中的实用性。</p></div><div class="field"><h3>动机 / 分析</h3><p>传统操作系统早已通过虚拟内存和在各层级间分页解决了快速内存有限的问题，这暗示了针对 LLM context 的类似解决方案。</p></div><div class="field"><h3>关键洞见</h3><p>LLM 自身可以充当自己的 memory 管理器：赋予它在 main context 与外部存储之间分页数据的工具以及管理控制流的中断，它就能决定保留、驱逐和检索什么，从而营造出无界 context 的假象。</p></div><div class="field"><h3>挑战</h3><p>教会模型何时将信息分页进/出、在不丢失关键事实的前提下递归摘要，以及通过中断在模型与用户之间协调控制流。</p></div><div class="field"><h3>方法</h3><p>一个虚拟 context 管理系统，采用分层 memory（main context 对比外部存储），LLM 通过发出 function/tool call 在各层级间移动数据，并使用中断来管理控制流和递归摘要。</p></div><div class="field"><h3>实验设置</h3><p>在两个受限 context 影响明显的领域中评估：文档分析（处理超出 LLM window 的文档）和多会话聊天（能在长期交互中记忆、反思并演进的 agent）。</p></div><div class="field"><h3>结果</h3><p>摘要报告的是定性能力——MemGPT 能分析远超底层 LLM context window 的文档，并维持连贯的长期聊天——摘要中没有单一的标志性 benchmark 数字；已验证的主张是 OS 分页类比和“LLM 作为 memory 管理器”的设计。</p></div><div class="field"><h3>局限</h3><p>其有效性取决于基础模型可靠调用 memory 管理函数的能力；摘要没有量化误分页带来的开销或错误率。</p></div><div class="field"><h3>与领域的关系</h3><p>一项基础性的 LLM-memory 工作，如今被产品化为 Letta；与以结构为中心的 agentic memory（如 A-MEM）以及跨会话共享 protocol（如 Mesh Memory Protocol）形成对照。</p></div>
 <div class="nav"><a href="model-context-protocol.html">← Model Context Protocol (Anthropic 2024</a><span class="sp"></span><a href="flexmarl.html">FlexMARL: Rollout-Training Co-Design f →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

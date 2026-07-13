@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一项负面（NEGATIVE）的受控研究：对于 7-8B 的同质智能体团队，无引导的同伴 debate 比孤立的 self-correction 多消耗 2.1-3.4 倍 token，准确率却相当甚至更差；论文还识别出三条知识破坏路径。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# The Cost of Consensus: Isolated Self-Correction Prevails Over Unguided Homogeneous Multi-Agent Debate
+<div class="mm-wrap"><div class="markmap"># The Cost of Consensus: Isolated Self-Correction Prevails Over Unguided Homogeneous Multi-Agent Debate
 ## 一句话 
 - 一项负面（NEGATIVE）的受控研究：对于 7-8B 的同质智能体团队，无引导的同伴 debate 比孤立的 self-correction 多消耗 2.1-3.4 倍 token，准确率却相当甚至更差；论文还识别出三条知识破坏路径。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 将 debate 效应与单纯的额外采样区分开，控制通信密度与温度，并把真正的同伴信息与噪声分离（因此设置了无关理由对照）。
 ## 局限
-- 研究范围限于无结构化角色的 7-8B 同质类；作者不主张该结果可推广到更大、异质或有角色结构的团队。
-</script></div>
+- 研究范围限于无结构化角色的 7-8B 同质类；作者不主张该结果可推广到更大、异质或有角色结构的团队。</div></div></div>
 <div class="field"><h3>背景</h3><p>人们普遍假设多智能体 LLM debate 能通过同伴评审过滤幻觉。本文针对没有结构化角色的小型（7-8B）同质团队检验这一假设。</p></div><div class="field"><h3>问题</h3><p>在同质 LLM 智能体之间的无引导同伴交流，相比单个智能体在孤立状态下自我纠正，是否真的改善了成本-准确率权衡？</p></div><div class="field"><h3>动机 / 分析</h3><p>debate 的额外开销很少被计入其准确率增益；需要一个公平的等成本（matched-cost）对比来与孤立 self-correction 较量，还需一个随机对照来检验任何收益究竟是真实信号还是仅仅是扰动。</p></div><div class="field"><h3>关键洞见</h3><p>对于同质小模型，同伴交流通过三条路径破坏而非过滤知识——谄媚式盲从（sycophantic conformity）、上下文脆弱性（contextual fragility）和共识坍缩（consensus collapse）——因此孤立 self-correction 给出严格更优的成本-准确率权衡。</p></div><div class="field"><h3>挑战</h3><p>将 debate 效应与单纯的额外采样区分开，控制通信密度与温度，并把真正的同伴信息与噪声分离（因此设置了无关理由对照）。</p></div><div class="field"><h3>方法</h3><p>受控实证研究，采用 N=10 个同质智能体、R=3 轮的团队，跨三个模型（Qwen2.5-7B、Llama-3.1-8B、Ministral-3-8B）在 GSM-Hard 与 MMLU-Hard 上，比较同伴 debate、孤立 self-correction 与一个随机噪声对照（来自无关问题的理由）；并对通信密度 K∈{2,4,9} 和温度 T∈{0.4,0.7} 做消融。</p></div><div class="field"><h3>实验设置</h3><p>GSM-Hard 与 MMLU-Hard，三个 7-8B 模型，debate vs. self-correction vs. 噪声对照，并做密度与温度消融。</p></div><div class="field"><h3>结果</h3><p>负面结果：孤立 self-correction 一致地提供更优的成本-准确率权衡；debate 多消耗 2.1-3.4 倍 token（高达 28,631 tokens/题），准确率却相当或更低。失败路径：谄媚式盲从（众数采纳率最高 85.5%）、上下文脆弱性（脆弱率最高 70.0%）、共识坍缩（oracle 差距最高 32.3 个百分点）。在最低同伴接触（K=2）时盲从就已很高，且初始多样性越大反而越严重。</p></div><div class="field"><h3>局限</h3><p>研究范围限于无结构化角色的 7-8B 同质类；作者不主张该结果可推广到更大、异质或有角色结构的团队。</p></div><div class="field"><h3>与领域的关系</h3><p>对 Huang 等人等预算批评（M059）的 2026 年实证确认与扩展；其盲从/坍缩路径与 M162、M163 重叠，其机制在 M161 的 detection-without-correction 框架下得到统一。</p></div>
 <div class="nav"><a href="langgraph-vs-crewai.html">← LangGraph vs CrewAI (framework referen</a><span class="sp"></span><a href="demystifying-multi-agent-debate.html">Demystifying Multi-Agent Debate: The R →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

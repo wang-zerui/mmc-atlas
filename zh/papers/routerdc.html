@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个基于查询的 router，用双重对比损失（样本-LLM 与样本-样本）训练，将冻结的现成 LLM 组装起来，胜过最佳单模型和以往的 router。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# RouterDC
+<div class="mm-wrap"><div class="markmap"># RouterDC
 ## 一句话 
 - 一个基于查询的 router，用双重对比损失（样本-LLM 与样本-样本）训练，将冻结的现成 LLM 组装起来，胜过最佳单模型和以往的 router。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 处理多个 LLM 都正确的平局情形，并训练出能在分布外泛化的稳定查询/LLM 嵌入。
 ## 局限
-- 每个模型池都需要训练数据；具体的模型/基准名称见论文。收益虽一致，但绝对幅度不大。
-</script></div>
+- 每个模型池都需要训练数据；具体的模型/基准名称见论文。收益虽一致，但绝对幅度不大。</div></div></div>
 <div class="field"><h3>背景</h3><p>当 router 能为每个查询挑对模型时，在互补的现成 LLM 之间做路由可以胜过任何单个模型。</p></div><div class="field"><h3>问题</h3><p>当多个 LLM 在同一查询上都表现良好时，现有 router 会陷入困难，产生含糊或不稳定的路由决策。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个更好的训练目标，使 router 的查询表征在跨模型和跨相似查询两个维度上都具有判别性。</p></div><div class="field"><h3>关键洞见</h3><p>双重对比学习——一个损失把查询与表现良好的 LLM 对齐，另一个损失把相似查询拉近——在多个模型都可行时能产生鲁棒的路由。</p></div><div class="field"><h3>挑战</h3><p>处理多个 LLM 都正确的平局情形，并训练出能在分布外泛化的稳定查询/LLM 嵌入。</p></div><div class="field"><h3>方法</h3><p>RouterDC 将一个编码器与可学习的 LLM 嵌入配对，并用两个对比损失训练：样本-LLM 损失（查询 vs 候选模型）和样本-样本损失（查询 vs 查询）；推理时编码器将查询与 LLM 嵌入打分以选出一个模型。</p></div><div class="field"><h3>实验设置</h3><p>组装多个冻结的现成 LLM；在分布内和分布外的任务套件上，与顶尖单模型和以往路由方法比较评估。</p></div><div class="field"><h3>结果</h3><p>在分布内以 +2.76%、分布外以 +1.90% 的幅度胜过最佳单个 LLM 和以往 router（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>每个模型池都需要训练数据；具体的模型/基准名称见论文。收益虽一致，但绝对幅度不大。</p></div><div class="field"><h3>与领域的关系</h3><p>一个可学习的、基于查询的 router，承袭自 Zooter 和 RouteLLM，以其双重对比目标为特色；在后续路由综述中被用作基准。</p></div>
 <div class="nav"><a href="zooter.html">← Zooter (Lu et al. 2023, NAACL 2024)</a><span class="sp"></span><a href="metallm.html">MetaLLM (Nguyen et al. 2024) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

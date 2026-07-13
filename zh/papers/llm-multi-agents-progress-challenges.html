@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇奠基性且被广泛引用的 LLM 多智能体系统综述，围绕智能体模拟何种环境、如何被刻画（profiled）与通信、以及哪些机制促进其能力增长来组织该领域。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Large Language Model based Multi-Agents: A Survey of Progress and Challenges
+<div class="mm-wrap"><div class="markmap"># Large Language Model based Multi-Agents: A Survey of Progress and Challenges
 ## 一句话 
 - 一篇奠基性且被广泛引用的 LLM 多智能体系统综述，围绕智能体模拟何种环境、如何被刻画（profiled）与通信、以及哪些机制促进其能力增长来组织该领域。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 讨论了 LLM 多智能体系统面临的挑战，并指出未来研究方向。
 ## 局限
-- 这是一篇综述而非实证研究；作为较早（2024 年初）的综述，尽管后有修订，仍先于大量后续工作。
-</script></div>
+- 这是一篇综述而非实证研究；作为较早（2024 年初）的综述，尽管后有修订，仍先于大量后续工作。</div></div></div>
 <div class="field"><h3>背景</h3><p>在以单个 LLM 作为规划或决策智能体的基础上，LLM 多智能体系统在复杂问题求解和世界模拟方面取得了长足进展。</p></div><div class="field"><h3>问题</h3><p>该领域发展迅速，缺乏一份把 LLM 多智能体系统的核心方面与开放挑战整合起来的深入综述。</p></div><div class="field"><h3>动机 / 分析</h3><p>为社区提供一个结构化的切入点，回答 LLM-MAS 模拟什么、智能体如何被刻画与通信、以及能力如何增长等核心问题。</p></div><div class="field"><h3>关键洞见</h3><p>围绕所模拟的领域、智能体刻画、通信以及能力增长机制来梳理文献，可为原本零散的领域给出连贯视角。</p></div><div class="field"><h3>挑战</h3><p>讨论了 LLM 多智能体系统面临的挑战，并指出未来研究方向。</p></div><div class="field"><h3>方法</h3><p>综述 LLM 多智能体系统的核心方面：它们模拟的领域与环境、智能体如何被刻画与通信、以及促进智能体能力增长的机制，并讨论挑战。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：对 LLM-MAS 工作的深入综述，汇总常用数据集与基准，并维护一个开源 GitHub 文献仓库；未开展新实验。</p></div><div class="field"><h3>结果</h3><p>给出了关于 LLM-MAS 在模拟、刻画、通信与能力增长方面进展的结构化梳理，并为社区整合了基准资源。</p></div><div class="field"><h3>局限</h3><p>这是一篇综述而非实证研究；作为较早（2024 年初）的综述，尽管后有修订，仍先于大量后续工作。</p></div><div class="field"><h3>与领域的关系</h3><p>是本图谱 LLM-MAS 部分的奠基性参考，提供了后续协作与应用综述所依托的进展与挑战主干。</p></div>
 <div class="nav"><a href="evaluation-benchmarking-llm-agents-survey.html">← Evaluation and Benchmarking of LLM Age</a><span class="sp"></span><a href="llm-mas-recent-advances-applications.html">A Survey on LLM-based Multi-Agent Syst →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

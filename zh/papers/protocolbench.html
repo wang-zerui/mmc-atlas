@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">ProtocolBench 通过在保持 LLM、prompt 和硬件不变的同时改变 protocol（A2A/ACP/ANP/Agora）来隔离 agent 通信 protocol 的影响，而 ProtocolRouter 是一个可学习的按模块路由器，从需求和运行时信号中选择 protocol。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# ProtocolBench / ProtocolRouter
+<div class="mm-wrap"><div class="markmap"># ProtocolBench / ProtocolRouter
 ## 一句话 
 - ProtocolBench 通过在保持 LLM、prompt 和硬件不变的同时改变 protocol（A2A/ACP/ANP/Agora）来隔离 agent 通信 protocol 的影响，而 ProtocolRouter 是一个可学习的按模块路由器，从需求和运行时信号中选择 protocol。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在相同条件下公平对比异构 protocol、设计能对不同失败模式施压的场景，以及从需求和运行时信号中学习路由策略。
 ## 局限
-- 结果与具体场景相关，并依赖于所测试的 protocol 实现；路由器的收益是相对于所评估的 baseline 和 benchmark 条件而言的。
-</script></div>
+- 结果与具体场景相关，并依赖于所测试的 protocol 实现；路由器的收益是相对于所评估的 baseline 和 benchmark 条件而言的。</div></div></div>
 <div class="field"><h3>背景</h3><p>多 agent 系统必须选择一种通信 protocol，但这一层研究不足，其对系统行为的影响也很少被单独测量。</p></div><div class="field"><h3>问题</h3><p>protocol 选择靠直觉驱动，缺乏标准化、定量的指导，无法说明该选择究竟在多大程度上影响任务成功率、延迟、开销和鲁棒性。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果 protocol 层可测量地改变结果，团队就需要一个能隔离其影响的 benchmark，并且最好有一种为每个场景自动选择正确 protocol 的方法。</p></div><div class="field"><h3>关键洞见</h3><p>在保持其余一切不变的情况下可以发现，仅 protocol 选择就有巨大且可测量的影响，且没有任何单一 protocol 在所有场景都最优——这促成了一个可学习的路由器，按模块和运行时条件自适应地选择 protocol。</p></div><div class="field"><h3>挑战</h3><p>在相同条件下公平对比异构 protocol、设计能对不同失败模式施压的场景，以及从需求和运行时信号中学习路由策略。</p></div><div class="field"><h3>方法</h3><p>ProtocolBench 从四个维度（任务成功率、端到端延迟、消息/字节开销、失败下的鲁棒性）评估 protocol，采用 Streaming Queue 和 Fail-Storm Recovery 等场景；ProtocolRouter 学习从需求和运行时信号中为每个场景/每个模块挑选 protocol。</p></div><div class="field"><h3>实验设置</h3><p>在多种 protocol（A2A、ACP、ANP、Agora）上，于 Streaming Queue 和 Fail-Storm Recovery 场景以及基于 GAIA 的任务上进行受控 benchmark，并发布了 ProtocolRouterBench 和代码（ulab-uiuc/AgentProtocols）。</p></div><div class="field"><h3>结果</h3><p>已验证：在 Streaming Queue 中，各 protocol 间完成时间相差最多 36.5%，平均端到端延迟相差 3.48s；ProtocolRouter 相比最佳单一 protocol baseline 将 Fail-Storm 恢复时间最多减少 18.1%，并提升了 GAIA 成功率。</p></div><div class="field"><h3>局限</h3><p>结果与具体场景相关，并依赖于所测试的 protocol 实现；路由器的收益是相对于所评估的 baseline 和 benchmark 条件而言的。</p></div><div class="field"><h3>与领域的关系</h3><p>作为 protocol 综述（Ehtesham 等人）和语义视角分析（Yuan 等人）的实证配套工作，将定性的 protocol 对比转化为可测量的性能和一种自动选择机制。</p></div>
 <div class="nav"><a href="beyond-message-passing.html">← Beyond Message Passing: A Semantic Vie</a><span class="sp"></span><a href="position.html">Position: Collaborative Agentic AI Nee →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

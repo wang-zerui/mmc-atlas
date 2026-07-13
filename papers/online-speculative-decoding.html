@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">Online Speculative Decoding continuously retrains the draft model(s) on the live user-query distribution using knowledge distillation and spare serving-cluster FLOPs, closing the train/serve distribution shift and enabling per-topic specialist drafters.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Online Speculative Decoding
+<div class="mm-wrap"><div class="markmap"># Online Speculative Decoding
 ## TL;DR 
 - Online Speculative Decoding continuously retrains the draft model(s) on the live user-query distribution using knowledge distillation and spare serving-cluster…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Adapting draft models online without disrupting serving, using spare FLOPs efficiently, and maintaining consistency as the query distribution shifts.
 ## Limitations
-- Requires spare serving-cluster compute and an online training pipeline; gains depend on how much the query distribution drifts and the draft/target…
-</script></div>
+- Requires spare serving-cluster compute and an online training pipeline; gains depend on how much the query distribution drifts and the draft/target…</div></div></div>
 <div class="field"><h3>Background</h3><p>Speculative decoding accelerates LLM inference by having a small draft model propose tokens that the target model verifies in parallel.</p></div><div class="field"><h3>Problem</h3><p>Its speedup collapses when the draft model is inaccurate, which happens with diverse inputs and a large capability gap between draft and target, because static drafters mismatch the actual query distribution.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Serving clusters have idle compute; using it to keep the draft model aligned with incoming queries could raise acceptance rates and cut latency without extra hardware.</p></div><div class="field"><h3>Key Insight</h3><p>Continuously updating the draft model on observed user queries via distillation reduces the mismatch between the drafter&#x27;s training distribution and the real query stream, and even allows multiple topic-specialized drafters.</p></div><div class="field"><h3>Challenges</h3><p>Adapting draft models online without disrupting serving, using spare FLOPs efficiently, and maintaining consistency as the query distribution shifts.</p></div><div class="field"><h3>Method</h3><p>A prototype built on knowledge distillation that continuously updates one or more draft models on observed user query data, adapting to the live distribution during serving.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on both synthetic and real query data, measuring token acceptance rate and end-to-end latency versus static drafters.</p></div><div class="field"><h3>Results</h3><p>Increases token acceptance rate by 0.1 to 0.65 and reduces latency by 1.22x-3.06x (arXiv abstract reports 1.42x-2.17x) versus static draft models; accepted at ICML 2024.</p></div><div class="field"><h3>Limitations</h3><p>Requires spare serving-cluster compute and an online training pipeline; gains depend on how much the query distribution drifts and the draft/target capability gap.</p></div><div class="field"><h3>Relation to the Field</h3><p>The multi-model efficiency work in this family focused on inference (draft/target collaboration) rather than agent orchestration; complements training-based efficiency methods like Optima and system co-design work like FlexMARL.</p></div>
 <div class="nav"><a href="agentprune.html">← AgentPrune / &#x27;Cut the Crap&#x27; (Zhang et </a><span class="sp"></span><a href="prefillshare.html">PrefillShare (Woo et al. 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

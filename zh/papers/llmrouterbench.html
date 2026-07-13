@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个大规模的统一路由 benchmark（400K+ 实例、21 个数据集、33 个模型、10 个 baseline），其核心发现是许多近期及商用 router 都无法可靠地超越一个简单 baseline，而且 router 的骨干 embedding 几乎无关紧要。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# LLMRouterBench
+<div class="mm-wrap"><div class="markmap"># LLMRouterBench
 ## 一句话 
 - 一个大规模的统一路由 benchmark（400K+ 实例、21 个数据集、33 个模型、10 个 baseline），其核心发现是许多近期及商用 router 都无法可靠地超越一个简单 baseline，而且 router 的骨干 embedding 几乎无关紧要。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在 21 个数据集、33 个模型上汇集 400K+ 实例，并一致地实现 10 个 router baseline 以做公平比较。
 ## 局限
-- 与 RouterBench 一样，离线/静态评测无法涵盖 agentic 或多轮路由；为预印本，未声称 venue。
-</script></div>
+- 与 RouterBench 一样，离线/静态评测无法涵盖 agentic 或多轮路由；为预印本，未声称 venue。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM router 大量涌现且各有相互竞争的宣称，但评测使用的模型池和数据集不一致，使进展难以判断。</p></div><div class="field"><h3>问题</h3><p>缺少一个大规模、统一的 benchmark 来公平比较各 router，并检验它们是否真的能胜过平凡的 baseline。</p></div><div class="field"><h3>动机 / 分析</h3><p>严谨的科学比较需要标准化的规模和强 baseline；以往的 benchmark（如 RouterBench 2024）规模较小，给出的图景过于乐观。</p></div><div class="field"><h3>关键洞见</h3><p>在大规模下、对照一个简单 baseline 和一个 oracle 评测时，许多复杂 router 几乎没有真正的优势，而 embedding 骨干的选择贡献甚微。</p></div><div class="field"><h3>挑战</h3><p>在 21 个数据集、33 个模型上汇集 400K+ 实例，并一致地实现 10 个 router baseline 以做公平比较。</p></div><div class="field"><h3>方法</h3><p>一个统一的 benchmark harness，预先计算了 33 个模型在 400K+ 实例、21 个数据集上的输出；针对一个简单 baseline 和一个 oracle 上界评测 10 个路由 baseline 加商用 router，并对 embedding 骨干做消融。</p></div><div class="field"><h3>实验设置</h3><p>400K+ 实例、21 个数据集、33 个模型、10 个 baseline，加上商用 router；在成本-质量前沿上相对简单 baseline 和 oracle 给出指标。</p></div><div class="field"><h3>结果</h3><p>确认了 400K+ 实例 / 33 个模型 / 10 个 baseline 的规模，以及以下发现：router 无法可靠地击败简单 baseline、与 Oracle 之间存在持续差距、骨干 embedding 的选择影响甚微（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>与 RouterBench 一样，离线/静态评测无法涵盖 agentic 或多轮路由；为预印本，未声称 venue。</p></div><div class="field"><h3>与领域的关系</h3><p>是 RouterBench (M028) 更大规模、更具批判性的后继；其发人深省的结果推动了 agentic benchmark（TwinRouterBench M127）以及该家族中更好的 router 设计。</p></div>
 <div class="nav"><a href="seqroute.html">← SeqRoute (Xu et al. 2026)</a><span class="sp"></span><a href="llm-router.html">LLM Router: Rethinking Routing with Pr →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

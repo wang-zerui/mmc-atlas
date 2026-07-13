@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">AdaptOrch 主张：随着各家提供商的 LLM 在基准上趋同，主导系统性能的是编排拓扑而非模型选择，并将每个任务的 DAG 动态路由到 parallel/sequential/hierarchical/hybrid 拓扑。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AdaptOrch: Task-Adaptive Multi-Agent Orchestration in the Era of LLM Performance Convergence
+<div class="mm-wrap"><div class="markmap"># AdaptOrch: Task-Adaptive Multi-Agent Orchestration in the Era of LLM Performance Convergence
 ## 一句话 
 - AdaptOrch 主张：随着各家提供商的 LLM 在基准上趋同，主导系统性能的是编排拓扑而非模型选择，并将每个任务的 DAG 动态路由到 parallel/sequential/hierarchical/hybrid 拓扑。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 高效地将任务依赖图映射到最优拓扑，并在带终止保证的前提下，从并行 agent 中综合出一致的输出。
 ## 局限
-- arXiv 预印本，无发表 venue 且为单作者；12-23% 的区间未经独立审计，并依赖启发式一致性评分。
-</script></div>
+- arXiv 预印本，无发表 venue 且为单作者；12-23% 的区间未经独立审计，并依赖启发式一致性评分。</div></div></div>
 <div class="field"><h3>背景</h3><p>来自不同提供商的 LLM 正趋同到相近的基准性能，这降低了为每个任务挑选单一最佳模型的收益。</p></div><div class="field"><h3>问题</h3><p>当模型能力趋同时，逐任务的模型选择收益递减，然而大多数系统仍固定使用单一的编排拓扑。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果拓扑比模型选择更能驱动系统级性能，那么编排设计就应当被当作一等的优化目标。</p></div><div class="field"><h3>关键洞见</h3><p>一条 &#x27;Performance Convergence Scaling Law&#x27; 定义了在何时编排选择比模型选择更重要，因此将每个任务的分解 DAG 路由到恰当的拓扑，会胜过任何固定拓扑。</p></div><div class="field"><h3>挑战</h3><p>高效地将任务依赖图映射到最优拓扑，并在带终止保证的前提下，从并行 agent 中综合出一致的输出。</p></div><div class="field"><h3>方法</h3><p>三个组件：一条 Performance Convergence Scaling Law；一个 Topology Routing Algorithm，以 O(|V|+|E|) 时间将分解 DAG 映射到 parallel/sequential/hierarchical/hybrid 模式；以及一个带终止保证与启发式一致性评分的 Adaptive Synthesis Protocol。</p></div><div class="field"><h3>实验设置</h3><p>在使用相同底层模型的情况下，于编码（SWE-bench）、推理（GPQA）和检索增强生成任务上进行验证。</p></div><div class="field"><h3>结果</h3><p>报告在使用相同底层模型的情况下，相对静态单拓扑基线取得 12-23% 的提升（标题与方法已对照 abstract 确认；仅为 arXiv 预印本，数字未经审计）。</p></div><div class="field"><h3>局限</h3><p>arXiv 预印本，无发表 venue 且为单作者；12-23% 的区间未经独立审计，并依赖启发式一致性评分。</p></div><div class="field"><h3>与领域的关系</h3><p>与 MacNet 的拓扑发现以及 AOrchestra 的动态组合互补，将模型趋同重新诠释为拓扑优先编排的动机。</p></div>
 <div class="nav"><a href="aorchestra.html">← AOrchestra: Automating Sub-Agent Creat</a><span class="sp"></span><a href="multi-agent-teams-hold-experts-back.html">Multi-Agent Teams Hold Experts Back (P →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

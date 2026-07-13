@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一项负面（NEGATIVE）分析，表明标准的 &#x27;answer flip rate&#x27; 混淆了自发不稳定性、立场诱导的盲从与推理诱导的说服；严格盲从（29%）大多有害（57-77% 由正确变错误），甚至空洞的推理也能驱动 20-39% 的错误采纳，但有害盲从在 Round 0 就可预测（AUC 0.79）。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Not All Flips Are Conformity: Decomposing Stance Convergence in Multi-Agent LLM Debate
+<div class="mm-wrap"><div class="markmap"># Not All Flips Are Conformity: Decomposing Stance Convergence in Multi-Agent LLM Debate
 ## 一句话 
 - 一项负面（NEGATIVE）分析，表明标准的 &#x27;answer flip rate&#x27; 混淆了自发不稳定性、立场诱导的盲从与推理诱导的说服；严格盲从（29%）大多有害（57-77% 由正确变错误），甚至空洞的推理也能驱动 20-39% 的错误采纳，但有害盲从在 Round 0 就可预测（AUC 0.79）。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 通过受控反事实条件隔离每个翻转来源；以及在没有正确性标签或 self-reflection 对照时，有益与有害影响无法区分，因此削减采纳并不能提升准确率。
 ## 局限
-- 仅见于 arXiv；干预能减少有害盲从但无法提升准确率——在缺乏正确性标签或 self-reflection 对照时，有益与有害影响相互纠缠。
-</script></div>
+- 仅见于 arXiv；干预能减少有害盲从但无法提升准确率——在缺乏正确性标签或 self-reflection 对照时，有益与有害影响相互纠缠。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体 debate 中的答案收敛常被解读为有益共识，&#x27;answer flip rate&#x27; 被用作汇总指标，但它把非常不同的底层机制混在了一起。</p></div><div class="field"><h3>问题</h3><p>当智能体在 debate 中改变答案时，有多少反映真正的推理，有多少是社会性顺从，以及聚合的翻转率是否是一个有意义的信号？</p></div><div class="field"><h3>动机 / 分析</h3><p>如果大多数翻转是有害的盲从而非说服，那么天真地减少翻转或信任收敛都可能损害准确率；必须把各成分拆解开。</p></div><div class="field"><h3>关键洞见</h3><p>翻转可分解为三个不同来源——自发不稳定性、立场诱导的盲从与推理诱导的说服——而严格盲从主要是有害的，因此收敛并非正确性的证据；有害盲从可从 Round-0 特征预测。</p></div><div class="field"><h3>挑战</h3><p>通过受控反事实条件隔离每个翻转来源；以及在没有正确性标签或 self-reflection 对照时，有益与有害影响无法区分，因此削减采纳并不能提升准确率。</p></div><div class="field"><h3>方法</h3><p>一个三来源分解框架，将翻转分离为自发不稳定性、立场诱导的盲从与推理诱导的说服，每一项通过受控反事实条件隔离；构建有害盲从的 Round-0 预测器和一个风险定向的干预。</p></div><div class="field"><h3>实验设置</h3><p>主要场景为 MMLU-Pro，在 GPQA-Diamond 上做鲁棒性验证，跨三个模型家族。</p></div><div class="field"><h3>结果</h3><p>负面结果：37% 的观测仅在 self-reflection 下就发生翻转（自发不稳定性）；严格盲从为 29% 且主要有害（57-77% 由正确变错误）；甚至空洞/无内容的推理也能在抵抗型智能体中驱动 20-39% 的错误采纳。有害盲从可从 Round-0 特征预测（AUC 0.79），一个风险定向干预将有害盲从削减 13.6 个百分点（p&lt;0.001）。警示：在没有标签/对照时，减少同伴采纳并不能提升准确率。</p></div><div class="field"><h3>局限</h3><p>仅见于 arXiv；干预能减少有害盲从但无法提升准确率——在缺乏正确性标签或 self-reflection 对照时，有益与有害影响相互纠缠。</p></div><div class="field"><h3>与领域的关系</h3><p>将 M158 的 &#x27;谄媚式盲从&#x27; 路径细化为不同机制，并与 M163 的多样性坍缩视角互补；与 M161 的 detection-without-correction 论述一致。</p></div>
 <div class="nav"><a href="detection-without-correction.html">← Detection Without Correction: A Two-Pa</a><span class="sp"></span><a href="diversity-collapse-in-multi-agent-llm-systems.html">Diversity Collapse in Multi-Agent LLM  →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

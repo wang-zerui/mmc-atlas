@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A-MEM 是一种受 Zettelkasten 启发的 agentic memory，其中每条 memory 都是一个原子笔记，带有 LLM 生成的关键词、标签和上下文描述，动态链接到相关笔记，并允许随新 memory 到来而演进——超越了静态的 RAG 检索。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# A-MEM: Agentic Memory for LLM Agents
+<div class="mm-wrap"><div class="markmap"># A-MEM: Agentic Memory for LLM Agents
 ## 一句话 
 - A-MEM 是一种受 Zettelkasten 启发的 agentic memory，其中每条 memory 都是一个原子笔记，带有 LLM 生成的关键词、标签和上下文描述，动态链接到相关笔记，并允许随新 memory 到来而演进——超越了静态的 RAG 检索。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 决定链接哪些过往 memory、自动生成有用的结构化属性，以及在不破坏已有知识的前提下将更新在网络中传播。
 ## 局限
-- 摘要没有报告提升的确切幅度，也没有报告 LLM 驱动的笔记生成与演进的成本/延迟；收益可能随基础模型的结构化能力而变化。
-</script></div>
+- 摘要没有报告提升的确切幅度，也没有报告 LLM 驱动的笔记生成与演进的成本/延迟；收益可能随基础模型的结构化能力而变化。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM agent 依赖 memory 系统在多次交互间持久保存和回忆信息，但大多数系统只提供基础的存储和检索。</p></div><div class="field"><h3>问题</h3><p>现有 memory 系统缺乏精细的组织：它们存储和取回条目，却不构建或维护一个结构化、相互关联的知识网络。</p></div><div class="field"><h3>动机 / 分析</h3><p>Zettelkasten 笔记法展示了原子化、相互链接的笔记如何形成一个不断演进的知识网络，这为 agent memory 提供了更丰富的组织原则。</p></div><div class="field"><h3>关键洞见</h3><p>将 Zettelkasten 结构与 agent 驱动的决策相结合，可让 memory 自我组织：新笔记生成自己的属性、链接到语义相关的过往笔记，并能触发对现有 memory 属性的更新。</p></div><div class="field"><h3>挑战</h3><p>决定链接哪些过往 memory、自动生成有用的结构化属性，以及在不破坏已有知识的前提下将更新在网络中传播。</p></div><div class="field"><h3>方法</h3><p>对每条新 memory，系统生成一个结构化笔记（上下文描述、关键词、标签），在存在有意义相似性之处将其链接到现有 memory，并让此次新增触发 memory 演进，更新相关历史笔记的表示和属性。</p></div><div class="field"><h3>实验设置</h3><p>在六个基础模型上进行了实证评估，并与现有的 state-of-the-art memory baseline 进行对比。</p></div><div class="field"><h3>结果</h3><p>论文报告在六个基础模型上相比现有 SOTA memory baseline 有显著提升；摘要中未给出具体的逐项 benchmark 指标值。已验证：动态索引/链接加上 memory 演进、六模型评估、NeurIPS 2025。</p></div><div class="field"><h3>局限</h3><p>摘要没有报告提升的确切幅度，也没有报告 LLM 驱动的笔记生成与演进的成本/延迟；收益可能随基础模型的结构化能力而变化。</p></div><div class="field"><h3>与领域的关系</h3><p>作为以结构和演进为中心的替代方案，与以 context 分页为核心的 memory（如 MemGPT）形成对照；两者都是单 agent memory 系统，而 Mesh Memory Protocol 处理的是跨 agent 的 memory 共享。</p></div>
 <div class="nav"><a href="survey-of-agent-interoperability-protocols.html">← Survey of Agent Interoperability Proto</a><span class="sp"></span><a href="model-context-protocol.html">Model Context Protocol (Anthropic 2024 →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

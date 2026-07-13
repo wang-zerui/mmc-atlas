@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一种可学习的 LLM cascade，将每个查询从最便宜的模型开始逐级向上路由，用质量评分器判断当前答案是否已足够好，从而以极低的成本达到 GPT-4 的水平。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# FrugalGPT
+<div class="mm-wrap"><div class="markmap"># FrugalGPT
 ## 一句话 
 - 一种可学习的 LLM cascade，将每个查询从最便宜的模型开始逐级向上路由，用质量评分器判断当前答案是否已足够好，从而以极低的成本达到 GPT-4 的水平。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 学习该使用哪些模型组合并设定可靠的接受阈值，使提前停止不会牺牲准确率；同时要以低成本、高精度地估计答案质量。
 ## 局限
-- 质量评分器与 cascade 顺序是按任务/数据集学习的，可能难以迁移；节省幅度取决于查询难度分布以及可用模型之间的价格差距。
-</script></div>
+- 质量评分器与 cascade 顺序是按任务/数据集学习的，可能难以迁移；节省幅度取决于查询难度分布以及可用模型之间的价格差距。</div></div></div>
 <div class="field"><h3>背景</h3><p>商用 LLM API（GPT-4、ChatGPT、J1-Jumbo 等）之间的价格差异高达两个数量级，在大规模场景下对每个查询都直接调用最强模型的开销极其庞大。</p></div><div class="field"><h3>问题</h3><p>在拥有异构付费 API 模型池的前提下，如何在保持（甚至提升）答案质量的同时降低 LLM 推理的金钱成本。</p></div><div class="field"><h3>动机 / 分析</h3><p>以往工作主要优化单模型的提示或近似手段，却没有系统性地利用一个事实：很多查询用便宜模型就能正确回答，昂贵模型只需留给困难样本。</p></div><div class="field"><h3>关键洞见</h3><p>一个事后的质量/可靠性估计器可以判断便宜模型的答案是否可接受，从而构建按成本升序、仅在需要时才升级的 cascade。</p></div><div class="field"><h3>挑战</h3><p>学习该使用哪些模型组合并设定可靠的接受阈值，使提前停止不会牺牲准确率；同时要以低成本、高精度地估计答案质量。</p></div><div class="field"><h3>方法</h3><p>FrugalGPT 是 LLM cascade 的一个具体实例：它针对每个任务学习一个 LLM 序列以及一个对每条生成答案打分的评分函数；查询依次流经越来越昂贵的模型，并在第一个分数超过学习阈值的答案处停止。它与提示自适应、LLM 近似共同构成综述中的三种降本策略。</p></div><div class="field"><h3>实验设置</h3><p>在包括 GPT-4、ChatGPT 和 J1-Jumbo 在内的商用 API 上，于 HEADLINES 等 QA/分类数据集上评估；基线是对所有查询都使用最佳单模型（GPT-4）。</p></div><div class="field"><h3>结果</h3><p>在成本最多降低 98% 的情况下达到 GPT-4 的性能，或在等成本下将准确率相对 GPT-4 提升 4%。在 HEADLINES 上仅有 16.6% 的查询被路由到 GPT-4（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>质量评分器与 cascade 顺序是按任务/数据集学习的，可能难以迁移；节省幅度取决于查询难度分布以及可用模型之间的价格差距。</p></div><div class="field"><h3>与领域的关系</h3><p>本家族中的奠基性 cascade 方法；后续的路由/cascade 工作（AutoMix、Hybrid LLM、RouterBench、Gatekeeper、UCCI）都在其成本升序、置信度门控的延迟思想之上构建或以其为基准。</p></div>
 <div class="nav"><a href="agreement-based-cascading.html">← Agreement-Based Cascading (Kolawole et</a><span class="sp"></span><a href="self-consistent-mixture-of-agents.html">Self-Consistent Mixture of Agents / Tr →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

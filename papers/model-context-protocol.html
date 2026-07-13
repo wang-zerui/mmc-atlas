@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">MCP is an open JSON-RPC standard, likened to a &#x27;USB-C port for AI&#x27;, that connects AI applications to external data sources, tools, and workflows through a common client-server interface.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Model Context Protocol
+<div class="mm-wrap"><div class="markmap"># Model Context Protocol
 ## TL;DR 
 - MCP is an open JSON-RPC standard, likened to a &#x27;USB-C port for AI&#x27;, that connects AI applications to external data sources, tools, and workflows through a…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Defining primitives general enough to cover tools, data, and prompts while keeping the transport secure, typed, and simple enough for broad…
 ## Limitations
-- MCP standardizes agent-to-tool access, not agent-to-agent coordination; it says nothing about multi-agent task delegation, identity, or discovery…
-</script></div>
+- MCP standardizes agent-to-tool access, not agent-to-agent coordination; it says nothing about multi-agent task delegation, identity, or discovery…</div></div></div>
 <div class="field"><h3>Background</h3><p>Agentic LLM applications need to reach beyond their weights to files, databases, search engines, and specialized prompts, but every such integration was previously built ad hoc and non-portable.</p></div><div class="field"><h3>Problem</h3><p>Without a shared standard, connecting M applications to N tools requires M x N bespoke integrations, which is costly to build, hard to secure, and impossible to reuse across the ecosystem.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A single open protocol lets developers &#x27;build once and integrate everywhere&#x27;, so any MCP-compatible client (Claude, ChatGPT, VS Code, Cursor) can talk to any MCP server.</p></div><div class="field"><h3>Key Insight</h3><p>Standardizing the interface rather than the implementation - exposing capabilities as typed primitives over JSON-RPC - turns tool integration into a plug-and-play ecosystem, deliberately drawing on the Language Server Protocol&#x27;s design.</p></div><div class="field"><h3>Challenges</h3><p>Defining primitives general enough to cover tools, data, and prompts while keeping the transport secure, typed, and simple enough for broad client/server adoption.</p></div><div class="field"><h3>Method</h3><p>A client-server architecture over JSON-RPC 2.0 in which servers expose tools (callable functions), resources (data/context), and prompts (reusable templates), and clients expose roots (filesystem scope) and sampling (server-initiated LLM calls).</p></div><div class="field"><h3>Experimental Setup</h3><p>As a specification rather than an empirical paper, it is validated by ecosystem adoption rather than benchmarks; reference servers and SDKs demonstrate connections to calendars, databases, design tools, and more.</p></div><div class="field"><h3>Results</h3><p>No benchmark numbers; the verified outcome is the primitive set (tools/resources/prompts/roots/sampling), the JSON-RPC/LSP-inspired design, broad client and server support, and donation to the Agentic AI Foundation in December 2025.</p></div><div class="field"><h3>Limitations</h3><p>MCP standardizes agent-to-tool access, not agent-to-agent coordination; it says nothing about multi-agent task delegation, identity, or discovery between peer agents.</p></div><div class="field"><h3>Relation to the Field</h3><p>The dominant agent-to-tool layer that complements agent-to-agent protocols like A2A; positioned as the bottom of layered adoption roadmaps (MCP tools -&gt; ACP messaging -&gt; A2A tasks -&gt; ANP open networks) in interoperability surveys.</p></div>
 <div class="nav"><a href="a-mem.html">← A-MEM: Agentic Memory for LLM Agents (</a><span class="sp"></span><a href="memgpt.html">MemGPT (Packer et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个 orchestrator-worker 式的研究系统：一个 Claude Opus 4 主导 agent 派生出多个并行的 Claude Sonnet 4 子 agent，各自独立检索并返回经过筛选的发现以供综合。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Anthropic Multi-Agent Research System
+<div class="mm-wrap"><div class="markmap"># Anthropic Multi-Agent Research System
 ## 一句话 
 - 一个 orchestrator-worker 式的研究系统：一个 Claude Opus 4 主导 agent 派生出多个并行的 Claude Sonnet 4 子 agent，各自独立检索并返回经过筛选的发现以供综合。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 协调子 agent、避免重复劳动、进行来源溯源，以及控制运行大量 agent 所带来的高昂 token 成本。
 ## 局限
-- 鉴于约 15x 的 token 成本，仅在高价值任务上才具经济可行性；不适用于子 agent 需要共享状态的紧耦合任务。
-</script></div>
+- 鉴于约 15x 的 token 成本，仅在高价值任务上才具经济可行性；不适用于子 agent 需要共享状态的紧耦合任务。</div></div></div>
 <div class="field"><h3>背景</h3><p>开放式研究查询需要探索多个方向，无法像静态 RAG 检索那样预先规划。</p></div><div class="field"><h3>问题</h3><p>拥有单一上下文窗口的单个 agent 是广域研究的瓶颈：它无法并行探索众多方面，也难以有效地扩展 token 预算。</p></div><div class="field"><h3>动机 / 分析</h3><p>将子任务委派给拥有独立上下文窗口的并行子 agent，可让系统动态地发现并适应相关信息。</p></div><div class="field"><h3>关键洞见</h3><p>研究性能的大部分方差由总 token 预算驱动；在多个子 agent 间并行化探索，既提升质量，又降低了复杂查询的时延。</p></div><div class="field"><h3>挑战</h3><p>协调子 agent、避免重复劳动、进行来源溯源，以及控制运行大量 agent 所带来的高昂 token 成本。</p></div><div class="field"><h3>方法</h3><p>主导 agent 分析查询、制定策略，并派生子 agent 并行运行各自的检索；主导 agent 综合返回的发现，并判断是否需要进一步研究，最后由一个 CitationAgent 将各项论断归因到来源。</p></div><div class="field"><h3>实验设置</h3><p>内部研究评测以及 BrowseComp benchmark；针对 token 用量、工具调用次数与模型选择的消融实验。</p></div><div class="field"><h3>结果</h3><p>Opus-4 主导 + Sonnet-4 子 agent 的系统在内部研究评测上比单 agent 的 Opus 4 高出 90.2%；在 BrowseComp 上，三个因素解释了 95% 的方差，其中仅 token 用量就约占 80%；多 agent 消耗的 token 约为聊天场景的 15x；并行化最多可将研究时间缩短 90%。</p></div><div class="field"><h3>局限</h3><p>鉴于约 15x 的 token 成本，仅在高价值任务上才具经济可行性；不适用于子 agent 需要共享状态的紧耦合任务。</p></div><div class="field"><h3>与领域的关系</h3><p>orchestrator-worker 角色专业化在生产规模上的一个实例，与 Magentic-One 的 manager-worker 设计高度并行，并推动了在编排轨迹上做 RL 的相关工作。</p></div>
 <div class="nav"><a href="understanding-agent-scaling-in-llm-based-multi-a.html">← Understanding Agent Scaling in LLM-Bas</a><span class="sp"></span><a href="macnet.html">MacNet / Scaling LLM Multi-Agent Colla →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

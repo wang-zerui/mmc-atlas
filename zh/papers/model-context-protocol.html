@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">MCP 是一个开放的 JSON-RPC 标准，被比喻为“AI 的 USB-C 接口”，通过统一的 client-server 接口将 AI 应用连接到外部数据源、工具和工作流。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Model Context Protocol
+<div class="mm-wrap"><div class="markmap"># Model Context Protocol
 ## 一句话 
 - MCP 是一个开放的 JSON-RPC 标准，被比喻为“AI 的 USB-C 接口”，通过统一的 client-server 接口将 AI 应用连接到外部数据源、工具和工作流。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 定义足够通用的原语以覆盖工具、数据和 prompt，同时保持传输层安全、带类型，并足够简单以便被广泛的 client/server 采用。
 ## 局限
-- MCP 标准化的是 agent 到工具的访问，而非 agent 到 agent 的协调；它对多 agent 的任务委派、身份或对等 agent 之间的发现只字未提。
-</script></div>
+- MCP 标准化的是 agent 到工具的访问，而非 agent 到 agent 的协调；它对多 agent 的任务委派、身份或对等 agent 之间的发现只字未提。</div></div></div>
 <div class="field"><h3>背景</h3><p>Agentic LLM 应用需要超越自身权重去访问文件、数据库、搜索引擎和专用 prompt，但此前每一项这样的集成都是临时搭建、无法移植的。</p></div><div class="field"><h3>问题</h3><p>在缺乏共享标准的情况下，将 M 个应用连接到 N 个工具需要 M x N 个定制集成，这样构建成本高、难以保障安全，且无法在生态系统中复用。</p></div><div class="field"><h3>动机 / 分析</h3><p>单一开放的 protocol 让开发者能够“一次构建、处处集成”，因此任何兼容 MCP 的 client（Claude、ChatGPT、VS Code、Cursor）都能与任何 MCP server 通信。</p></div><div class="field"><h3>关键洞见</h3><p>标准化接口而非实现——通过 JSON-RPC 将能力暴露为带类型的原语——将工具集成变成一个即插即用的生态系统，其设计刻意借鉴了 Language Server Protocol。</p></div><div class="field"><h3>挑战</h3><p>定义足够通用的原语以覆盖工具、数据和 prompt，同时保持传输层安全、带类型，并足够简单以便被广泛的 client/server 采用。</p></div><div class="field"><h3>方法</h3><p>基于 JSON-RPC 2.0 的 client-server 架构，其中 server 暴露 tools（可调用函数）、resources（数据/上下文）和 prompts（可复用模板），client 暴露 roots（文件系统作用域）和 sampling（server 发起的 LLM 调用）。</p></div><div class="field"><h3>实验设置</h3><p>作为一份规范而非实证论文，它通过生态系统的采用而非 benchmark 来验证；参考 server 和 SDK 演示了与日历、数据库、设计工具等的连接。</p></div><div class="field"><h3>结果</h3><p>没有 benchmark 数据；已验证的成果是原语集合（tools/resources/prompts/roots/sampling）、受 JSON-RPC/LSP 启发的设计、广泛的 client 与 server 支持，以及 2025 年 12 月捐赠给 Agentic AI Foundation。</p></div><div class="field"><h3>局限</h3><p>MCP 标准化的是 agent 到工具的访问，而非 agent 到 agent 的协调；它对多 agent 的任务委派、身份或对等 agent 之间的发现只字未提。</p></div><div class="field"><h3>与领域的关系</h3><p>作为主导的 agent 到工具层，它与 A2A 等 agent 到 agent 协议互补；在互操作性综述的分层采用路线图中被定位于最底层（MCP tools -&gt; ACP messaging -&gt; A2A tasks -&gt; ANP open networks）。</p></div>
 <div class="nav"><a href="a-mem.html">← A-MEM: Agentic Memory for LLM Agents (</a><span class="sp"></span><a href="memgpt.html">MemGPT (Packer et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

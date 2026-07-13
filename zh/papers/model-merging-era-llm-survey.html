@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇 2026 年关于 LLM 模型合并（model merging）的综述，采用 FUSE 分类体系（Foundations、Unification strategies、Scenarios、Ecosystem）组织，从损失地形理论到权重平均、任务向量算术、稀疏化、MoE 与进化优化。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Model Merging in the Era of Large Language Models: Methods, Applications, and Future Directions
+<div class="mm-wrap"><div class="markmap"># Model Merging in the Era of Large Language Models: Methods, Applications, and Future Directions
 ## 一句话 
 - 一篇 2026 年关于 LLM 模型合并（model merging）的综述，采用 FUSE 分类体系（Foundations、Unification strategies、Scenarios、Ecosystem）组织，从损失地形理论到权重平均、任务向量算术、稀疏化、MoE 与进化优化。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 它指出在合并的理论理解、向众多异质检查点扩展、以及标准化评估方面的开放挑战，并勾勒未来方向。
 ## 局限
-- 是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CL）。
-</script></div>
+- 是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CL）。</div></div></div>
 <div class="field"><h3>背景</h3><p>模型合并在不额外训练的情况下将多个神经网络的参数整合为单一模型；随着微调后的 LLM 大量涌现，它相较集成与全量重训练提供了计算上更廉价的替代方案。</p></div><div class="field"><h3>问题</h3><p>合并文献快速增长且分散在理论、算法、应用与工具之间，缺乏可供研究者与实践者定位的结构化基础。</p></div><div class="field"><h3>动机 / 分析</h3><p>实践者需要以极低成本组合各种专门能力，因此对合并何时以及如何奏效给出结构化说明很有价值。</p></div><div class="field"><h3>关键洞见</h3><p>合并可通过损失地形几何与模式连通性得到连贯理解，这为多样的算法策略提供根基，使其成为单一设计空间中的点，而非零散技巧。</p></div><div class="field"><h3>挑战</h3><p>它指出在合并的理论理解、向众多异质检查点扩展、以及标准化评估方面的开放挑战，并勾勒未来方向。</p></div><div class="field"><h3>方法</h3><p>它以 FUSE 分类体系综述模型合并：Foundations（损失地形几何、模式连通性）、Unification strategies（权重平均、任务向量算术、稀疏化增强方法、mixture-of-experts、进化优化）、Scenarios（多任务学习、安全对齐、领域专门化、federated learning）、Ecosystem（工具与基准）。</p></div><div class="field"><h3>实验设置</h3><p>作为综述，它回顾算法空间、下游应用与支撑性工具/基准，而非报告新实验。</p></div><div class="field"><h3>结果</h3><p>提供一个结构化基础，组织合并的方法、理论、应用与生态，将合并定位为现代 LLM 开发中的核心技术。</p></div><div class="field"><h3>局限</h3><p>是综述而非实证研究；为无确认发表场所的 arXiv preprint（cs.CL）。</p></div><div class="field"><h3>与领域的关系</h3><p>本图谱中以合并为重点的 2026 年综述，与以集成为导向的 M041 及 merge/ensemble/cooperate 综述 M304 互补，夯实了区别于输出集成的模型融合/合并脉络。</p></div>
 <div class="nav"><a href="beyond-individual-intelligence-llm-mas-survey.html">← Beyond Individual Intelligence: Survey</a><span class="sp"></span><a href="memory-autonomous-llm-agents-survey.html">Memory for Autonomous LLM Agents: Mech →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

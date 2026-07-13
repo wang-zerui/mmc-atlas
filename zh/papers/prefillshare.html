@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">PrefillShare将模型分解为prefill模块和decode模块，冻结prefill模块，只微调decode模块，从而在基于vLLM的解耦serving架构中，让多个任务专用模型共享同一个prefill阶段及其KV cache。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# PrefillShare
+<div class="mm-wrap"><div class="markmap"># PrefillShare
 ## 一句话 
 - PrefillShare将模型分解为prefill模块和decode模块，冻结prefill模块，只微调decode模块，从而在基于vLLM的解耦serving架构中，让多个任务专用模型共享同一个prefill阶段及其KV cache。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在prefill被冻结共享的情况下保持full-fine-tuning的准确率，并在解耦系统内为异构模型的prefill共享路由请求。
 ## 局限
-- 需要针对冻结的共享prefill微调decode模块（一个训练步骤）；共享prefill的假设适合多agent共享上下文的workload，但不适用于任意独立请求；尚无同行评审venue。
-</script></div>
+- 需要针对冻结的共享prefill微调decode模块（一个训练步骤）；共享prefill的假设适合多agent共享上下文的workload，但不适用于任意独立请求；尚无同行评审venue。</div></div></div>
 <div class="field"><h3>背景</h3><p>多agent系统常在共享上下文上调用多个专用模型，反复处理同一个prompt prefix。</p></div><div class="field"><h3>问题</h3><p>每个模型都冗余地运行prefill阶段并持有各自的KV cache，抬高了总体prefill负载，并通过prefill-decode干扰恶化尾延迟；解耦serving虽减少了干扰，但并未消除对同一prompt在模型间的计算与KV存储冗余。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果专用模型能够共享一个共同的prefill表示，那么共享的prefix只需处理一次，其KV cache即可在所有模型间复用，从而削减冗余计算和内存。</p></div><div class="field"><h3>关键洞见</h3><p>冻结一个共享的prefill模块、只对各任务的decode模块进行微调，能让异构的任务专用模型复用同一份prefill计算和KV cache，且不损失任务准确率。</p></div><div class="field"><h3>挑战</h3><p>在prefill被冻结共享的情况下保持full-fine-tuning的准确率，并在解耦系统内为异构模型的prefill共享路由请求。</p></div><div class="field"><h3>方法</h3><p>将模型分解为prefill模块和decode模块；冻结prefill、只微调decode；增加一个路由机制，在基于vLLM的解耦系统中实现跨异构模型的prefill/KV共享，面向共享prefix之上的多agent多轮工作流。</p></div><div class="field"><h3>实验设置</h3><p>在多模型agent workload中、跨一系列任务和模型进行评估，将准确率与full fine-tuning对比、将延迟/吞吐与解耦基线对比。</p></div><div class="field"><h3>结果</h3><p>报告在与full-fine-tuning准确率相当的同时，在多模型agent workload中实现p95延迟降低4.5x、吞吐提升3.9x；arXiv 2026年2月，未注明venue，量级未经独立审计。</p></div><div class="field"><h3>局限</h3><p>需要针对冻结的共享prefill微调decode模块（一个训练步骤）；共享prefill的假设适合多agent共享上下文的workload，但不适用于任意独立请求；尚无同行评审venue。</p></div><div class="field"><h3>与领域的关系</h3><p>将prefill/decode解耦（DistServe）扩展到跨模型场景，并将prefix KV共享（vLLM、SGLang）泛化到不同模型之间；与RelayCaching的跨agent KV复用密切相关。</p></div>
 <div class="nav"><a href="online-speculative-decoding.html">← Online Speculative Decoding (Liu et al</a><span class="sp"></span><a href="relaycaching.html">RelayCaching (Geng et al. 2026) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

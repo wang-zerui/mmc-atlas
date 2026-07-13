@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一篇 60 页的 LLM 评估综述，从五个视角组织 LLMs-as-judges 范式：functionality、methodology、applications、meta-evaluation 与 limitations。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# LLMs-as-Judges: A Comprehensive Survey on LLM-based Evaluation Methods
+<div class="mm-wrap"><div class="markmap"># LLMs-as-Judges: A Comprehensive Survey on LLM-based Evaluation Methods
 ## 一句话 
 - 一篇 60 页的 LLM 评估综述，从五个视角组织 LLMs-as-judges 范式：functionality、methodology、applications、meta-evaluation 与 limitations。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 专辟一个视角讨论 LLM 裁判的现存问题与局限，并勾勒未来方向。
 ## 局限
-- 这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。
-</script></div>
+- 这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。</div></div></div>
 <div class="field"><h3>背景</h3><p>将 LLM 用作自然语言回答的评估器（LLMs-as-judges）因其有效性、跨任务泛化能力以及自然语言可解释性，吸引了学界与业界的关注。</p></div><div class="field"><h3>问题</h3><p>快速膨胀的 LLM 裁判文献缺乏一个涵盖为何用、如何用、在何处用以及如何评估裁判本身的全面组织结构。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一篇全面且持续更新的综述，端到端地系统化 LLMs-as-judges 范式。</p></div><div class="field"><h3>关键洞见</h3><p>将该范式拆分为 functionality、methodology、application、meta-evaluation 与 limitations，给出 LLM 评估的完整生命周期视角。</p></div><div class="field"><h3>挑战</h3><p>专辟一个视角讨论 LLM 裁判的现存问题与局限，并勾勒未来方向。</p></div><div class="field"><h3>方法</h3><p>综述内容：从五个视角看待 LLMs-as-judges——functionality（为何）、methodology（如何）、applications（在何处）、meta-evaluation（如何评估裁判）以及 limitations。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：一份 60 页的全面综述，并附带持续维护的 GitHub 资源列表；未开展新实验。</p></div><div class="field"><h3>结果</h3><p>给出了该领域的五视角组织，涵盖为何使用裁判、如何使用与应用，以及如何对裁判进行元评估。</p></div><div class="field"><h3>局限</h3><p>这是一篇综述而非实证研究；为尚无确认发表场所的 arXiv preprint。</p></div><div class="field"><h3>与领域的关系</h3><p>在本图谱评估主题内，是以可靠性为核心的 LLM-as-a-Judge 综述（M306）在方法学与元评估方面的补充。</p></div>
 <div class="nav"><a href="survey-llm-as-a-judge.html">← A Survey on LLM-as-a-Judge (Gu et al. </a><span class="sp"></span><span></span></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

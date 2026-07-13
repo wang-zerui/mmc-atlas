@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">由多样化 LLM 智能体组成的圆桌会议经过多轮讨论，并采用置信度加权投票（confidence-weighted voting）达成更强的共识答案。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# ReConcile
+<div class="mm-wrap"><div class="markmap"># ReConcile
 ## 一句话 
 - 由多样化 LLM 智能体组成的圆桌会议经过多轮讨论，并采用置信度加权投票（confidence-weighted voting）达成更强的共识答案。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 协调异构的 API/开源/领域专用模型、为加权而校准置信度分数，以及构造有效的说服式讨论 prompt。
 ## 局限
-- 需要访问多个多样化（且往往成本高昂）的模型以及可靠的置信度估计；本综述中各基准数值尚待独立审计。
-</script></div>
+- 需要访问多个多样化（且往往成本高昂）的模型以及可靠的置信度估计；本综述中各基准数值尚待独立审计。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 在复杂推理上仍力有不逮，而单模型或同质化的多智能体设置限制了观点的多样性。ReConcile 沿袭 &#x27;society of minds&#x27; 思想，但强调模型多样性。</p></div><div class="field"><h3>问题</h3><p>如何构建异构 LLM 之间的协作，使多样化的观点与置信度信号能够将推理提升到超越任何单一智能体的水平？</p></div><div class="field"><h3>动机 / 分析</h3><p>不同模型家族会犯不同的错误；一个让智能体相互说服、并按置信度加权投票的圆桌，应能利用这种多样性来纠正错误。</p></div><div class="field"><h3>关键洞见</h3><p>结合 (a) 多样化的 LLM 智能体、(b) 多轮讨论——智能体借助能纠正答案的人类解释示范相互说服，以及 (c) 置信度加权投票，能得到比均匀投票更好的共识。</p></div><div class="field"><h3>挑战</h3><p>协调异构的 API/开源/领域专用模型、为加权而校准置信度分数，以及构造有效的说服式讨论 prompt。</p></div><div class="field"><h3>方法</h3><p>每一轮，每个智能体都会收到一个讨论 prompt，其中包含分组呈现的上一轮答案与解释、它们的置信度分数，以及能纠正答案的人类解释示范；智能体据此修正答案，并通过置信度加权投票产生共识。智能体组合方式灵活（API、开源、领域专用）。</p></div><div class="field"><h3>实验设置</h3><p>在七个推理基准上评测，采用多样化 LLM 智能体的不同组合，其中包括一项 MATH 评测。</p></div><div class="field"><h3>结果</h3><p>相较此前的单智能体与多智能体基线最多提升 11.4%，在三个数据集上胜过 GPT-4，并在 MATH 上带来 8% 的提升；消融实验表明模型多样性对性能至关重要。（数值出自摘要，未经独立审计。）</p></div><div class="field"><h3>局限</h3><p>需要访问多个多样化（且往往成本高昂）的模型以及可靠的置信度估计；本综述中各基准数值尚待独立审计。</p></div><div class="field"><h3>与领域的关系</h3><p>多智能体 debate（M002）的一个异构、置信度加权变体；其对多样性 + 置信度的强调，预示了 M159 提出的两项修正（多样性感知的初始化 + 校准置信度）。</p></div>
 <div class="nav"><a href="multiagent-debate.html">← Multiagent Debate (Du et al. 2023)</a><span class="sp"></span><a href="llms-cannot-self-correct-reasoning-yet.html">LLMs Cannot Self-Correct Reasoning Yet →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">多智能体辩论可能降低而非提升准确率，因为智能体在同伴压力下会从正确答案转向错误答案，且较弱的少数派能拖垮较强的多数派。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Talk Isn&#x27;t Always Cheap: Understanding Failure Modes in Multi-Agent Debate
+<div class="mm-wrap"><div class="markmap"># Talk Isn&#x27;t Always Cheap: Understanding Failure Modes in Multi-Agent Debate
 ## 一句话 
 - 多智能体辩论可能降低而非提升准确率，因为智能体在同伴压力下会从正确答案转向错误答案，且较弱的少数派能拖垮较强的多数派。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 厘清有害答案转变的驱动因素（谄媚、社会从众、模型与任务类型），并衡量跨轮次而非单一时点的性能退化。
 ## 局限
-- 摘要中的发现是定性的、没有标志性数字；结果取决于具体的模型、提示词与辩论协议，且缓解措施（激励模型抵抗同伴压力）虽被指出但未完全解决。
-</script></div>
+- 摘要中的发现是定性的、没有标志性数字；结果取决于具体的模型、提示词与辩论协议，且缓解措施（激励模型抵抗同伴压力）虽被指出但未完全解决。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体辩论被广泛推崇为提升 LLM 推理能力的手段，让智能体在多轮中相互批评并完善各自的答案。</p></div><div class="field"><h3>问题</h3><p>大多数辩论研究使用同质智能体并假定辩论有益；混合不同能力智能体的效果，以及辩论是否可能主动造成损害，都尚未被充分探究。</p></div><div class="field"><h3>动机 / 分析</h3><p>在部署辩论之前，理解它何时以及为何失败是必要的，因为真实系统会混用不同强弱的模型。</p></div><div class="field"><h3>关键洞见</h3><p>辩论中的智能体优化的是社会性一致而非正确性：它们既无动机也无能力去抵抗有说服力但错误的推理，因此共识动态可能压倒真相。</p></div><div class="field"><h3>挑战</h3><p>厘清有害答案转变的驱动因素（谄媚、社会从众、模型与任务类型），并衡量跨轮次而非单一时点的性能退化。</p></div><div class="field"><h3>方法</h3><p>作者用能力异质的智能体开展辩论，跟踪答案在各轮次的变化，并将谄媚、社会从众以及模型/任务类型作为正确转错误转变的候选成因加以分析。</p></div><div class="field"><h3>实验设置</h3><p>在多种模型类型和任务类型上评估辩论，比较连续辩论轮次间的准确率轨迹，并改变群体的能力构成。</p></div><div class="field"><h3>结果</h3><p>准确率可能随辩论轮次下降；模型频繁因同伴而从正确答案切换到错误答案，且即便更强的模型在数量上占优，这种退化仍会发生。摘要未报告具体的数值准确率。</p></div><div class="field"><h3>局限</h3><p>摘要中的发现是定性的、没有标志性数字；结果取决于具体的模型、提示词与辩论协议，且缓解措施（激励模型抵抗同伴压力）虽被指出但未完全解决。</p></div><div class="field"><h3>与领域的关系</h3><p>对基于辩论的协作方法的一个负面结果反例；补充了 MAST 的智能体间失配类别，并强化了「更多智能体对话并非免费」的警示。</p></div>
 <div class="nav"><a href="why-do-multi-agent-llm-systems-fail.html">← Why Do Multi-Agent LLM Systems Fail? /</a><span class="sp"></span><a href="multiagentbench.html">MultiAgentBench (Zhu et al. 2025) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

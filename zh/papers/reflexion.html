@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">语言智能体通过对任务反馈进行语言化反思，并将这些反思存入情景记忆缓冲区（episodic memory buffer），在多次试验中不断改进，从而在不更新权重的情况下强化行为。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Reflexion
+<div class="mm-wrap"><div class="markmap"># Reflexion
 ## 一句话 
 - 语言智能体通过对任务反馈进行语言化反思，并将这些反思存入情景记忆缓冲区（episodic memory buffer），在多次试验中不断改进，从而在不更新权重的情况下强化行为。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 如何把原始反馈转化为有用的反思、如何管理/检索不断增长的记忆缓冲区，以及如何在序贯决策、编码与推理等不同任务类型间实现泛化。
 ## 局限
-- 依赖信息量充足的反馈信号和模型的反思能力；记忆可能不断增长而需要整理，且收益依赖于多次试验，会增加推理成本。
-</script></div>
+- 依赖信息量充足的反馈信号和模型的反思能力；记忆可能不断增长而需要整理，且收益依赖于多次试验，会增加推理成本。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 越来越多地被用作在环境（游戏、编译器、API）中行动的目标驱动型智能体，但用经典 RL 微调来从试错中学习需要大量样本和昂贵的梯度更新。</p></div><div class="field"><h3>问题</h3><p>语言智能体如何能在不更新模型权重的情况下，跨多次重复尝试从稀疏反馈中高效学习？</p></div><div class="field"><h3>动机 / 分析</h3><p>人类通过对哪里出错进行语言化反思而改进；智能体同样可以把反馈转化为自然语言经验教训并加以复用，从而绕开代价高昂的微调。</p></div><div class="field"><h3>关键洞见</h3><p>&#x27;言语强化学习&#x27;（Verbal reinforcement learning）——将反思写入情景记忆、并在下一次试验时重新读取——能引导后续决策，且既适用于标量反馈也适用于自由格式反馈，反馈来源既可外部也可内部模拟。</p></div><div class="field"><h3>挑战</h3><p>如何把原始反馈转化为有用的反思、如何管理/检索不断增长的记忆缓冲区，以及如何在序贯决策、编码与推理等不同任务类型间实现泛化。</p></div><div class="field"><h3>方法</h3><p>每次试验后，智能体接收反馈，生成关于失败的语言化自我反思，并将其追加到情景记忆缓冲区；在后续试验中，这些保留的文本作为条件引导策略做出更好的决策。消融实验对反馈信号、纳入方式和智能体类型进行了变换。</p></div><div class="field"><h3>实验设置</h3><p>在三类任务上评测：序贯决策（ALFWorld）、编码（HumanEval）与语言推理（HotpotQA），并辅以消融/分析研究。</p></div><div class="field"><h3>结果</h3><p>在 HumanEval 上取得 91% pass@1，超越此前 GPT-4 的 80% 最优结果，并在多样化任务集上相较基线智能体取得显著提升。</p></div><div class="field"><h3>局限</h3><p>依赖信息量充足的反馈信号和模型的反思能力；记忆可能不断增长而需要整理，且收益依赖于多次试验，会增加推理成本。</p></div><div class="field"><h3>与领域的关系</h3><p>在自我批判（M014）基础上引入跨试验的持久情景记忆，而非单一精修循环；属于批判/精修族群中一个记忆增强的近亲。</p></div>
 <div class="nav"><a href="self-refine.html">← Self-Refine (Madaan et al. 2023)</a><span class="sp"></span><a href="chateval.html">ChatEval (Chan et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

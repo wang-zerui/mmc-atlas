@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个小型 LM 通过 few-shot 对自己的答案做自我验证，再由一个 POMDP 元验证器根据这一带噪的置信信号决定是否升级到更大的模型。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# AutoMix
+<div class="mm-wrap"><div class="markmap"># AutoMix
 ## 一句话 
 - 一个小型 LM 通过 few-shot 对自己的答案做自我验证，再由一个 POMDP 元验证器根据这一带噪的置信信号决定是否升级到更大的模型。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 自我验证并不可靠；POMDP 元验证器必须对带噪置信度足够鲁棒，以避免过度或不足地升级。
 ## 局限
-- 依赖小模型的自我验证能力；在基于上下文的推理上评估，因此在其他任务类型上收益可能不同。
-</script></div>
+- 依赖小模型的自我验证能力；在基于上下文的推理上评估，因此在其他任务类型上收益可能不同。</div></div></div>
 <div class="field"><h3>背景</h3><p>云端 LLM 服务提供多种规模的模型；要高效地混用它们，需要判断小模型的答案何时可信到足以保留。</p></div><div class="field"><h3>问题</h3><p>在不训练单独难度预测器、仅依靠小模型自评的前提下，将基于上下文的推理查询从小 LM 路由到大 LM。</p></div><div class="field"><h3>动机 / 分析</h3><p>以往的 cascade 需要带标注数据或专门的评分器；一种轻量训练、复用小模型来做验证的方法更实用，但原始的自我验证噪声很大。</p></div><div class="field"><h3>关键洞见</h3><p>few-shot 自我验证能给出一个可用（尽管带噪）的正确性估计，而把路由建模为 POMDP 可以让元验证器在决定是否升级时考虑这种噪声。</p></div><div class="field"><h3>挑战</h3><p>自我验证并不可靠；POMDP 元验证器必须对带噪置信度足够鲁棒，以避免过度或不足地升级。</p></div><div class="field"><h3>方法</h3><p>小 LM 生成一个答案并对其做 few-shot 自我验证；一个基于 POMDP 的元验证器将（带噪的）验证信号映射为接受该答案或把查询路由到更大 LM 的决策。</p></div><div class="field"><h3>实验设置</h3><p>在五个基于上下文的推理数据集上，使用 LLaMA2-13B 与 LLaMA2-70B（小/大模型对）并跨五个模型进行评估；与强 cascade/路由基线比较。</p></div><div class="field"><h3>结果</h3><p>在这 5 个数据集上，每单位成本的增量收益相比基线最多提升 89%，并在性能相当的情况下将计算成本降低超过 50%（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>依赖小模型的自我验证能力；在基于上下文的推理上评估，因此在其他任务类型上收益可能不同。</p></div><div class="field"><h3>与领域的关系</h3><p>以自我验证和有原则的 POMDP 升级策略扩展了 FrugalGPT 式 cascade；与 Gatekeeper、UCCI 等置信度校准方法相关。</p></div>
 <div class="nav"><a href="hybrid-llm.html">← Hybrid LLM (Ding et al. 2024)</a><span class="sp"></span><a href="routerbench.html">RouterBench (Hu et al. 2024) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

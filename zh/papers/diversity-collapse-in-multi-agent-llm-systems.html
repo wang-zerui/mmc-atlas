@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">针对开放式创意生成的一项负面（NEGATIVE）结果：多智能体协作减少了创意多样性，其根源在于交互结构而非模型局限；论文记录了算力-效率悖论、权威驱动的多样性抑制，以及稠密拓扑导致的过早收敛。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# Diversity Collapse in Multi-Agent LLM Systems
+<div class="mm-wrap"><div class="markmap"># Diversity Collapse in Multi-Agent LLM Systems
 ## 一句话 
 - 针对开放式创意生成的一项负面（NEGATIVE）结果：多智能体协作减少了创意多样性，其根源在于交互结构而非模型局限；论文记录了算力-效率悖论、权威驱动的多样性抑制，以及稠密拓扑导致的过早收敛。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 跨三个层级（模型智能、智能体认知、系统动态）度量创意多样性，并将坍缩归因于结构而非模型能力。
 ## 局限
-- 以开放式构思的多样性（而非任务准确率）为结果指标；摘要报告的是定性机制而非具体多样性度量数值。
-</script></div>
+- 以开放式构思的多样性（而非任务准确率）为结果指标；摘要报告的是定性机制而非具体多样性度量数值。</div></div></div>
 <div class="field"><h3>背景</h3><p>人们假设多智能体系统能在开放式创意生成中拓宽解空间，但协作究竟何时以及为何真正扩展了探索，尚不清楚。</p></div><div class="field"><h3>问题</h3><p>多智能体协作是否真正增加了所生成创意的多样性？如果没有，是什么导致了多样性坍缩？</p></div><div class="field"><h3>动机 / 分析</h3><p>创意/构思任务依赖于探索大量不同的想法；如果协作是收窄而非拓宽解空间，那么面向创造力的 MAS 设计就需要重新思考。</p></div><div class="field"><h3>关键洞见</h3><p>多样性坍缩主要源于交互结构（&#x27;结构耦合&#x27;）而非模型固有的不足：交互无意中收缩了每个智能体的探索，因此保持独立性与分歧比模型强度更重要。</p></div><div class="field"><h3>挑战</h3><p>跨三个层级（模型智能、智能体认知、系统动态）度量创意多样性，并将坍缩归因于结构而非模型能力。</p></div><div class="field"><h3>方法</h3><p>对基于 MAS 的构思任务中的多样性做系统性实证研究，跨三个自底向上的层级——模型智能、智能体认知与系统动态——并附公开代码。</p></div><div class="field"><h3>实验设置</h3><p>开放式创意生成任务，在模型、认知与系统层级加以分析，改变模型强度、群体权威结构、群体规模与通信拓扑。</p></div><div class="field"><h3>结果</h3><p>负面结果：(1) 算力-效率悖论——更强、对齐更好的模型带来递减的边际多样性，尽管每样本质量更高；(2) 权威驱动的抑制——层级化、由权威主导的群体产生的语义多样性低于由初级成员主导的群体；(3) 稠密通信拓扑加速过早收敛，而更大的群体呈现递减回报。坍缩源于交互结构，而非模型不足。</p></div><div class="field"><h3>局限</h3><p>以开放式构思的多样性（而非任务准确率）为结果指标；摘要报告的是定性机制而非具体多样性度量数值。</p></div><div class="field"><h3>与领域的关系</h3><p>是聚焦盲从的负面研究（M158、M162）的结构性对应物：那些研究展示准确率损害，本文展示多样性损害；其稠密拓扑发现与稀疏拓扑（M063）的效率增益形成对照。</p></div>
 <div class="nav"><a href="not-all-flips-are-conformity.html">← Not All Flips Are Conformity: Decompos</a><span class="sp"></span><a href="epistemic-gain-aleatoric-cost.html">Epistemic Gain, Aleatoric Cost: Uncert →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

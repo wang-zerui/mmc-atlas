@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">A survey of methods for optimizing LLM-based agents, categorizing them into parameter-driven (fine-tuning, RL, hybrid) and parameter-free (prompt engineering, external knowledge) approaches.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# A Survey on the Optimization of LLM-based Agents
+<div class="mm-wrap"><div class="markmap"># A Survey on the Optimization of LLM-based Agents
 ## TL;DR 
 - A survey of methods for optimizing LLM-based agents, categorizing them into parameter-driven (fine-tuning, RL, hybrid) and parameter-free (prompt engineering,…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Discusses major challenges and promising future directions for optimizing agents toward long-horizon planning and complex decision-making.
 ## Limitations
-- A survey rather than an empirical study; an arXiv preprint without a confirmed venue.
-</script></div>
+- A survey rather than an empirical study; an arXiv preprint without a confirmed venue.</div></div></div>
 <div class="field"><h3>Background</h3><p>LLM-based agents are widely adopted for autonomous decision-making, but most work relies on prompt design or fine-tuning vanilla LLMs, limiting effectiveness in complex agent environments.</p></div><div class="field"><h3>Problem</h3><p>General LLM optimization lacks specialization for critical agent functionalities like long-term planning, dynamic environment interaction, and complex decision-making, and no holistic review compares agent-optimization methods.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A systematic review is needed to compare optimization strategies tailored to LLM-based agents from a unified perspective.</p></div><div class="field"><h3>Key Insight</h3><p>Agent optimization cleanly divides into parameter-driven methods that change the model and parameter-free methods that shape behavior externally, giving a comprehensive taxonomy.</p></div><div class="field"><h3>Challenges</h3><p>Discusses major challenges and promising future directions for optimizing agents toward long-horizon planning and complex decision-making.</p></div><div class="field"><h3>Method</h3><p>What it surveys: LLM-based agent optimization split into parameter-driven optimization (fine-tuning-based, reinforcement-learning-based, hybrid strategies) analyzed by trajectory-data construction, fine-tuning techniques, reward-function design, and optimization algorithms, plus parameter-free strategies (prompt engineering, external knowledge retrieval).</p></div><div class="field"><h3>Experimental Setup</h3><p>Coverage: a comprehensive review summarizing datasets and benchmarks used for evaluation and tuning, with a maintained reference repository; no new experiments.</p></div><div class="field"><h3>Results</h3><p>Organizes agent-optimization methods under the parameter-driven vs parameter-free taxonomy and reviews key applications and the datasets/benchmarks used to evaluate them.</p></div><div class="field"><h3>Limitations</h3><p>A survey rather than an empirical study; an arXiv preprint without a confirmed venue.</p></div><div class="field"><h3>Relation to the Field</h3><p>Provides the optimization/training lens for this atlas&#x27;s agents, complementing the RL-for-LLM-MAS orchestration survey (M165/M214) with a broader parameter-driven vs parameter-free taxonomy.</p></div>
 <div class="nav"><a href="ai-agents-vs-agentic-ai.html">← AI Agents vs. Agentic AI: A Conceptual</a><span class="sp"></span><a href="evaluation-benchmarking-llm-agents-survey.html">Evaluation and Benchmarking of LLM Age →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

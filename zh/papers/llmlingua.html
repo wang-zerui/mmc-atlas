@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一个小型对齐的 LM 在大模型读取之前对 prompt 进行 coarse-to-fine 压缩，将上下文缩减这一任务委托给弱模型以削减成本。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# LLMLingua
+<div class="mm-wrap"><div class="markmap"># LLMLingua
 ## 一句话 
 - 一个小型对齐的 LM 在大模型读取之前对 prompt 进行 coarse-to-fine 压缩，将上下文缩减这一任务委托给弱模型以削减成本。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在激进压缩下保持语义完整性；建模保留 token 之间的相互依赖；将小型 compressor 的分布与 target 对齐。
 ## 局限
-- 本质上 lossy；小型 compressor 的效果取决于与 target 模型的对齐，极端压缩最终可能损害质量。
-</script></div>
+- 本质上 lossy；小型 compressor 的效果取决于与 target 模型的对齐，极端压缩最终可能损害质量。</div></div></div>
 <div class="field"><h3>背景</h3><p>带 chain-of-thought 与 in-context 示例的 prompt 已变得非常长，抬高了大模型的推理成本与延迟。</p></div><div class="field"><h3>问题</h3><p>将长 prompt 压缩到原长度的一小部分，同时保持大模型的任务性能。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个廉价的小模型可识别并移除低信息量的 token，将上下文缩减从昂贵的 target 模型卸载出去（strong-weak delegation）。</p></div><div class="field"><h3>关键洞见</h3><p>由 budget controller 与 token-level 迭代移除驱动的 coarse-to-fine 压缩，即便在高压缩比下也能保持语义完整性。</p></div><div class="field"><h3>挑战</h3><p>在激进压缩下保持语义完整性；建模保留 token 之间的相互依赖；将小型 compressor 的分布与 target 对齐。</p></div><div class="field"><h3>方法</h3><p>一个小型 LM（经 instruction tuning 做分布对齐）用 budget controller 在 prompt 各组件间分配压缩，再用 token-level 迭代压缩算法在建模 token 相互依赖的同时移除 token，之后大模型读取压缩后的 prompt。</p></div><div class="field"><h3>实验设置</h3><p>在 GSM8K、BBH、ShareGPT 与 Arxiv-March23 上验证。</p></div><div class="field"><h3>结果</h3><p>至多 20x prompt 压缩且性能损失极小（已在 claim_checked 中核实）。该方法是 lossy 的（部分信息被丢弃），但报告的退化很小。</p></div><div class="field"><h3>局限</h3><p>本质上 lossy；小型 compressor 的效果取决于与 target 模型的对齐，极端压缩最终可能损害质量。</p></div><div class="field"><h3>与领域的关系</h3><p>strong-weak delegation 的开创性 prompt-compression 形式；被 LLMLingua-2（蒸馏出的 token-classification compressor）扩展，并应用于 ACON 与 AgentDiet 等 agent-context 方法。</p></div>
 <div class="nav"><a href="big-little-decoder.html">← Big Little Decoder (Kim et al. 2023)</a><span class="sp"></span><a href="orca.html">Orca (Mukherjee et al. 2023) →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

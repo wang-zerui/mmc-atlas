@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">对以 debate 作监督的一次更广泛检验——弱裁判评判强 debater：debate 胜过单智能体 consultancy 并有助于提升裁判准确率，但相较直接 QA 的优势因任务而异，且说服力效应比早期工作所暗示的更小。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# On Scalable Oversight with Weak LLMs Judging Strong LLMs
+<div class="mm-wrap"><div class="markmap"># On Scalable Oversight with Weak LLMs Judging Strong LLMs
 ## 一句话 
 - 对以 debate 作监督的一次更广泛检验——弱裁判评判强 debater：debate 胜过单智能体 consultancy 并有助于提升裁判准确率，但相较直接 QA 的优势因任务而异，且说服力效应比早期工作所暗示的更小。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 覆盖多样化的任务类型（数学、编码、逻辑、多模态、QA）与不同的裁判-智能体不对称程度，并将信息不对称的效应与 debate 机制本身区分开来。
 ## 局限
-- 以 LLM 裁判作为人类代理；debate 的收益较小且因任务而异，故本文未对以 debate 作监督给出强有力的认可。
-</script></div>
+- 以 LLM 裁判作为人类代理；debate 的收益较小且因任务而异，故本文未对以 debate 作监督给出强有力的认可。</div></div></div>
 <div class="field"><h3>背景</h3><p>可扩展监督（scalable oversight）协议旨在让人类（此处以较弱 LLM 代理）监督能力更强的 AI。此前的 debate 证据（Khan et al. 2024）主要使用单一的抽取式 QA 任务且带有信息不对称。</p></div><div class="field"><h3>问题</h3><p>在更广泛的任务范围和更多样的裁判-智能体能力差距下，debate 是否真的能让弱裁判相较 consultancy、以及相较其自行作答，取得优势？</p></div><div class="field"><h3>动机 / 分析</h3><p>在认可 debate 之前，需要将其推广到单一任务之外；作者据此探究 debate 的优势是稳健的，还是带有信息不对称的抽取式 QA 的产物。</p></div><div class="field"><h3>关键洞见</h3><p>debate 可靠地胜过 consultancy 并有一定帮助，但其相较直接 QA 的优势取决于任务是否具有信息不对称；对 debate 作为监督手段的认可是弱正面的，而非决定性的。</p></div><div class="field"><h3>挑战</h3><p>覆盖多样化的任务类型（数学、编码、逻辑、多模态、QA）与不同的裁判-智能体不对称程度，并将信息不对称的效应与 debate 机制本身区分开来。</p></div><div class="field"><h3>方法</h3><p>以 LLM 为智能体、更弱的 LLM 为裁判，比较三种协议：debate（两个 AI 说服裁判）、consultancy（一个 AI 说服一位提问的裁判），以及直接问答（裁判独自作答）。测试指定立场与自选立场，并在多种裁判-智能体不对称下变换 debater 强度。</p></div><div class="field"><h3>实验设置</h3><p>抽取式 QA（有/无信息不对称）、数学、编码、逻辑与多模态推理，均在弱裁判/强智能体的设定下进行。</p></div><div class="field"><h3>结果</h3><p>在随机立场分配下，debate 在所有任务上都胜过 consultancy；在带信息不对称的抽取式 QA 中 debate 胜过直接 QA，但在不带信息不对称的任务上结果参差。当智能体自选立场时，debate 下裁判被错误答案蒙骗的情形少于 consultancy。更高 Elo 的 debater 能小幅提升裁判准确率——效应小于此前工作。</p></div><div class="field"><h3>局限</h3><p>以 LLM 裁判作为人类代理；debate 的收益较小且因任务而异，故本文未对以 debate 作监督给出强有力的认可。</p></div><div class="field"><h3>与领域的关系</h3><p>在 debate 族群的可扩展监督分支中，作为 Khan et al.（M061）更为审慎的姊妹工作，削弱了 &#x27;说服力提升真实性&#x27; 这一结果的强度。</p></div>
 <div class="nav"><a href="debating-with-more-persuasive-llms-leads-to-more.html">← Debating with More Persuasive LLMs Lea</a><span class="sp"></span><a href="improving-multi-agent-debate-with-sparse-communi.html">Improving Multi-Agent Debate with Spar →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

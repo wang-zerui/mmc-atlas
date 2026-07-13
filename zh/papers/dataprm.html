@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">一种具备环境感知能力的生成式过程奖励模型（PRM），作为主动 verifier 与环境交互以捕捉静默错误，并采用反思感知的三元奖励用于智能体式数据分析。</div>
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# DataPRM
+<div class="mm-wrap"><div class="markmap"># DataPRM
 ## 一句话 
 - 一种具备环境感知能力的生成式过程奖励模型（PRM），作为主动 verifier 与环境交互以捕捉静默错误，并采用反思感知的三元奖励用于智能体式数据分析。
 ## 问题
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 挑战
 - 在环境中安全地执行验证，以及用反思感知的三元方案（而非二元正确性）来标注步骤。
 ## 局限
-- 仅在数据分析智能体上以 4B verifier 进行了验证；环境交互会增加成本，并需要一个可控的执行环境。
-</script></div>
+- 仅在数据分析智能体上以 4B verifier 进行了验证；环境交互会增加成本，并需要一个可控的执行环境。</div></div></div>
 <div class="field"><h3>背景</h3><p>PRM 对推理步骤进行打分，但在智能体式数据分析任务中，许多错误是静默的，会产生看似合理实则错误的输出。</p></div><div class="field"><h3>问题</h3><p>被动的、纯文本的 PRM 无法检测数据分析智能体中的静默错误，并将所有错误一视同仁地当作致命错误，忽略了错误是否可恢复。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个真正对环境进行执行、并能区分可纠正错误与不可恢复错误的 verifier，能够更好地对智能体式数据分析进行把关。</p></div><div class="field"><h3>关键洞见</h3><p>让 PRM 具备生成能力和环境感知能力，使其与数据环境交互以核查步骤，再加上一个将可纠正错误与不可恢复错误分开的三元奖励，就能捕捉被动 PRM 所遗漏的静默失败。</p></div><div class="field"><h3>挑战</h3><p>在环境中安全地执行验证，以及用反思感知的三元方案（而非二元正确性）来标注步骤。</p></div><div class="field"><h3>方法</h3><p>DataPRM 是一个 4B 生成式 PRM，作为主动 verifier 与环境交互，并给出反思感知的三元奖励（正确 / 可纠正 / 不可恢复），用于对数据分析智能体的 best-of-N 选择进行把关。</p></div><div class="field"><h3>实验设置</h3><p>在智能体式数据分析基准 ScienceAgentBench 和 DABStep 上，以该 4B 生成式 PRM 作为 verifier 进行 best-of-N 评测。</p></div><div class="field"><h3>结果</h3><p>在 best-of-N 下，DataPRM 凭借其 4B 生成式 PRM 和三元奖励，在 ScienceAgentBench 上带来 +7.21% 的提升，在 DABStep 上带来 +11.28% 的提升（verified vs abstract；KDD 2026）。</p></div><div class="field"><h3>局限</h3><p>仅在数据分析智能体上以 4B verifier 进行了验证；环境交互会增加成本，并需要一个可控的执行环境。</p></div><div class="field"><h3>与领域的关系</h3><p>是对 Let&#x27;s-Verify 和 Generative Verifiers 中 PRM verifier 的环境感知、智能体化演进，与 Agent-as-a-Judge 方向以及 AJ-Bench 的交互式验证相一致。</p></div>
 <div class="nav"><a href="aj-bench.html">← AJ-Bench (Shi et al. 2026, ACL&#x27;26 Find</a><span class="sp"></span><a href="agentv-rl.html">AgentV-RL / Agentic Verifier (Zhang et →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>

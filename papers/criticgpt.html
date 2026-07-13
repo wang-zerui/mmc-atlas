@@ -81,11 +81,12 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
 .mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
-.mm-wrap{background:var(--bg)}
-.mm-src{display:none}
-svg.markmap{display:block}
-svg.markmap text{fill:var(--ink);font-family:var(--sans)}
-svg.markmap a{fill:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -105,9 +106,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="tldr">An RLHF-trained critic writes natural-language critiques of code that trainers prefer over human critiques and that find more bugs, with human+critic teams hallucinating less than the critic alone.</div>
 <div class="mm-card">
 <div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
-<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
-<script type="text/template" class="mm-src">
-# CriticGPT / LLM Critics Help Catch LLM Bugs
+<div class="mm-wrap"><div class="markmap"># CriticGPT / LLM Critics Help Catch LLM Bugs
 ## TL;DR 
 - An RLHF-trained critic writes natural-language critiques of code that trainers prefer over human critiques and that find more bugs, with human+critic teams…
 ## Problem
@@ -123,8 +122,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Challenges
 - Critics can hallucinate nonexistent problems or nitpick; balancing recall of real bugs against hallucinated ones is central.
 ## Limitations
-- Focused on relatively short code snippets with single bugs; critics still hallucinate and may not scale to large, distributed real-world defects.
-</script></div>
+- Focused on relatively short code snippets with single bugs; critics still hallucinate and may not scale to large, distributed real-world defects.</div></div></div>
 <div class="field"><h3>Background</h3><p>RLHF relies on human trainers to evaluate model outputs, but as models tackle harder tasks like code, humans increasingly miss subtle errors, threatening the reliability of the reward signal.</p></div><div class="field"><h3>Problem</h3><p>Human evaluators cannot reliably catch bugs in complex model-written code, degrading the quality of RLHF feedback (a scalable-oversight problem).</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Assisting human trainers with an AI critic that surfaces flaws could keep human oversight effective as model capability outpaces unaided human judgment.</p></div><div class="field"><h3>Key Insight</h3><p>A model trained with RLHF specifically to critique code can point out real bugs in natural language, and human+critic teams outperform either alone, demonstrating scalable oversight.</p></div><div class="field"><h3>Challenges</h3><p>Critics can hallucinate nonexistent problems or nitpick; balancing recall of real bugs against hallucinated ones is central.</p></div><div class="field"><h3>Method</h3><p>CriticGPT is trained with RLHF to write natural-language critiques of ChatGPT-produced code; it is evaluated on both inserted bugs and naturally-occurring bugs, and in human+critic team settings.</p></div><div class="field"><h3>Experimental Setup</h3><p>Human preference comparisons of critic vs human critiques, bug-detection rates versus paid code reviewers, and precision/recall trade-offs with and without human assistance.</p></div><div class="field"><h3>Results</h3><p>Trainers preferred CriticGPT&#x27;s critiques in 63% of cases on naturally-occurring bugs, and the critic catches more bugs than paid human reviewers; human+critic teams hallucinate less than the critic alone (confirmed in abstract).</p></div><div class="field"><h3>Limitations</h3><p>Focused on relatively short code snippets with single bugs; critics still hallucinate and may not scale to large, distributed real-world defects.</p></div><div class="field"><h3>Relation to the Field</h3><p>A critique-generating verifier for scalable oversight; conceptually adjacent to Generative Verifiers and Agent-as-a-Judge, which also produce reasoned verification rather than scalar scores.</p></div>
 <div class="nav"><a href="self-taught-evaluators.html">← Self-Taught Evaluators (Wang et al. 20</a><span class="sp"></span><a href="replacing-judges-with-juries.html">Replacing Judges with Juries / Panel o →</a></div></article></div>
 </div></div>
@@ -163,28 +161,26 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
 <script>
 (function(){
- function draw(){
-  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
-  var T=new window.markmap.Transformer();
-  document.querySelectorAll('.mm-card').forEach(function(card){
-    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
-    if(!src||!svg||svg.dataset.done)return;
-    try{var r=T.transform(src.textContent.trim());
-      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
-      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
-  });
- }
- draw();
+ // fold/unfold toggle
  document.addEventListener('click',function(e){
    var b=e.target.closest('.mm-toggle'); if(!b)return;
    var w=b.closest('.mm-card').querySelector('.mm-wrap');
    var folded=w.style.display==='none';
    w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
  });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
 })();
 </script>
 </body></html>
