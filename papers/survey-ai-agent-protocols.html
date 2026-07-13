@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>F. 强弱协作提效 — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>A Survey of AI Agent Protocols (Yang et al. 2025) — Multi-Model Collaboration Atlas</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
 [data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
@@ -82,24 +82,23 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 </style></head><body>
 <div class="layout">
 <aside class="sidebar" id="sidebar">
- <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
-   <div class="sb-tools"><a class="langbtn" href="../../families/F.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">166 篇论文 · 10 个族</div>
-  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a>
+   <div class="sb-tools"><a class="langbtn" href="../zh/papers/survey-ai-agent-protocols.html">中文</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 papers · 10 families</div>
+  <input class="sb-search" id="sb-search" placeholder="Filter papers…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
-<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>Multi-Model Collaboration Atlas</b></div>
 <div class="mwrap">
-<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
-<article><h1>F. 强弱协作提效</h1>
-<div class="pmeta"><span class="b">6 篇论文</span></div>
-<div class="tldr">弱模型承担大量工作,强模型验证或精修。</div>
-<div class="summ-body"><p><strong>基础方法。</strong> 唯一具有形式化保证的家族。Speculative decoding<br>（M005/M006）在分布精确的前提下达到 2–3×；EAGLE (M007) 达 2.7–6.5×；一个庞大的<br>无损家族（SpecInfer M081、Staged M082、Self-Speculative M083、Lookahead M080、CS<br>Drafting M087、REST M085、异构词表 TLI M086）；有损的同类被明确<br>标记为有损（Medusa-2 M079、BiLD M088）。Prompt/上下文压缩（LLMLingua<br><a href="../papers/llmlingua.html">M089</a>/<a href="../papers/llmlingua-2.html">M090</a>）与蒸馏（Orca <a href="../papers/orca.html">M091</a>）属于强→弱迁移，而智能体化的<br>上下文剪枝（AgentDiet <a href="../papers/agentdiet.html">M092</a>、ACON <a href="../papers/acon.html">M093</a>）将其扩展到轨迹。<br><strong>2026 SOTA。</strong> 2026 年的这批工作进一步锐化了综述所坚持的无损/有损界线：<br><strong>无损</strong>——Saguaro（M190，ICLR&#x27;26）通过预先推测验证打破了 draft/verify 的<br>依赖关系（较 spec-decode 约 +30%，最高 5×）；BASTION (M192) 为<br>预算感知的树式块扩散起草，免训练，最高 6.61×。<br><strong>有损/近似</strong>——VSD (M191) 重训起草器以最大化接受率<br>（无分布保证）；PARSE (M193) 语义前缀验证<br>（&quot;可忽略&quot;但非零的退化）；TreeFlash (M195) 近似 AR<br>分布；跨家族的 UAG (M194) 确立了在 token 转译下不存在无损性；ConfLayers (M196) 被<br>定位为速度-质量权衡。其结论未变且被强化：<br>耦合之所以能带来稳健的增益，<strong>是因为</strong>验证步骤携带了一个<br>结构性的（分布保持的）保证。</p></div>
-<div class="field"><h3>本族论文</h3></div>
-<div class="grid"><a class="card" href="../papers/agentdiet.html"><div class="w">AgentDiet (Xiao et al. 2025)</div><div class="t">一种推理时的轨迹缩减方法，自动从软件 agent 不断增长的上下文中剪除冗余、无用与过期的信息，在不损害性能的前提下削减 input-token 成本。</div><div class="badges"><span class="b">M092</span><span class="b y">FSE 2026</span></div></a><a class="card" href="../papers/acon.html"><div class="w">ACON: Agent Context Optimization (Kang et al. 2025)</div><div class="t">从失败分析中优化自然语言压缩准则，再将 LLM compressor 蒸馏进一个小模型，使弱模型为强长程 agent 精简上下文。</div><div class="badges"><span class="b">M093</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/llmlingua-2.html"><div class="w">LLMLingua-2 (Pan et al. 2024)</div><div class="t">将 GPT-4 的压缩知识蒸馏进一个小型双向 encoder，以 token classification 的方式进行 prompt 压缩，比 LLMLingua 更快、更忠实。</div><div class="badges"><span class="b">M090</span><span class="b y">ACL 2024 (Findings)</span></div></a><a class="card" href="../papers/big-little-decoder.html"><div class="w">Big Little Decoder (Kim et al. 2023)</div><div class="t">一个小模型自回归地解码，而大模型仅被偶尔调用，以非自回归的方式仅精修不确定的预测，通过学习到的 fallback 与 rollback 策略实现。</div><div class="badges"><span class="b">M008</span><span class="b y">NeurIPS 2023</span></div></a><a class="card" href="../papers/llmlingua.html"><div class="w">LLMLingua (Jiang et al. 2023)</div><div class="t">一个小型对齐的 LM 在大模型读取之前对 prompt 进行 coarse-to-fine 压缩，将上下文缩减这一任务委托给弱模型以削减成本。</div><div class="badges"><span class="b">M089</span><span class="b y">EMNLP 2023</span></div></a><a class="card" href="../papers/orca.html"><div class="w">Orca (Mukherjee et al. 2023)</div><div class="t">把 distillation 作为 strong-weak 迁移：一个 13B 模型模仿 GPT-4 的逐步解释轨迹（而不仅是输出风格），这是一种训练时的耦合，之后可独立运行。</div><div class="badges"><span class="b">M091</span><span class="b y">arXiv 2023 (Microsoft Research)</span></div></a></div></article></div>
+<div class="crumb"><a href="../index.html">Multi-Model Collaboration Atlas</a> &nbsp;·&nbsp; <a href="../families/S.html">S. Surveys &amp; Related Work</a></div>
+<article><h1>A Survey of AI Agent Protocols (Yang et al. 2025)</h1>
+<div class="pmeta"><span class="b">M305</span><span class="b y">arXiv preprint (Apr 2025)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2504.16736" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">A survey of AI agent communication protocols that proposes a two-dimensional classification, context-oriented vs inter-agent and general-purpose vs domain-specific, and compares protocols on security, scalability, and latency.</div>
+<div class="field"><h3>Background</h3><p>LLM agents are deployed across industries but lack a standardized way to communicate with external tools, data sources, and one another.</p></div><div class="field"><h3>Problem</h3><p>The absence of unified protocols limits collaboration and scalability, and the fast-growing protocol landscape lacks a detailed comparative analysis.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A comprehensive, comparative survey is needed as a practical reference for designing and evaluating agent communication infrastructures.</p></div><div class="field"><h3>Key Insight</h3><p>Protocols separate cleanly along two axes, whether they connect an agent to context/tools versus other agents, and whether they are general-purpose versus domain-specific, enabling systematic comparison.</p></div><div class="field"><h3>Challenges</h3><p>Highlights trends and open needs toward layered architectures, group-based interaction, privacy preservation, and collective-intelligence infrastructures.</p></div><div class="field"><h3>Method</h3><p>What it surveys: existing agent protocols organized by a two-dimensional taxonomy (context-oriented vs inter-agent; general-purpose vs domain-specific), with a comparative performance analysis.</p></div><div class="field"><h3>Experimental Setup</h3><p>Coverage: a comparative analysis of agent protocols across dimensions including security, scalability, and latency; a landscape survey rather than new benchmarking.</p></div><div class="field"><h3>Results</h3><p>Delivers the claimed first comprehensive analysis of agent protocols and compares them on security, scalability, and latency, identifying desirable properties like adaptability and privacy preservation.</p></div><div class="field"><h3>Limitations</h3><p>A survey rather than an empirical study; an arXiv preprint without a confirmed venue.</p></div><div class="field"><h3>Relation to the Field</h3><p>Complements the Survey of Agent Interoperability Protocols (M096) with an orthogonal two-axis taxonomy of the MCP/A2A/ANP protocol landscape.</p></div>
+<div class="nav"><a href="multi-agent-collaboration-mechanisms-survey.html">← Multi-Agent Collaboration Mechanisms: </a><span class="sp"></span><a href="survey-evaluation-llm-agents.html">Survey on Evaluation of LLM-based Agen →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
