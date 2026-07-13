@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>TwinRouterBench (Yang et al. 2026)</h1>
 <div class="pmeta"><span class="b">M127</span><span class="b y">arXiv 2026</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2605.18859" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">面向长程 agentic 应用的 step-level routing 基准，包含一个静态确定性赛道（970 个 router 可见的前缀）和一个在 SWE-bench Verified 上实时运行 router 的动态赛道，用于衡量真实任务解决率与 API 花费。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# TwinRouterBench
+## 一句话 
+- 面向长程 agentic 应用的 step-level routing 基准，包含一个静态确定性赛道（970 个 router 可见的前缀）和一个在 SWE-bench Verified 上实时运行 router 的动态赛道，用于衡量真实任务解决率与 API 花费。
+## 问题
+- 现有 routing 基准只评测单条 query，无法衡量 step-level routing 如何影响端到端 agentic 任务的成功率与成本。
+## 洞见
+- 将确定性回放赛道（固定前缀）与实时执行赛道配对，既能让 router 可复现地对比，也能在真实任务解决率与花费上进行衡量。
+## 方法
+- 两条赛道：静态确定性赛道包含从 SWE-bench 和 BFCL 抽取的 970 个 router 可见前缀；实时动态赛道让 router 在 SWE-bench Verified（520 个实例）上端到端运行，衡量任务解决率与 API 美元花费。
+## 设置
+- 静态赛道：970 个前缀；实时赛道：SWE-bench Verified，含 520 个实例，衡量候选 router 的真实解决率与花费。
+## 结果
+- 确认了双赛道的 agentic step-level 设计、970 个前缀 / 520 个实例，以及实时 SWE-bench Verified 花费衡量（在 claim_checked 中已核实）；v1 2026 年 5 月 14 日（v2 5 月 22 日），未声明发表 venue。
+## 挑战
+- 从 SWE-bench/BFCL 构建 970 个 router 可见的 step 前缀，并编排一个让 router 在 SWE-bench Verified 的真实智能体内部运行的实时赛道。
+## 局限
+- 实时赛道结果取决于所用的特定智能体与模型池；为无 venue 的预印本。
+</script></div>
 <div class="field"><h3>背景</h3><p>Agentic 应用（编程、研究智能体）在一条长轨迹上会发起大量模型调用，因此 routing 决策发生在 step 层面，而非针对单条独立 query。</p></div><div class="field"><h3>问题</h3><p>现有 routing 基准只评测单条 query，无法衡量 step-level routing 如何影响端到端 agentic 任务的成功率与成本。</p></div><div class="field"><h3>动机 / 分析</h3><p>要公平评测 agentic router，既需要可复现的静态对比，也需要一个能刻画真实任务上逐步决策累积效应的实时环境。</p></div><div class="field"><h3>关键洞见</h3><p>将确定性回放赛道（固定前缀）与实时执行赛道配对，既能让 router 可复现地对比，也能在真实任务解决率与花费上进行衡量。</p></div><div class="field"><h3>挑战</h3><p>从 SWE-bench/BFCL 构建 970 个 router 可见的 step 前缀，并编排一个让 router 在 SWE-bench Verified 的真实智能体内部运行的实时赛道。</p></div><div class="field"><h3>方法</h3><p>两条赛道：静态确定性赛道包含从 SWE-bench 和 BFCL 抽取的 970 个 router 可见前缀；实时动态赛道让 router 在 SWE-bench Verified（520 个实例）上端到端运行，衡量任务解决率与 API 美元花费。</p></div><div class="field"><h3>实验设置</h3><p>静态赛道：970 个前缀；实时赛道：SWE-bench Verified，含 520 个实例，衡量候选 router 的真实解决率与花费。</p></div><div class="field"><h3>结果</h3><p>确认了双赛道的 agentic step-level 设计、970 个前缀 / 520 个实例，以及实时 SWE-bench Verified 花费衡量（在 claim_checked 中已核实）；v1 2026 年 5 月 14 日（v2 5 月 22 日），未声明发表 venue。</p></div><div class="field"><h3>局限</h3><p>实时赛道结果取决于所用的特定智能体与模型池；为无 venue 的预印本。</p></div><div class="field"><h3>与领域的关系</h3><p>将 routing 基准测试（RouterBench M028、LLMRouterBench M122）扩展到 agentic step-level 场景，与 Switchcraft（M124）等 agentic router 相呼应。</p></div>
 <div class="nav"><a href="ucci.html">← UCCI: Calibrated Uncertainty for Cost-</a><span class="sp"></span><a href="dynamic-model-routing-and-cascading.html">Dynamic Model Routing and Cascading: A →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

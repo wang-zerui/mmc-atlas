@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>AFlow (Zhang et al. 2024)</h1>
 <div class="pmeta"><span class="b">M101</span><span class="b y">ICLR 2025 (Oral)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2410.10762" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">AFlow 将 agentic 工作流设计重构为在代码表示的工作流上进行搜索，并用 Monte Carlo Tree Search（MCTS）自动发现高性能工作流，无需人工搭建。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# AFlow
+## 一句话 
+- AFlow 将 agentic 工作流设计重构为在代码表示的工作流上进行搜索，并用 Monte Carlo Tree Search（MCTS）自动发现高性能工作流，无需人工搭建。
+## 问题
+- 构建 agentic 工作流需要大量人工投入，限制了可扩展性；此前的自动化尝试仍依赖人工初始化或受限的搜索空间。
+## 洞见
+- 将工作流表示为代码（由边连接的 LLM 调用节点），并将其设计视为树搜索问题，使 MCTS 能借助结构化经验与执行反馈迭代精炼工作流。
+## 方法
+- AFlow 在代码表示的工作流上执行 MCTS，迭代修改代码、积累树状经验，并利用执行反馈收敛到由可复用算子构成的有效工作流。
+## 设置
+- 在六个 benchmark 数据集上验证，并与最先进基线及 ADAS 进行对比。
+## 结果
+- 在六个 benchmark 上相较最先进基线平均提升 5.7%，并使较小的模型在某些任务上以其推理成本（美元）的 4.55% 超越 GPT-4o；批注还引用了在 MATH-lv5/MBPP 上相较 ADAS 提升 57%。
+## 挑战
+- 工作流空间极其庞大；该方法需要高效探索、可复用的算子（如 Ensemble、Review、Revise）以及可靠的执行反馈来引导搜索。
+## 局限
+- 增益取决于算子库与执行反馈的质量；在代码上进行 MCTS 算力开销大，结果仅在六个 benchmark 上报告，可能未覆盖所有任务类型。
+</script></div>
 <div class="field"><h3>背景</h3><p>LLM 通过由详细指令和 LLM 调用步骤组成的 agentic 工作流来解决复杂任务，但这些工作流通常靠人工构建。</p></div><div class="field"><h3>问题</h3><p>构建 agentic 工作流需要大量人工投入，限制了可扩展性；此前的自动化尝试仍依赖人工初始化或受限的搜索空间。</p></div><div class="field"><h3>动机 / 分析</h3><p>自动化探索工作流结构可以消除人工瓶颈，并让更廉价的模型与昂贵模型一较高下。</p></div><div class="field"><h3>关键洞见</h3><p>将工作流表示为代码（由边连接的 LLM 调用节点），并将其设计视为树搜索问题，使 MCTS 能借助结构化经验与执行反馈迭代精炼工作流。</p></div><div class="field"><h3>挑战</h3><p>工作流空间极其庞大；该方法需要高效探索、可复用的算子（如 Ensemble、Review、Revise）以及可靠的执行反馈来引导搜索。</p></div><div class="field"><h3>方法</h3><p>AFlow 在代码表示的工作流上执行 MCTS，迭代修改代码、积累树状经验，并利用执行反馈收敛到由可复用算子构成的有效工作流。</p></div><div class="field"><h3>实验设置</h3><p>在六个 benchmark 数据集上验证，并与最先进基线及 ADAS 进行对比。</p></div><div class="field"><h3>结果</h3><p>在六个 benchmark 上相较最先进基线平均提升 5.7%，并使较小的模型在某些任务上以其推理成本（美元）的 4.55% 超越 GPT-4o；批注还引用了在 MATH-lv5/MBPP 上相较 ADAS 提升 57%。</p></div><div class="field"><h3>局限</h3><p>增益取决于算子库与执行反馈的质量；在代码上进行 MCTS 算力开销大，结果仅在六个 benchmark 上报告，可能未覆盖所有任务类型。</p></div><div class="field"><h3>与领域的关系</h3><p>一种基于搜索的工作流优化器，性能超越 ADAS 的代码档案搜索，并与 GPTSwarm 等基于图的方法互补；属于后由 OMAC 与 MAS-Orchestra 延续的自动化 MAS 设计脉络。</p></div>
 <div class="nav"><a href="adas.html">← ADAS / Meta Agent Search (Hu et al. 20</a><span class="sp"></span><a href="textgrad.html">TextGrad (Yuksekgonul et al. 2024/2025 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,8 +103,30 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Understanding Agent Scaling in LLM-Based Multi-Agent Systems via Diversity (2026)</h1>
 <div class="pmeta"><span class="b">M157</span><span class="b y">arXiv 2026 (preprint)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2602.03794" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">An information-theoretic account of why adding agents saturates: homogeneous outputs are correlated so gains cap at task uncertainty, while heterogeneous agents add complementary channels; empirically 2 diverse agents match or exceed 16 homogeneous ones.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Understanding Agent Scaling in LLM-Based Multi-Agent Systems via Diversity
+## TL;DR 
+- An information-theoretic account of why adding agents saturates: homogeneous outputs are correlated so gains cap at task uncertainty, while heterogeneous…
+## Problem
+- It was unclear why agent scaling saturates and when adding agents is worthwhile.
+## Insight
+- MAS performance is bounded by task uncertainty, not agent count: homogeneous agents produce correlated outputs that plateau early, while diverse…
+## Method
+- Develops an information-theoretic framework deriving architecture-agnostic improvement bounds via &#x27;effective channel count,&#x27; and introduces K*, a…
+## Setup
+- Empirical scaling studies comparing homogeneous vs heterogeneous agent teams across tasks (code/dataset released).
+## Results
+- Reports that 2 diverse agents can match or exceed 16 homogeneous agents, quantified via the K* effective-channel-count metric; homogeneous agents…
+## Challenges
+- Quantifying effective independent contribution without ground-truth labels.
+## Limitations
+- arXiv preprint with no venue; specific magnitudes not independently audited and depend on the diversity sources chosen.
+</script></div>
 <div class="field"><h3>Background</h3><p>Multi-agent LLM systems are scaled by adding agents, but returns often diminish quickly.</p></div><div class="field"><h3>Problem</h3><p>It was unclear why agent scaling saturates and when adding agents is worthwhile.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A principled, architecture-agnostic account of scaling limits would guide efficient, robust MAS design.</p></div><div class="field"><h3>Key Insight</h3><p>MAS performance is bounded by task uncertainty, not agent count: homogeneous agents produce correlated outputs that plateau early, while diverse agents (varied models/prompts/tools) contribute complementary information channels.</p></div><div class="field"><h3>Challenges</h3><p>Quantifying effective independent contribution without ground-truth labels.</p></div><div class="field"><h3>Method</h3><p>Develops an information-theoretic framework deriving architecture-agnostic improvement bounds via &#x27;effective channel count,&#x27; and introduces K*, a label-free metric of the number of effective channels.</p></div><div class="field"><h3>Experimental Setup</h3><p>Empirical scaling studies comparing homogeneous vs heterogeneous agent teams across tasks (code/dataset released).</p></div><div class="field"><h3>Results</h3><p>Reports that 2 diverse agents can match or exceed 16 homogeneous agents, quantified via the K* effective-channel-count metric; homogeneous agents plateau early due to correlated outputs. Confirmed vs abstract; magnitudes not independently audited.</p></div><div class="field"><h3>Limitations</h3><p>arXiv preprint with no venue; specific magnitudes not independently audited and depend on the diversity sources chosen.</p></div><div class="field"><h3>Relation to the Field</h3><p>Provides the information-theoretic explanation behind the Ringelmann-effect ceiling (M156) and reinforces heterogeneity over raw scaling (vs MacNet&#x27;s agent-count scaling).</p></div>
-<div class="nav"><a href="the-ringelmann-effect-in-multi-agent-llm-systems.html">← The Ringelmann Effect in Multi-Agent L</a><span class="sp"></span><a href="reinforcement-learning-for-llm-based-multi-agent.html">Reinforcement Learning for LLM-based M →</a></div></article></div>
+<div class="nav"><a href="the-ringelmann-effect-in-multi-agent-llm-systems.html">← The Ringelmann Effect in Multi-Agent L</a><span class="sp"></span><a href="anthropic-multi-agent-research-system.html">Anthropic Multi-Agent Research System  →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview"};
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

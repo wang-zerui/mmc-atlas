@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>SeqRoute (Xu et al. 2026)</h1>
 <div class="pmeta"><span class="b">M121</span><span class="b y">arXiv 2026</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2605.25424" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">SeqRoute 让预算感知的 LLM 路由变为序列化的，把多轮会话建模为一个用 offline RL 求解的有限时域 MDP，使 router 学会“延迟满足”，避免过早花光预算。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# SeqRoute
+## 一句话 
+- SeqRoute 让预算感知的 LLM 路由变为序列化的，把多轮会话建模为一个用 offline RL 求解的有限时域 MDP，使 router 学会“延迟满足”，避免过早花光预算。
+## 问题
+- 逐查询路由忽视了这样一点：在早期简单一轮上花费，会导致后期困难一轮无钱可用，造成会话结束前的“预算破产”。
+## 洞见
+- 把剩余预算放入 RL state，路由就变成一个有限时域 MDP，策略可以学会把昂贵模型推迟到最需要时才使用。
+## 方法
+- 将路由建模为一个 state 中含剩余预算的有限时域 MDP，并用 Conservative Q-Learning（offline RL）求解；Hindsight Budget Relabeling 在多种预算水平下对已记录的会话进行重标注，从而生成多得多的训练 transition。
+## 设置
+- 在多轮会话数据上做 offline-RL 训练；Hindsight Budget Relabeling 将 10K 会话扩展为 2.38M transition。就成本降低和破产率进行评测。
+## 结果
+- 报告 6.0-73.5% 的成本降低，预算破产率低于 1%（已在 claim_checked 中核实）；提交于 2026 年 5 月 25 日，未声称任何会议 venue。
+## 挑战
+- 从有限的会话日志做 offline RL 很消耗数据；论文引入 Hindsight Budget Relabeling 来大幅扩充训练 transition。
+## 局限
+- offline RL 依赖于日志数据的覆盖度；尚无同行评审 venue；增益随预算区间波动很大（6-73.5%）。
+</script></div>
 <div class="field"><h3>背景</h3><p>大多数 router 都是孤立地对每条查询做决策，但真实助手是在多轮会话中、在一个跨轮共享的全局预算下提供服务的。</p></div><div class="field"><h3>问题</h3><p>逐查询路由忽视了这样一点：在早期简单一轮上花费，会导致后期困难一轮无钱可用，造成会话结束前的“预算破产”。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个全局预算感知的策略应在整个会话中配给花费，而非贪婪地优化每一轮，但这类数据稀缺且是长时域的。</p></div><div class="field"><h3>关键洞见</h3><p>把剩余预算放入 RL state，路由就变成一个有限时域 MDP，策略可以学会把昂贵模型推迟到最需要时才使用。</p></div><div class="field"><h3>挑战</h3><p>从有限的会话日志做 offline RL 很消耗数据；论文引入 Hindsight Budget Relabeling 来大幅扩充训练 transition。</p></div><div class="field"><h3>方法</h3><p>将路由建模为一个 state 中含剩余预算的有限时域 MDP，并用 Conservative Q-Learning（offline RL）求解；Hindsight Budget Relabeling 在多种预算水平下对已记录的会话进行重标注，从而生成多得多的训练 transition。</p></div><div class="field"><h3>实验设置</h3><p>在多轮会话数据上做 offline-RL 训练；Hindsight Budget Relabeling 将 10K 会话扩展为 2.38M transition。就成本降低和破产率进行评测。</p></div><div class="field"><h3>结果</h3><p>报告 6.0-73.5% 的成本降低，预算破产率低于 1%（已在 claim_checked 中核实）；提交于 2026 年 5 月 25 日，未声称任何会议 venue。</p></div><div class="field"><h3>局限</h3><p>offline RL 依赖于日志数据的覆盖度；尚无同行评审 venue；增益随预算区间波动很大（6-73.5%）。</p></div><div class="field"><h3>与领域的关系</h3><p>将 bandit/RL 路由（MetaLLM、NeuralUCB、dueling-feedback）扩展到序列化的多轮、全局预算场景，超越了逐查询 router。</p></div>
 <div class="nav"><span></span><span class="sp"></span><a href="llmrouterbench.html">LLMRouterBench (Li et al. 2026) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

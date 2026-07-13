@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Detection Without Correction: A Two-Parameter Decomposition of Multi-Stage LLM Pipelines (Nilayam et al. 2026)</h1>
 <div class="pmeta"><span class="b">M161</span><span class="b y">arXiv 2026</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2605.27559" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">一篇负面机制（NEGATIVE-mechanism）论文，将下游智能体的响应重构为 detection（上游内容是否应被信任？）加上条件生成，把 self-correction 退化与 debate 增益不可复现统一为同一失败模式，其中条件误纠正（conditional miscorrection）以 53-94% 的比例占主导。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Detection Without Correction: A Two-Parameter Decomposition of Multi-Stage LLM Pipelines
+## 一句话 
+- 一篇负面机制（NEGATIVE-mechanism）论文，将下游智能体的响应重构为 detection（上游内容是否应被信任？）加上条件生成，把 self-correction 退化与 debate 增益不可复现统一为同一失败模式，其中条件误纠正（conditional miscorrection）以 53-94%…
+## 问题
+- 是否存在一个共同的底层机制，既能解释 self-correction 为何降低性能，又能解释多智能体 debate 增益为何在不同模型与轮次间无法复现？
+## 洞见
+- 一个下游响应是两个耦合的决策——detection（是否将上游内容视为权威）与条件生成（若不视为权威则生成什么）——而承重的失败是 &#x27;detection without correction&#x27;：模型检测到问题却仍无法纠正，从而产生条件误纠正。
+## 方法
+- 将响应分解为 detection + 条件生成，得到四种可观测的响应区间；在四个模型家族、四个 benchmark（GSM8K、MATH-500、GPQA-Diamond、AIME）和两种方法（多智能体 debate 与内在 self-correction）上运行一个九格实证网格。
+## 设置
+- 四个模型家族 x 四个 benchmark（GSM8K、MATH-500、GPQA-Diamond、AIME）x 两种方法（debate、self-correction），一个九格网格。
+## 结果
+- 负面统一：条件误纠正率在各群组中一致占主导，为 53-94%（承重失败），而 detection 率则随上下文变化超过一个数量级。detection 阈值是一个稳定的模型/协议级规律，在匹配的 benchmark 难度下跨方法持续存在，将 self-correction 退化与不可复现的…
+## 挑战
+- 把 detection 与条件生成操作化为可观测的状态区间（regime），并证明同样的阈值行为跨模型家族、benchmark 以及 debate 与 self-correction 两种方法反复出现。
+## 局限
+- 仅见于 arXiv；该框架诊断而非修复失败，且四区间分解是对更复杂流水线行为的一种建模抽象。
+</script></div>
 <div class="field"><h3>背景</h3><p>多阶段 LLM 流水线（多智能体 debate、self-correction、检索增强验证）呈现出令人费解的聚合行为：准确率停滞、轮间反转，以及 debate 动态在不同供应商间的分化。</p></div><div class="field"><h3>问题</h3><p>是否存在一个共同的底层机制，既能解释 self-correction 为何降低性能，又能解释多智能体 debate 增益为何在不同模型与轮次间无法复现？</p></div><div class="field"><h3>动机 / 分析</h3><p>把这些现象当作彼此独立会阻碍进展；将每个下游响应分解为其构成决策，或可揭示共同成因。</p></div><div class="field"><h3>关键洞见</h3><p>一个下游响应是两个耦合的决策——detection（是否将上游内容视为权威）与条件生成（若不视为权威则生成什么）——而承重的失败是 &#x27;detection without correction&#x27;：模型检测到问题却仍无法纠正，从而产生条件误纠正。</p></div><div class="field"><h3>挑战</h3><p>把 detection 与条件生成操作化为可观测的状态区间（regime），并证明同样的阈值行为跨模型家族、benchmark 以及 debate 与 self-correction 两种方法反复出现。</p></div><div class="field"><h3>方法</h3><p>将响应分解为 detection + 条件生成，得到四种可观测的响应区间；在四个模型家族、四个 benchmark（GSM8K、MATH-500、GPQA-Diamond、AIME）和两种方法（多智能体 debate 与内在 self-correction）上运行一个九格实证网格。</p></div><div class="field"><h3>实验设置</h3><p>四个模型家族 x 四个 benchmark（GSM8K、MATH-500、GPQA-Diamond、AIME）x 两种方法（debate、self-correction），一个九格网格。</p></div><div class="field"><h3>结果</h3><p>负面统一：条件误纠正率在各群组中一致占主导，为 53-94%（承重失败），而 detection 率则随上下文变化超过一个数量级。detection 阈值是一个稳定的模型/协议级规律，在匹配的 benchmark 难度下跨方法持续存在，将 self-correction 退化与不可复现的 debate 增益解释为同一机制。</p></div><div class="field"><h3>局限</h3><p>仅见于 arXiv；该框架诊断而非修复失败，且四区间分解是对更复杂流水线行为的一种建模抽象。</p></div><div class="field"><h3>与领域的关系</h3><p>为 M059、M158、M162 的负面结果提供统一机制；与对抗性同伴研究 M160 共享作者/框架。</p></div>
 <div class="nav"><a href="heterogeneous-llm-debate-under-adversarial-peers.html">← Heterogeneous LLM Debate Under Adversa</a><span class="sp"></span><a href="not-all-flips-are-conformity.html">Not All Flips Are Conformity: Decompos →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

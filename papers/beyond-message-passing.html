@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Beyond Message Passing: A Semantic View of Agent Communication Protocols (Yuan et al. 2026)</h1>
 <div class="pmeta"><span class="b">M097</span><span class="b y">arXiv 2026 (preprint)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2604.02369" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">This paper organizes agent communication protocols into a three-layer taxonomy (communication, syntactic, semantic) inspired by Shannon-Weaver and Gricean pragmatics, and shows that current protocols are mature on transport/syntax but under-support semantic alignment such as clarification and repair.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Beyond Message Passing: A Semantic View of Agent Communication Protocols
+## TL;DR 
+- This paper organizes agent communication protocols into a three-layer taxonomy (communication, syntactic, semantic) inspired by Shannon-Weaver and Gricean…
+## Problem
+- Existing protocol design and comparison focus on transport and message formats, obscuring whether protocols actually help agents reach shared…
+## Insight
+- There is a clear imbalance: because protocols provide little native support for clarification, context alignment, and verification, these semantic…
+## Method
+- A three-layer framework - communication (reliable transport), syntactic (structured interaction), and semantic (meaning-level coordination) -…
+## Setup
+- An analytical study: 18 representative protocols are systematically analyzed and compared across the three layers rather than benchmarked empirically.
+## Results
+- No quantitative benchmarks; the verified findings are the 3-layer taxonomy, the analysis of 18 protocols, and the conclusion that semantic-alignment…
+## Challenges
+- Systematically mapping heterogeneous protocols onto a common layered framework and characterizing the semantic gaps and maintenance costs they impose.
+## Limitations
+- The work is conceptual and diagnostic; it identifies gaps and offers selection guidance but does not implement or evaluate new semantic-layer…
+</script></div>
 <div class="field"><h3>Background</h3><p>Agent communication protocols are emerging as core infrastructure for LLM systems that use tools, coordinate with other agents, and operate across diverse environments.</p></div><div class="field"><h3>Problem</h3><p>Existing protocol design and comparison focus on transport and message formats, obscuring whether protocols actually help agents reach shared understanding.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A human-communication-inspired lens is needed to reveal what protocols do and do not support at the level of meaning, not just bytes and schemas.</p></div><div class="field"><h3>Key Insight</h3><p>There is a clear imbalance: because protocols provide little native support for clarification, context alignment, and verification, these semantic responsibilities get pushed into prompts, wrappers, and orchestration logic, creating hidden technical debt.</p></div><div class="field"><h3>Challenges</h3><p>Systematically mapping heterogeneous protocols onto a common layered framework and characterizing the semantic gaps and maintenance costs they impose.</p></div><div class="field"><h3>Method</h3><p>A three-layer framework - communication (reliable transport), syntactic (structured interaction), and semantic (meaning-level coordination) - grounded in Shannon-Weaver and Grice, used to systematically analyze and compare protocols.</p></div><div class="field"><h3>Experimental Setup</h3><p>An analytical study: 18 representative protocols are systematically analyzed and compared across the three layers rather than benchmarked empirically.</p></div><div class="field"><h3>Results</h3><p>No quantitative benchmarks; the verified findings are the 3-layer taxonomy, the analysis of 18 protocols, and the conclusion that semantic-alignment responsibilities are offloaded into prompts/wrappers as technical debt, with a research agenda toward semantically robust ecosystems.</p></div><div class="field"><h3>Limitations</h3><p>The work is conceptual and diagnostic; it identifies gaps and offers selection guidance but does not implement or evaluate new semantic-layer protocol mechanisms.</p></div><div class="field"><h3>Relation to the Field</h3><p>A semantically-focused complement to the Ehtesham et al. protocol survey and the ProtocolBench empirical study; its &#x27;shared understanding&#x27; agenda motivates memory/semantics protocols like the Mesh Memory Protocol.</p></div>
 <div class="nav"><a href="orca.html">← Orca (Mukherjee et al. 2023)</a><span class="sp"></span><a href="protocolbench.html">ProtocolBench / ProtocolRouter (Du, Zh →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

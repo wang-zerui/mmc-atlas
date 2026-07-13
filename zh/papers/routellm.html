@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>RouteLLM (Ong et al. 2024)</h1>
 <div class="pmeta"><span class="b">M004</span><span class="b y">ICLR 2025</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2406.18665" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">基于人类偏好数据训练的 router 模型能针对每个查询动态选择强或弱的 LLM，在质量持平的前提下将成本削减 2 倍以上，并可跨模型对迁移。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# RouteLLM
+## 一句话 
+- 基于人类偏好数据训练的 router 模型能针对每个查询动态选择强或弱的 LLM，在质量持平的前提下将成本削减 2 倍以上，并可跨模型对迁移。
+## 问题
+- 学习一个 router，针对每个查询判断需要用弱模型还是强模型，从而优化成本与质量的权衡。
+## 洞见
+- 人类偏好数据（两个模型答案中哪个更好）是训练 router 的强信号，而数据增强能让 router 更鲁棒、更易迁移。
+## 方法
+- 一套训练框架利用经合成/增强技术扩充的人类偏好数据产出多种 router 架构；推理时 router 对查询打分，并将其分派给强或弱 LLM 以命中成本目标。
+## 设置
+- 在广受认可的基准（如 MT-Bench、MMLU、GSM8K）上使用强/弱模型对进行评估；基线包括随机路由和已有 router。同时通过更换模型对来测试迁移能力。
+## 结果
+- 在不损失响应质量的情况下将成本降低超过 2 倍；在更换强/弱模型时展现出很强的迁移学习能力。路由与奖励建模被明确区分开（已在 claim_checked 中核实）。
+## 挑战
+- 获取足够的带标注路由数据、避免把路由与奖励建模混为一谈，以及确保在测试时更换强/弱模型对后 router 仍然有效。
+## 局限
+- 聚焦于强 vs 弱的二元路由，而非多模型选择；性能取决于偏好数据的质量。
+</script></div>
 <div class="field"><h3>背景</h3><p>部署时必须在能力强但昂贵的 LLM 与便宜但较弱的 LLM 之间取舍；固定单一选择会在简单查询上浪费金钱，或在困难查询上失败。</p></div><div class="field"><h3>问题</h3><p>学习一个 router，针对每个查询判断需要用弱模型还是强模型，从而优化成本与质量的权衡。</p></div><div class="field"><h3>动机 / 分析</h3><p>以往的路由工作缺乏有原则的训练数据，没有清晰地把路由与奖励/偏好建模区分开，也未证明在底层模型更换时的迁移能力。</p></div><div class="field"><h3>关键洞见</h3><p>人类偏好数据（两个模型答案中哪个更好）是训练 router 的强信号，而数据增强能让 router 更鲁棒、更易迁移。</p></div><div class="field"><h3>挑战</h3><p>获取足够的带标注路由数据、避免把路由与奖励建模混为一谈，以及确保在测试时更换强/弱模型对后 router 仍然有效。</p></div><div class="field"><h3>方法</h3><p>一套训练框架利用经合成/增强技术扩充的人类偏好数据产出多种 router 架构；推理时 router 对查询打分，并将其分派给强或弱 LLM 以命中成本目标。</p></div><div class="field"><h3>实验设置</h3><p>在广受认可的基准（如 MT-Bench、MMLU、GSM8K）上使用强/弱模型对进行评估；基线包括随机路由和已有 router。同时通过更换模型对来测试迁移能力。</p></div><div class="field"><h3>结果</h3><p>在不损失响应质量的情况下将成本降低超过 2 倍；在更换强/弱模型时展现出很强的迁移学习能力。路由与奖励建模被明确区分开（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>聚焦于强 vs 弱的二元路由，而非多模型选择；性能取决于偏好数据的质量。</p></div><div class="field"><h3>与领域的关系</h3><p>一个典范性的、基于偏好训练的二元 router；与多模型 router（Zooter、RouterDC、GraphRouter）形成对照，并在后续基准（RouterBench、LLMRouterBench）中常被用作基线。</p></div>
 <div class="nav"><a href="reward-based-online-llm-routing-via-neuralucb.html">← Reward-Based Online LLM Routing via Ne</a><span class="sp"></span><a href="graphrouter.html">GraphRouter (Feng et al. 2024, ICLR 20 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

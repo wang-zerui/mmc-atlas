@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Improving Multi-Agent Debate with Sparse Communication Topology (Li et al. 2024)</h1>
 <div class="pmeta"><span class="b">M063</span><span class="b y">arXiv 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2406.11776" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Default multi-agent debate is all-to-all; using a sparse communication graph achieves comparable or better accuracy while significantly cutting token/compute cost, on both GPT and Mistral models.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Improving Multi-Agent Debate with Sparse Communication Topology
+## TL;DR 
+- Default multi-agent debate is all-to-all; using a sparse communication graph achieves comparable or better accuracy while significantly cutting token/compute…
+## Problem
+- Does every agent really need to communicate with every other agent, or can a sparser topology preserve debate&#x27;s benefits at lower cost?
+## Insight
+- Communication connectivity is a design lever: sparse topologies process far fewer messages yet retain or improve reasoning quality, making the…
+## Method
+- Systematically studies sparse vs.
+## Setup
+- Reasoning tasks, multimodal reasoning, and alignment labeling, with GPT and Mistral models, comparing sparse vs.
+## Results
+- Sparse communication topology achieves comparable or superior performance to fully-connected debate while significantly reducing computational/token…
+## Challenges
+- Choosing which connections to keep without losing the error-correcting diversity of debate, and validating across models and task modalities.
+## Limitations
+- Abstract does not give exact numeric accuracy/cost figures; optimal topology may be task- and model-dependent, and gains presume debate helps in the…
+</script></div>
 <div class="field"><h3>Background</h3><p>Multi-agent debate improves reasoning/factuality but typically uses a brute-force fully-connected topology where every agent reads every other agent&#x27;s messages, which is expensive as agents and rounds grow.</p></div><div class="field"><h3>Problem</h3><p>Does every agent really need to communicate with every other agent, or can a sparser topology preserve debate&#x27;s benefits at lower cost?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Communication cost in debate scales with the number of connections; if most of the benefit comes from limited peer exposure, pruning connections could dramatically cut cost.</p></div><div class="field"><h3>Key Insight</h3><p>Communication connectivity is a design lever: sparse topologies process far fewer messages yet retain or improve reasoning quality, making the &#x27;society of minds&#x27; approach more efficient.</p></div><div class="field"><h3>Challenges</h3><p>Choosing which connections to keep without losing the error-correcting diversity of debate, and validating across models and task modalities.</p></div><div class="field"><h3>Method</h3><p>Systematically studies sparse vs. fully-connected agent communication graphs in multi-agent debate, limiting which agents exchange information each round; evaluates on reasoning plus two new domains (multimodal reasoning and alignment labeling).</p></div><div class="field"><h3>Experimental Setup</h3><p>Reasoning tasks, multimodal reasoning, and alignment labeling, with GPT and Mistral models, comparing sparse vs. fully-connected topologies.</p></div><div class="field"><h3>Results</h3><p>Sparse communication topology achieves comparable or superior performance to fully-connected debate while significantly reducing computational/token cost across the tasks and models. (Abstract states the qualitative result; exact cost-reduction percentages are in the full paper.)</p></div><div class="field"><h3>Limitations</h3><p>Abstract does not give exact numeric accuracy/cost figures; optimal topology may be task- and model-dependent, and gains presume debate helps in the first place (contested by M059/M158).</p></div><div class="field"><h3>Relation to the Field</h3><p>An efficiency-oriented refinement of Du et al.&#x27;s multi-agent debate (M002); complements cost critiques (M158) by showing structure, not just budget, governs debate&#x27;s cost-effectiveness, and relates to topology effects in M163.</p></div>
 <div class="nav"><a href="on-scalable-oversight-with-weak-llms-judging-str.html">← On Scalable Oversight with Weak LLMs J</a><span class="sp"></span><a href="self-refine.html">Self-Refine (Madaan et al. 2023) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

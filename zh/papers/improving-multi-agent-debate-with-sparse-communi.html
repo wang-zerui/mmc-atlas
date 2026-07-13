@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Improving Multi-Agent Debate with Sparse Communication Topology (Li et al. 2024)</h1>
 <div class="pmeta"><span class="b">M063</span><span class="b y">arXiv 2024</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2406.11776" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">默认的多智能体 debate 采用全连接（all-to-all）通信；本文改用稀疏通信图，在 GPT 与 Mistral 模型上都达到相当甚至更好的准确率，同时显著削减 token/算力开销。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Improving Multi-Agent Debate with Sparse Communication Topology
+## 一句话 
+- 默认的多智能体 debate 采用全连接（all-to-all）通信；本文改用稀疏通信图，在 GPT 与 Mistral 模型上都达到相当甚至更好的准确率，同时显著削减 token/算力开销。
+## 问题
+- 每个智能体真的需要与其他所有智能体通信吗？还是说更稀疏的拓扑就能以更低成本保留 debate 的收益？
+## 洞见
+- 通信连接度是一个设计杠杆：稀疏拓扑处理的消息远少于全连接，却能保持甚至提升推理质量，使 &#x27;society of minds&#x27; 方法更高效。
+## 方法
+- 系统性地对比多智能体 debate 中稀疏与全连接的智能体通信图，限制每轮哪些智能体之间交换信息；在推理任务外，还在两个新领域（多模态推理与对齐标注）上评估。
+## 设置
+- 推理任务、多模态推理和对齐标注，使用 GPT 与 Mistral 模型，比较稀疏与全连接拓扑。
+## 结果
+- 稀疏通信拓扑在各任务与模型上取得与全连接 debate 相当或更优的性能，同时显著降低计算/token 成本。（摘要给出的是定性结论，确切的成本削减百分比见正文。）
+## 挑战
+- 如何在不损失 debate 纠错所需的多样性的前提下选择保留哪些连接，并跨模型与任务模态加以验证。
+## 局限
+- 摘要未给出确切的准确率/成本数值；最优拓扑可能依赖于具体任务与模型，且其收益以 debate 本身有效为前提（这一点受 M059/M158 质疑）。
+</script></div>
 <div class="field"><h3>背景</h3><p>多智能体 debate 能提升推理与事实性，但通常采用暴力的全连接拓扑，即每个智能体都读取其他所有智能体的消息，随着智能体数量与轮数增加，代价高昂。</p></div><div class="field"><h3>问题</h3><p>每个智能体真的需要与其他所有智能体通信吗？还是说更稀疏的拓扑就能以更低成本保留 debate 的收益？</p></div><div class="field"><h3>动机 / 分析</h3><p>debate 的通信成本随连接数扩张；如果大部分收益来自有限的同伴接触，那么修剪连接就能大幅削减成本。</p></div><div class="field"><h3>关键洞见</h3><p>通信连接度是一个设计杠杆：稀疏拓扑处理的消息远少于全连接，却能保持甚至提升推理质量，使 &#x27;society of minds&#x27; 方法更高效。</p></div><div class="field"><h3>挑战</h3><p>如何在不损失 debate 纠错所需的多样性的前提下选择保留哪些连接，并跨模型与任务模态加以验证。</p></div><div class="field"><h3>方法</h3><p>系统性地对比多智能体 debate 中稀疏与全连接的智能体通信图，限制每轮哪些智能体之间交换信息；在推理任务外，还在两个新领域（多模态推理与对齐标注）上评估。</p></div><div class="field"><h3>实验设置</h3><p>推理任务、多模态推理和对齐标注，使用 GPT 与 Mistral 模型，比较稀疏与全连接拓扑。</p></div><div class="field"><h3>结果</h3><p>稀疏通信拓扑在各任务与模型上取得与全连接 debate 相当或更优的性能，同时显著降低计算/token 成本。（摘要给出的是定性结论，确切的成本削减百分比见正文。）</p></div><div class="field"><h3>局限</h3><p>摘要未给出确切的准确率/成本数值；最优拓扑可能依赖于具体任务与模型，且其收益以 debate 本身有效为前提（这一点受 M059/M158 质疑）。</p></div><div class="field"><h3>与领域的关系</h3><p>是对 Du 等人多智能体 debate（M002）的效率导向改进；与成本批评（M158）互补，表明结构而非仅仅预算决定了 debate 的成本效益，并与 M163 中的拓扑效应相关。</p></div>
 <div class="nav"><a href="on-scalable-oversight-with-weak-llms-judging-str.html">← On Scalable Oversight with Weak LLMs J</a><span class="sp"></span><a href="self-refine.html">Self-Refine (Madaan et al. 2023) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

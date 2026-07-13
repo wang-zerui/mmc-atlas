@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Faster Cascades via Speculative Decoding (Narasimhan et al. 2024)</h1>
 <div class="pmeta"><span class="b">M021</span><span class="b y">arXiv 2024 (cs.CL)</span><span class="b w">待审计</span> <a href="https://arxiv.org/abs/2405.19261" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">将级联（cascade）的延迟决策与speculative decoding的并行验证结合为“speculative cascades”，通过speculative execution来实现延迟规则，从而获得比单独使用任一技术都更优的成本-质量权衡。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Faster Cascades via Speculative Decoding
+## 一句话 
+- 将级联（cascade）的延迟决策与speculative decoding的并行验证结合为“speculative cascades”，通过speculative execution来实现延迟规则，从而获得比单独使用任一技术都更优的成本-质量权衡。
+## 问题
+- cascade使用延迟规则（deferral rule），仅对困难输入才调用大模型（成本-质量表现良好，甚至能超越大模型本身），而speculative decoding使用并行验证（质量中性但没有成本-质量收益）；两者都无法同时兼得这两方面的好处。
+## 洞见
+- cascade的延迟规则可以通过speculative execution实现，而非依赖单独的路由步骤，由此产生“speculative cascading”技术；作者刻画了最优延迟规则，并采用对其的plug-in近似。
+## 方法
+- 设计融合cascade延迟与speculative decoding的speculative cascading技术；推导最优延迟规则并应用plug-in近似，联合使用小模型与大模型。
+## 设置
+- 在Gemma与T5模型族上、跨一系列语言benchmark进行评估，与cascade及speculative-decoding基线（包括BiLD）进行对比。
+## 结果
+- 报告了比cascading与speculative-decoding基线都更优的成本-质量权衡；经验证的核心贡献是speculative延迟规则的设计，但摘要未给出单一的标志性数值，具体量级也未经审计。
+## 挑战
+- 刻画理论上最优的延迟规则，并以一种能与speculative验证融合、又不牺牲质量的方式对其进行近似。
+## 局限
+- 摘要未报告具体的加速比或准确率数字；收益取决于plug-in延迟近似的质量以及所使用的具体模型对。
+</script></div>
 <div class="field"><h3>背景</h3><p>cascade与speculative decoding是让LLM推理更廉价的两种成熟方法，都通过交替使用小模型与大模型来实现，但它们的工作机制各不相同。</p></div><div class="field"><h3>问题</h3><p>cascade使用延迟规则（deferral rule），仅对困难输入才调用大模型（成本-质量表现良好，甚至能超越大模型本身），而speculative decoding使用并行验证（质量中性但没有成本-质量收益）；两者都无法同时兼得这两方面的好处。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果cascade的延迟决策能够通过speculative execution来实现，就可以在保留speculative decoding基于验证的高效性的同时，继承cascade有利的成本-质量权衡。</p></div><div class="field"><h3>关键洞见</h3><p>cascade的延迟规则可以通过speculative execution实现，而非依赖单独的路由步骤，由此产生“speculative cascading”技术；作者刻画了最优延迟规则，并采用对其的plug-in近似。</p></div><div class="field"><h3>挑战</h3><p>刻画理论上最优的延迟规则，并以一种能与speculative验证融合、又不牺牲质量的方式对其进行近似。</p></div><div class="field"><h3>方法</h3><p>设计融合cascade延迟与speculative decoding的speculative cascading技术；推导最优延迟规则并应用plug-in近似，联合使用小模型与大模型。</p></div><div class="field"><h3>实验设置</h3><p>在Gemma与T5模型族上、跨一系列语言benchmark进行评估，与cascade及speculative-decoding基线（包括BiLD）进行对比。</p></div><div class="field"><h3>结果</h3><p>报告了比cascading与speculative-decoding基线都更优的成本-质量权衡；经验证的核心贡献是speculative延迟规则的设计，但摘要未给出单一的标志性数值，具体量级也未经审计。</p></div><div class="field"><h3>局限</h3><p>摘要未报告具体的加速比或准确率数字；收益取决于plug-in延迟近似的质量以及所使用的具体模型对。</p></div><div class="field"><h3>与领域的关系</h3><p>衔接了cascade路线（将困难输入路由到更大模型）与speculative-decoding路线；与纯speculative方法（如BiLD）以及与质量无关的cascade形成对比。</p></div>
 <div class="nav"><a href="software-defined-agentic-serving.html">← Software-Defined Agentic Serving (Agar</a><span class="sp"></span><a href="parrot.html">Parrot / Semantic Variable (Lin et al. →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Switchcraft (Agarwal et al. 2026)</h1>
 <div class="pmeta"><span class="b">M124</span><span class="b y">arXiv 2026</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2605.07112" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">一个专为 agentic 工具/函数调用（而非 chat）打造的 router：一个 DistilBERT 分类器在延迟预算下内联地挑选最便宜的正确模型，并表明更大的模型在工具使用上并不可靠地占优。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Switchcraft
+## 一句话 
+- 一个专为 agentic 工具/函数调用（而非 chat）打造的 router：一个 DistilBERT 分类器在延迟预算下内联地挑选最便宜的正确模型，并表明更大的模型在工具使用上并不可靠地占优。
+## 问题
+- 面向 chat 的 router 并不为工具调用正确性做优化，而且尚不清楚更大的模型是否在工具使用上更强。
+## 洞见
+- 对于函数调用，模型规模并非正确性的可靠代理，因此一个轻量分类器就能挑出会正确调用工具的最便宜模型。
+## 方法
+- Switchcraft 训练一个 DistilBERT 分类器，针对每条查询选出预测能产生正确工具调用的最便宜模型，在延迟约束下内联运行；被定位为首个面向 agentic 工具调用的 router。
+## 设置
+- 在 5 个函数调用 benchmark 上评测；相对始终使用大模型的 baseline，测量工具调用准确率和成本。
+## 结果
+- 在降低 84% 成本的情况下达到 82.9% 准确率，并表明更大的模型在工具使用上并不可靠地更优（已在 claim_checked 中核实）；提交于 2026 年 5 月 8 日，预印本（cs.AI/cs.MA）。
+## 挑战
+- 路由必须在 agent 的延迟预算内内联运行，并能泛化到各类函数调用 benchmark。
+## 局限
+- 范围限于函数/工具调用正确性；DistilBERT 分类器受训练覆盖度所限；尚无 venue。
+</script></div>
 <div class="field"><h3>背景</h3><p>大多数 router 面向开放式 chat 质量，但 agent 越来越多地把调用花在结构化的工具/函数调用上，这是一种不同的能力。</p></div><div class="field"><h3>问题</h3><p>面向 chat 的 router 并不为工具调用正确性做优化，而且尚不清楚更大的模型是否在工具使用上更强。</p></div><div class="field"><h3>动机 / 分析</h3><p>agentic 系统需要一种在遵守内联延迟预算的同时最大化工具调用正确性的路由，这是以往 router 忽略的场景。</p></div><div class="field"><h3>关键洞见</h3><p>对于函数调用，模型规模并非正确性的可靠代理，因此一个轻量分类器就能挑出会正确调用工具的最便宜模型。</p></div><div class="field"><h3>挑战</h3><p>路由必须在 agent 的延迟预算内内联运行，并能泛化到各类函数调用 benchmark。</p></div><div class="field"><h3>方法</h3><p>Switchcraft 训练一个 DistilBERT 分类器，针对每条查询选出预测能产生正确工具调用的最便宜模型，在延迟约束下内联运行；被定位为首个面向 agentic 工具调用的 router。</p></div><div class="field"><h3>实验设置</h3><p>在 5 个函数调用 benchmark 上评测；相对始终使用大模型的 baseline，测量工具调用准确率和成本。</p></div><div class="field"><h3>结果</h3><p>在降低 84% 成本的情况下达到 82.9% 准确率，并表明更大的模型在工具使用上并不可靠地更优（已在 claim_checked 中核实）；提交于 2026 年 5 月 8 日，预印本（cs.AI/cs.MA）。</p></div><div class="field"><h3>局限</h3><p>范围限于函数/工具调用正确性；DistilBERT 分类器受训练覆盖度所限；尚无 venue。</p></div><div class="field"><h3>与领域的关系</h3><p>把路由带入 agentic/工具使用场景，补充了 agentic 步级 benchmark TwinRouterBench (M127)，并与面向 chat 质量的 router 形成对比。</p></div>
 <div class="nav"><a href="llm-router.html">← LLM Router: Rethinking Routing with Pr</a><span class="sp"></span><a href="ucci.html">UCCI: Calibrated Uncertainty for Cost- →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

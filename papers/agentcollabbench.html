@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>AgentCollabBench (2026)</h1>
 <div class="pmeta"><span class="b">M225</span><span class="b y">arXiv 2026 (cs.CL; no formal venue listed)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2605.08647" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A 900-task human-validated benchmark that diagnoses process-level MAS failures under a fixed protocol, isolating four behavioral risks and revealing a synthesis bottleneck specific to converging-DAG topologies.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# AgentCollabBench
+## TL;DR 
+- A 900-task human-validated benchmark that diagnoses process-level MAS failures under a fixed protocol, isolating four behavioral risks and revealing a…
+## Problem
+- Existing evaluations measure only final-answer correctness and miss multi-hop process failures, so structural reliability problems remain invisible…
+## Insight
+- MAS reliability is fundamentally structural: failures concentrate at converging-DAG nodes where an agent balancing competing parent inputs discards…
+## Method
+- Under a fixed protocol, the benchmark of 900 tasks (software engineering, DevOps, data engineering) probes four behavioral failure modes: instruction…
+## Setup
+- Evaluated GPT-4.1-mini, Gemini 2.5 Flash Lite, Qwen-3.5-35B-A3B, and Llama 3.1 8B Instruct across communication topologies.
+## Results
+- No single model dominates: Qwen-3.5-35B-A3B led on tracer durability and instruction stability while GPT-4.1-mini led on leakage containment and…
+## Challenges
+- Building human-validated tasks that expose specific behavioral failures, and holding the collaboration protocol fixed so that observed failures are…
+## Limitations
+- Coverage is limited to three technical task domains and four failure modes under one fixed protocol; the benchmark measures failure propensity but…
+</script></div>
 <div class="field"><h3>Background</h3><p>Multi-agent pipelines can produce correct-looking final outputs even when an intermediate agent silently corrupts the reasoning chain, and outcome-based evaluation cannot detect these silent multi-hop process failures.</p></div><div class="field"><h3>Problem</h3><p>Existing evaluations measure only final-answer correctness and miss multi-hop process failures, so structural reliability problems remain invisible until deployment.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Making silent process failures measurable before deployment enables diagnosing whether reliability comes from model capability or from communication architecture.</p></div><div class="field"><h3>Key Insight</h3><p>MAS reliability is fundamentally structural: failures concentrate at converging-DAG nodes where an agent balancing competing parent inputs discards minority-branch constraints, so scaling model intelligence alone is no substitute for architecture.</p></div><div class="field"><h3>Challenges</h3><p>Building human-validated tasks that expose specific behavioral failures, and holding the collaboration protocol fixed so that observed failures are attributable to behavior and topology rather than orchestration differences.</p></div><div class="field"><h3>Method</h3><p>Under a fixed protocol, the benchmark of 900 tasks (software engineering, DevOps, data engineering) probes four behavioral failure modes: instruction decay, false-belief contagion, context leakage, and tracer durability.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated GPT-4.1-mini, Gemini 2.5 Flash Lite, Qwen-3.5-35B-A3B, and Llama 3.1 8B Instruct across communication topologies.</p></div><div class="field"><h3>Results</h3><p>No single model dominates: Qwen-3.5-35B-A3B led on tracer durability and instruction stability while GPT-4.1-mini led on leakage containment and false-belief resistance; communication topology explained 7-40% of variance in multi-hop information survival, with a synthesis bottleneck at converging-DAG nodes absent in linear chains.</p></div><div class="field"><h3>Limitations</h3><p>Coverage is limited to three technical task domains and four failure modes under one fixed protocol; the benchmark measures failure propensity but does not itself prescribe architectural fixes.</p></div><div class="field"><h3>Relation to the Field</h3><p>A failure-mode benchmark extending MAST&#x27;s taxonomy into measurable behavioral tests; its structural (topology) emphasis complements TraceElephant/DRIFT attribution work and reinforces Tran &amp; Kiela&#x27;s architecture-over-capability skepticism.</p></div>
 <div class="nav"><a href="single-agent-llms-outperform-mas-under-equal-tok.html">← Single-Agent LLMs Outperform MAS under</a><span class="sp"></span><a href="when-kv-cache-reuse-fails-in-multi-agent-systems.html">When KV Cache Reuse Fails in Multi-Age →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

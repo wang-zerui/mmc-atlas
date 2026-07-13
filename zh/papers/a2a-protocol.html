@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>A2A (Agent2Agent) Protocol (Google 2025)</h1>
 <div class="pmeta"><span class="b">M095</span><span class="b y">Open standard (Google, Apr 2025); donated to the Linux Foundation Jun 2025</span><span class="b g">已核实</span> <a href="https://a2a-protocol.org/" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">A2A 是一个开放的点对点 protocol，让基于不同 framework、由不同厂商构建的 AI agent 能够相互发现、委派任务并共享结果，而无需暴露各自的内部 memory、工具或逻辑。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# A2A
+## 一句话 
+- A2A 是一个开放的点对点 protocol，让基于不同 framework、由不同厂商构建的 AI agent 能够相互发现、委派任务并共享结果，而无需暴露各自的内部 memory、工具或逻辑。
+## 问题
+- 此前没有一种通用语言让一个自主 agent 能够声明自己的能力，并在保持双方不透明性和安全性的前提下将任务移交给另一个 agent。
+## 洞见
+- 将每个 agent 视为一个不透明的服务，它发布机器可读的能力描述并通过既定的生命周期接受任务，从而在保持内部状态私密的同时实现安全委派。
+## 方法
+- agent 发布 Agent Cards（在 /.well-known/agent-card.json 提供）描述其技能；对等方通过 HTTP 使用 JSON-RPC 2.0 和 Server-Sent Events 进行流式通信，采用 OAuth2/标准认证，并通过既定的任务生命周期驱动任务。
+## 设置
+- 通过生态系统采用而非 benchmark 来验证；发布时即有 50+ 合作伙伴，并演示了跨 framework 的 agent 互操作性。
+## 结果
+- 没有性能数据；已验证的事实包括：2025 年 4 月 9 日发布，拥有 50+ 合作伙伴，2025 年 6 月捐赠给 Linux Foundation（150+ 组织），Agent Cards 位于 /.well-known/agent-card.json，并明确与 MCP 互补（agent 到…
+## 挑战
+- 在不泄露 agent 内部状态的前提下，支持长时间运行和流式任务、安全认证、能力发现以及与 framework 无关的互操作性。
+## 局限
+- A2A 管理的是 agent 间的消息传递和任务委派，但不标准化 agent 如何访问自身的工具/数据（那是 MCP 的职责），也不规定内部推理或 memory。
+</script></div>
 <div class="field"><h3>背景</h3><p>企业越来越多地运行构建于异构技术栈（LangGraph、CrewAI、Semantic Kernel）上的 agent，这些 agent 需要跨组织和跨 framework 边界进行协作。</p></div><div class="field"><h3>问题</h3><p>此前没有一种通用语言让一个自主 agent 能够声明自己的能力，并在保持双方不透明性和安全性的前提下将任务移交给另一个 agent。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个 agent 到 agent 协作的标准，以支持复杂的跨厂商工作流，同时不强迫 agent 共享专有内部实现或统一到单一 framework。</p></div><div class="field"><h3>关键洞见</h3><p>将每个 agent 视为一个不透明的服务，它发布机器可读的能力描述并通过既定的生命周期接受任务，从而在保持内部状态私密的同时实现安全委派。</p></div><div class="field"><h3>挑战</h3><p>在不泄露 agent 内部状态的前提下，支持长时间运行和流式任务、安全认证、能力发现以及与 framework 无关的互操作性。</p></div><div class="field"><h3>方法</h3><p>agent 发布 Agent Cards（在 /.well-known/agent-card.json 提供）描述其技能；对等方通过 HTTP 使用 JSON-RPC 2.0 和 Server-Sent Events 进行流式通信，采用 OAuth2/标准认证，并通过既定的任务生命周期驱动任务。</p></div><div class="field"><h3>实验设置</h3><p>通过生态系统采用而非 benchmark 来验证；发布时即有 50+ 合作伙伴，并演示了跨 framework 的 agent 互操作性。</p></div><div class="field"><h3>结果</h3><p>没有性能数据；已验证的事实包括：2025 年 4 月 9 日发布，拥有 50+ 合作伙伴，2025 年 6 月捐赠给 Linux Foundation（150+ 组织），Agent Cards 位于 /.well-known/agent-card.json，并明确与 MCP 互补（agent 到 agent 对比 agent 到工具）。</p></div><div class="field"><h3>局限</h3><p>A2A 管理的是 agent 间的消息传递和任务委派，但不标准化 agent 如何访问自身的工具/数据（那是 MCP 的职责），也不规定内部推理或 memory。</p></div><div class="field"><h3>与领域的关系</h3><p>与 MCP 互补：MCP 赋予 agent 工具，A2A 让该 agent 与对等方协作；在分层互操作性路线图中位于 MCP 之上，并在 agent 协议综述和 ProtocolBench 中与 ACP/ANP 进行对比。</p></div>
 <div class="nav"><a href="mesh-memory-protocol.html">← Mesh Memory Protocol (Xu 2026)</a><span class="sp"></span><a href="survey-of-agent-interoperability-protocols.html">Survey of Agent Interoperability Proto →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

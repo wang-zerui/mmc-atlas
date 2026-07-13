@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Replacing Judges with Juries / Panel of LLM evaluators (PoLL) (Verga et al. 2024)</h1>
 <div class="pmeta"><span class="b">M075</span><span class="b y">arXiv preprint (Cohere)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2404.18796" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">由若干来自不同模型家族的较小 judge 组成的评审团，与人类的相关性更好、成本远低，且比单个大型 judge 的模型内偏见更少。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Replacing Judges with Juries / Panel of LLM evaluators
+## 一句话 
+- 由若干来自不同模型家族的较小 judge 组成的评审团，与人类的相关性更好、成本远低，且比单个大型 judge 的模型内偏见更少。
+## 问题
+- 单个大型 judge 成本高昂，且易产生模型内偏见（偏袒自己家族的输出），从而扭曲评估结果。
+## 洞见
+- 由来自不同模型家族的 LLM 评估者组成的评审团（PoLL）对每次判断进行投票，其集成结果与人类评分的相关性优于单个大模型。
+## 方法
+- PoLL 由来自不同提供方/家族的若干小模型组成并聚合它们的投票；在多种设定下，从人类相关性、成本和偏见等指标上将其与单个大型 judge 进行比较。
+## 设置
+- 在多个数据集/设定上评估，测量评审团与单个大型 judge 相比在与人类判断的相关性、美元成本以及模型内偏见方面的表现。
+## 结果
+- PoLL 通过组合不同模型家族，表现优于单个大型 judge，同时成本低 7 倍以上，且模型内偏见更少（已在摘要中确认）。
+## 挑战
+- 需要选择互补的 judge 及聚合规则；并确保评审团的多样性真正能抵消而非叠加偏见。
+## 局限
+- 需要访问多个模型；其有效性取决于评审团成员是否真正多样且各自具备足够能力。
+</script></div>
 <div class="field"><h3>背景</h3><p>如今用单个大型 LLM judge（如 GPT-4）来评估生成式模型已成为标准做法。</p></div><div class="field"><h3>问题</h3><p>单个大型 judge 成本高昂，且易产生模型内偏见（偏袒自己家族的输出），从而扭曲评估结果。</p></div><div class="field"><h3>动机 / 分析</h3><p>聚合多个多样化的小模型的裁决，或许能以极低的成本匹敌甚至超越单个大型 judge，同时稀释特定家族的偏见。</p></div><div class="field"><h3>关键洞见</h3><p>由来自不同模型家族的 LLM 评估者组成的评审团（PoLL）对每次判断进行投票，其集成结果与人类评分的相关性优于单个大模型。</p></div><div class="field"><h3>挑战</h3><p>需要选择互补的 judge 及聚合规则；并确保评审团的多样性真正能抵消而非叠加偏见。</p></div><div class="field"><h3>方法</h3><p>PoLL 由来自不同提供方/家族的若干小模型组成并聚合它们的投票；在多种设定下，从人类相关性、成本和偏见等指标上将其与单个大型 judge 进行比较。</p></div><div class="field"><h3>实验设置</h3><p>在多个数据集/设定上评估，测量评审团与单个大型 judge 相比在与人类判断的相关性、美元成本以及模型内偏见方面的表现。</p></div><div class="field"><h3>结果</h3><p>PoLL 通过组合不同模型家族，表现优于单个大型 judge，同时成本低 7 倍以上，且模型内偏见更少（已在摘要中确认）。</p></div><div class="field"><h3>局限</h3><p>需要访问多个模型；其有效性取决于评审团成员是否真正多样且各自具备足够能力。</p></div><div class="field"><h3>与领域的关系</h3><p>这是评审团/陪审团式 judge 集成方法的经典代表；CARE 和 CyclicJudge 进一步改进了此类评审团的聚合方式（考虑混杂因素）和调度方式（轮询制），以降低成本并减少相关性误差。</p></div>
 <div class="nav"><a href="criticgpt.html">← CriticGPT / LLM Critics Help Catch LLM</a><span class="sp"></span><a href="large-language-models-are-not-fair-evaluators.html">Large Language Models are not Fair Eva →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

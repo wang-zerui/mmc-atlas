@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>BudgetMem / Query-Aware Budget-Tier Routing (Zhang et al. 2026)</h1>
 <div class="pmeta"><span class="b">M130</span><span class="b y">ICML&#x27;26</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2602.06025" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A lightweight RL-trained router performs query-aware budget-tier routing across agent-memory modules, trading task performance against memory-construction cost over Low/Mid/High tiers.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# BudgetMem / Query-Aware Budget-Tier Routing
+## TL;DR 
+- A lightweight RL-trained router performs query-aware budget-tier routing across agent-memory modules, trading task performance against memory-construction cost…
+## Problem
+- Not every query needs expensive high-tier memory; always using the richest tier wastes memory-construction budget.
+## Insight
+- Query-aware routing generalizes from choosing models to choosing memory tiers, and RL can learn the performance-vs-memory-cost trade-off across tiers.
+## Method
+- A lightweight neural router trained with reinforcement learning selects among Low, Mid and High memory tiers (spanning implementation, reasoning and…
+## Setup
+- Evaluated on LoCoMo, LongMemEval and HotpotQA, measuring task performance versus memory-construction cost.
+## Results
+- Confirmed RL-trained budget-tier router with the three tier strategies over the named benchmarks (verified in claim_checked); v1 5 Feb 2026 (v3 27…
+## Challenges
+- Defining Low/Mid/High tiers over implementation, reasoning and capacity dimensions and training a router that balances accuracy against construction…
+## Limitations
+- Specific headline numbers not summarized in claim_checked; scope is agent-memory routing rather than general model routing.
+</script></div>
 <div class="field"><h3>Background</h3><p>Agent memory systems can build increasingly rich representations (implementation, reasoning, capacity), but richer memory costs more to construct.</p></div><div class="field"><h3>Problem</h3><p>Not every query needs expensive high-tier memory; always using the richest tier wastes memory-construction budget.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Routing the query to the cheapest memory tier that still answers it correctly can save cost, mirroring model routing but over memory modules.</p></div><div class="field"><h3>Key Insight</h3><p>Query-aware routing generalizes from choosing models to choosing memory tiers, and RL can learn the performance-vs-memory-cost trade-off across tiers.</p></div><div class="field"><h3>Challenges</h3><p>Defining Low/Mid/High tiers over implementation, reasoning and capacity dimensions and training a router that balances accuracy against construction cost.</p></div><div class="field"><h3>Method</h3><p>A lightweight neural router trained with reinforcement learning selects among Low, Mid and High memory tiers (spanning implementation, reasoning and capacity strategies) per query, optimizing task performance against memory-construction cost.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on LoCoMo, LongMemEval and HotpotQA, measuring task performance versus memory-construction cost.</p></div><div class="field"><h3>Results</h3><p>Confirmed RL-trained budget-tier router with the three tier strategies over the named benchmarks (verified in claim_checked); v1 5 Feb 2026 (v3 27 May), accepted at ICML 2026 per arXiv comment.</p></div><div class="field"><h3>Limitations</h3><p>Specific headline numbers not summarized in claim_checked; scope is agent-memory routing rather than general model routing.</p></div><div class="field"><h3>Relation to the Field</h3><p>Transfers the routing-under-budget idea from model selection (RouteLLM, SeqRoute) to agent-memory module selection, broadening the family toward agentic memory systems.</p></div>
 <div class="nav"><a href="dynamic-model-routing-and-cascading.html">← Dynamic Model Routing and Cascading: A</a><span class="sp"></span><a href="reward-based-online-llm-routing-via-neuralucb.html">Reward-Based Online LLM Routing via Ne →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Mixture-of-Agents (Wang et al. 2024)</h1>
 <div class="pmeta"><span class="b">M001</span><span class="b y">arXiv 2024 (COLM&#x27;24)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Mixture-of-Agents (MoA) stacks multiple LLM agents in layers, where each agent conditions on all outputs from the previous layer, and an open-model ensemble surpasses GPT-4 Omni on AlpacaEval 2.0.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Mixture-of-Agents
+## TL;DR 
+- Mixture-of-Agents (MoA) stacks multiple LLM agents in layers, where each agent conditions on all outputs from the previous layer, and an open-model ensemble…
+## Problem
+- No single LLM dominates across queries, and combining several models naively (e.g., picking one) fails to capture their complementary capabilities.
+## Insight
+- Feeding every agent the full set of prior-layer responses as auxiliary context lets later layers iteratively refine and synthesize, extracting more…
+## Method
+- A layered architecture where each layer comprises several LLM &#x27;proposer&#x27; agents; each agent receives all responses from the preceding layer as…
+## Setup
+- Evaluated on AlpacaEval 2.0, MT-Bench, and FLASK, including a configuration built purely from open-source LLMs, compared against GPT-4 Omni.
+## Results
+- The open-source-only MoA reached 65.1% on AlpacaEval 2.0 versus 57.5% for GPT-4 Omni, a state-of-the-art result surpassing GPT-4 Omni (confirmed in…
+## Challenges
+- Selecting which models serve as proposers versus aggregators, managing latency/cost from multiple layers and calls, and avoiding degradation when…
+## Limitations
+- Multiple layers and agents multiply inference cost and latency; gains depend on the quality mix of proposers, and later work (Self-MoA) questions…
+</script></div>
 <div class="field"><h3>Background</h3><p>Many open and proprietary LLMs are available, each with different strengths, but they are typically used in isolation. MoA asks whether the collective strengths of multiple models can be harnessed at inference time.</p></div><div class="field"><h3>Problem</h3><p>No single LLM dominates across queries, and combining several models naively (e.g., picking one) fails to capture their complementary capabilities.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>The authors observe an &#x27;collaborativeness&#x27; phenomenon: LLMs tend to produce better outputs when shown responses from other models, even weaker ones, suggesting layered aggregation can compound quality.</p></div><div class="field"><h3>Key Insight</h3><p>Feeding every agent the full set of prior-layer responses as auxiliary context lets later layers iteratively refine and synthesize, extracting more than any individual model.</p></div><div class="field"><h3>Challenges</h3><p>Selecting which models serve as proposers versus aggregators, managing latency/cost from multiple layers and calls, and avoiding degradation when weaker models inject noise.</p></div><div class="field"><h3>Method</h3><p>A layered architecture where each layer comprises several LLM &#x27;proposer&#x27; agents; each agent receives all responses from the preceding layer as auxiliary information and generates a refined response, with a final aggregator synthesizing the last layer&#x27;s outputs.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on AlpacaEval 2.0, MT-Bench, and FLASK, including a configuration built purely from open-source LLMs, compared against GPT-4 Omni.</p></div><div class="field"><h3>Results</h3><p>The open-source-only MoA reached 65.1% on AlpacaEval 2.0 versus 57.5% for GPT-4 Omni, a state-of-the-art result surpassing GPT-4 Omni (confirmed in the abstract).</p></div><div class="field"><h3>Limitations</h3><p>Multiple layers and agents multiply inference cost and latency; gains depend on the quality mix of proposers, and later work (Self-MoA) questions whether mixing distinct models is actually beneficial.</p></div><div class="field"><h3>Relation to the Field</h3><p>The foundational aggregation architecture of family B; directly challenged by Self-MoA (M036) and Co-Failure Ceiling (M135), and extended by SMoA (M120), Attention-MoA (M134), and Mixture of Complementary Agents (M118).</p></div>
 <div class="nav"><a href="llmboost.html">← LLMBoost (Chen et al. 2025)</a><span class="sp"></span><a href="more-agents-is-all-you-need.html">More Agents Is All You Need / Agent Fo →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

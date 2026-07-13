@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>LLMs Cannot Self-Correct Reasoning Yet (Huang et al. 2023, DeepMind)</h1>
 <div class="pmeta"><span class="b">M059</span><span class="b y">ICLR 2024</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2310.01798" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">一项批判性研究，表明内在自我纠正（intrinsic self-correction，无外部反馈）无法可靠地提升推理、甚至可能使其变差；并且在匹配采样预算的条件下，多智能体 debate 并不能胜过 self-consistency。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# LLMs Cannot Self-Correct Reasoning Yet
+## 一句话 
+- 一项批判性研究，表明内在自我纠正（intrinsic self-correction，无外部反馈）无法可靠地提升推理、甚至可能使其变差；并且在匹配采样预算的条件下，多智能体 debate 并不能胜过 self-consistency。
+## 问题
+- 在没有任何外部反馈或 oracle 标签的情况下，LLM 是否真的能通过自我纠正改进其推理？以及在公平匹配算力的条件下，此前报告的 debate 收益是否依然成立？
+## 洞见
+- 当模型必须自行判断是否以及如何修正时，它并没有可靠信号表明其初始答案是错的，因此内在自我纠正常常把正确答案改成错误答案；而 debate 的收益在很大程度上可由消耗了更多样本来解释，而非源于 debate 机制本身。
+## 方法
+- 在推理基准上复现内在自我纠正与多智能体 debate；特别地，用 gpt-3.5-turbo-0301、3 个智能体、2 轮，在完整 GSM8K 集上复现 Du et al.
+## 设置
+- 推理基准，包括完整 GSM8K（及其他），评测内在自我纠正，以及在匹配采样预算下的 debate 与 self-consistency 对比。
+## 结果
+- 负面结果：内在自我纠正无法提升、有时甚至降低推理准确率；在 &#x27;Multi-Agent Debate Does Not Outperform Self-Consistency&#x27; 一节中，一旦匹配样本总数（预算），3 个智能体/2 轮的 debate 便无法胜过…
+## 挑战
+- 将真正的自我纠正与 oracle 引导的停止区分开来，以及在 debate 与 self-consistency 之间构造公平的匹配预算比较。
+## 局限
+- 聚焦于推理任务与内在（无外部反馈）设置；带有可靠外部反馈或工具的自我纠正仍可能有帮助，对此本文并不否认。
+</script></div>
 <div class="field"><h3>背景</h3><p>Self-Refine、Reflexion 与多智能体 debate 曾暗示 LLM 能在测试时修正自身推理，此类主张也逐渐被当作既定事实。本文专门针对推理任务对这些主张进行压力测试。</p></div><div class="field"><h3>问题</h3><p>在没有任何外部反馈或 oracle 标签的情况下，LLM 是否真的能通过自我纠正改进其推理？以及在公平匹配算力的条件下，此前报告的 debate 收益是否依然成立？</p></div><div class="field"><h3>动机 / 分析</h3><p>许多先前的正面结果泄露了 oracle 信息（例如知道何时停止），或在不对等的采样预算下比较方法，因此自我纠正/debate 的表观收益需要一个受控测试来检验。</p></div><div class="field"><h3>关键洞见</h3><p>当模型必须自行判断是否以及如何修正时，它并没有可靠信号表明其初始答案是错的，因此内在自我纠正常常把正确答案改成错误答案；而 debate 的收益在很大程度上可由消耗了更多样本来解释，而非源于 debate 机制本身。</p></div><div class="field"><h3>挑战</h3><p>将真正的自我纠正与 oracle 引导的停止区分开来，以及在 debate 与 self-consistency 之间构造公平的匹配预算比较。</p></div><div class="field"><h3>方法</h3><p>在推理基准上复现内在自我纠正与多智能体 debate；特别地，用 gpt-3.5-turbo-0301、3 个智能体、2 轮，在完整 GSM8K 集上复现 Du et al. 的 debate，并与使用等量采样回复（匹配预算）的 self-consistency 进行比较。</p></div><div class="field"><h3>实验设置</h3><p>推理基准，包括完整 GSM8K（及其他），评测内在自我纠正，以及在匹配采样预算下的 debate 与 self-consistency 对比。</p></div><div class="field"><h3>结果</h3><p>负面结果：内在自我纠正无法提升、有时甚至降低推理准确率；在 &#x27;Multi-Agent Debate Does Not Outperform Self-Consistency&#x27; 一节中，一旦匹配样本总数（预算），3 个智能体/2 轮的 debate 便无法胜过 self-consistency——debate 的收益可追溯到额外的样本，而非 debate 本身。</p></div><div class="field"><h3>局限</h3><p>聚焦于推理任务与内在（无外部反馈）设置；带有可靠外部反馈或工具的自我纠正仍可能有帮助，对此本文并不否认。</p></div><div class="field"><h3>与领域的关系</h3><p>针对 M002/M014/M015 的关键负面反驳；其匹配预算批判被 2026 年的工作 M158（孤立自我纠正胜过无引导 debate）与 M159（同质条件下 debate 无法胜过 majority vote）所呼应并形式化，并被 M161 从机制上加以统一。</p></div>
 <div class="nav"><a href="reconcile.html">← ReConcile (Chen et al. 2023)</a><span class="sp"></span><a href="debating-with-more-persuasive-llms-leads-to-more.html">Debating with More Persuasive LLMs Lea →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

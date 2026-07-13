@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Mesh Memory Protocol (Xu 2026)</h1>
 <div class="pmeta"><span class="b">M213</span><span class="b y">arXiv 2026 (v0.2.3 specification, CC BY 4.0)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2604.19540" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">Mesh Memory Protocol (MMP) 是一个被提出的语义基础设施层，让 LLM agent 团队能够跨会话共享、评估并组合彼此的认知状态，由四个可组合原语（CAT7、SVAF、inter-agent lineage、remix）构成。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Mesh Memory Protocol
+## 一句话 
+- Mesh Memory Protocol (MMP) 是一个被提出的语义基础设施层，让 LLM agent 团队能够跨会话共享、评估并组合彼此的认知状态，由四个可组合原语（CAT7、SVAF、inter-agent lineage、remix）构成。
+## 问题
+- 跨会话的 agent 到 agent 认知协作尚未解决：agent 会整体接受对等方的内容，无法将主张追溯到其来源（因此自己思考的回声看起来像是新证据），并且基于检索而非有原则的存储来保留 memory。
+## 洞见
+- 认知状态应作为结构化块来交换，接收方逐字段地对照自己以角色索引的锚点进行评估，只存储自己重新评估后的理解（绝不存储原始的对等方信号）并带有完整的溯源信息。
+## 方法
+- 四个可组合原语：CAT7（每个 Cognitive Memory Block 的固定七字段 schema）、SVAF（以角色索引的逐字段接受/拒绝）、inter-agent lineage（通过 parent/ancestor content-hash key 实现溯源）和…
+## 设置
+- 一篇规范式论文，配有参考部署而非 benchmark；被描述为已规范化、已交付并在三个参考部署中投入生产运行，每个会话都是一个拥有自身身份和 memory 的自主 mesh 对等节点。
+## 结果
+- 没有报告 benchmark 数字；已验证的贡献是 MMP v0.2.3 规范、其跨会话 agent 到 agent 认知协作的定位、四原语设计，以及发布在 npm 上的参考实现（@sym-bot/sym、@sym-bot/mesh-channel）。
+## 挑战
+- 设计一个足够富有表现力以承载认知状态的固定 schema、逐字段评估对等方内容、通过 content-hash key 追踪溯源，以及防止自我回声被误认为外部证据。
+## 局限
+- 论文没有对该 protocol 的有效性提供任何定量评估；关于生产使用的主张是被描述出来的，而非经过实证测量。
+</script></div>
 <div class="field"><h3>背景</h3><p>现有的 agent protocol 覆盖了工具访问和任务委派，但没有一个标准的语义层供 agent 交换认知状态，而多 agent 设置往往只是并行运行各个 agent。</p></div><div class="field"><h3>问题</h3><p>跨会话的 agent 到 agent 认知协作尚未解决：agent 会整体接受对等方的内容，无法将主张追溯到其来源（因此自己思考的回声看起来像是新证据），并且基于检索而非有原则的存储来保留 memory。</p></div><div class="field"><h3>动机 / 分析</h3><p>真正的协作要求 agent 有选择地整合对等方的推理、知道每条主张的出处，并保持跨会话仍然相关的 memory——这是一个缺失的语义基础设施层。</p></div><div class="field"><h3>关键洞见</h3><p>认知状态应作为结构化块来交换，接收方逐字段地对照自己以角色索引的锚点进行评估，只存储自己重新评估后的理解（绝不存储原始的对等方信号）并带有完整的溯源信息。</p></div><div class="field"><h3>挑战</h3><p>设计一个足够富有表现力以承载认知状态的固定 schema、逐字段评估对等方内容、通过 content-hash key 追踪溯源，以及防止自我回声被误认为外部证据。</p></div><div class="field"><h3>方法</h3><p>四个可组合原语：CAT7（每个 Cognitive Memory Block 的固定七字段 schema）、SVAF（以角色索引的逐字段接受/拒绝）、inter-agent lineage（通过 parent/ancestor content-hash key 实现溯源）和 remix（只存储接收方经角色评估后的理解）。</p></div><div class="field"><h3>实验设置</h3><p>一篇规范式论文，配有参考部署而非 benchmark；被描述为已规范化、已交付并在三个参考部署中投入生产运行，每个会话都是一个拥有自身身份和 memory 的自主 mesh 对等节点。</p></div><div class="field"><h3>结果</h3><p>没有报告 benchmark 数字；已验证的贡献是 MMP v0.2.3 规范、其跨会话 agent 到 agent 认知协作的定位、四原语设计，以及发布在 npm 上的参考实现（@sym-bot/sym、@sym-bot/mesh-channel）。</p></div><div class="field"><h3>局限</h3><p>论文没有对该 protocol 的有效性提供任何定量评估；关于生产使用的主张是被描述出来的，而非经过实证测量。</p></div><div class="field"><h3>与领域的关系</h3><p>将单 agent memory 工作（MemGPT、A-MEM）扩展到多 agent、跨会话的场景，并通过在 A2A 和 MCP 等传输 protocol 之上增加一个 memory/语义层，回应了“Beyond Message Passing”所指出的语义对齐缺口。</p></div>
 <div class="nav"><a href="position.html">← Position: Collaborative Agentic AI Nee</a><span class="sp"></span><a href="a2a-protocol.html">A2A (Agent2Agent) Protocol (Google 202 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

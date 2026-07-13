@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>LLM-as-a-Judge / MT-Bench &amp; Chatbot Arena (Zheng et al. 2023)</h1>
 <div class="pmeta"><span class="b">M016</span><span class="b y">NeurIPS 2023 Datasets &amp; Benchmarks Track</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2306.05685" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Strong LLM judges approximate human preference at scale and exhibit position, verbosity, and self-enhancement biases.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# LLM-as-a-Judge / MT-Bench &amp; Chatbot Arena
+## TL;DR 
+- Strong LLM judges approximate human preference at scale and exhibit position, verbosity, and self-enhancement biases.
+## Problem
+- There was no scalable, explainable way to measure how well a chat model matches human preferences on multi-turn, open-ended conversation.
+## Insight
+- A capable model like GPT-4 prompted to compare or grade answers agrees with humans about as often as humans agree with each other, so it can serve as…
+## Method
+- The authors introduce MT-bench (80 multi-turn questions across 8 categories) and Chatbot Arena (crowdsourced pairwise battles), then study…
+## Setup
+- They collect ~3K expert pairwise votes on MT-bench and ~30K crowd conversations from Chatbot Arena, and evaluate LLaMA/Vicuna variants and other…
+## Results
+- GPT-4 as judge reaches over 80% agreement with human preferences, the same level as human-human agreement (confirmed in the abstract); the MT-bench…
+## Challenges
+- LLM judges suffer from position bias (favoring the first answer), verbosity bias (favoring longer answers), self-enhancement bias (favoring their own…
+## Limitations
+- Judges retain position/verbosity/self-enhancement biases and weak grading of math and reasoning; agreement is measured on a specific set of models…
+</script></div>
 <div class="field"><h3>Background</h3><p>Evaluating open-ended chat-assistant responses is hard: traditional benchmarks measure closed-form accuracy but not alignment with human preference, and collecting human preference labels is slow and costly.</p></div><div class="field"><h3>Problem</h3><p>There was no scalable, explainable way to measure how well a chat model matches human preferences on multi-turn, open-ended conversation.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If a strong LLM can reliably stand in for human raters, evaluation becomes cheap and reproducible, enabling rapid iteration on chat models.</p></div><div class="field"><h3>Key Insight</h3><p>A capable model like GPT-4 prompted to compare or grade answers agrees with humans about as often as humans agree with each other, so it can serve as an automated judge if its systematic biases are understood and controlled.</p></div><div class="field"><h3>Challenges</h3><p>LLM judges suffer from position bias (favoring the first answer), verbosity bias (favoring longer answers), self-enhancement bias (favoring their own style), and limited reasoning on math/logic questions.</p></div><div class="field"><h3>Method</h3><p>The authors introduce MT-bench (80 multi-turn questions across 8 categories) and Chatbot Arena (crowdsourced pairwise battles), then study single-answer grading, pairwise comparison, and reference-guided judging with GPT-4 as the judge; biases are characterized and partially mitigated.</p></div><div class="field"><h3>Experimental Setup</h3><p>They collect ~3K expert pairwise votes on MT-bench and ~30K crowd conversations from Chatbot Arena, and evaluate LLaMA/Vicuna variants and other models against human judgments.</p></div><div class="field"><h3>Results</h3><p>GPT-4 as judge reaches over 80% agreement with human preferences, the same level as human-human agreement (confirmed in the abstract); the MT-bench questions, 3K expert votes, and 30K conversations are released publicly.</p></div><div class="field"><h3>Limitations</h3><p>Judges retain position/verbosity/self-enhancement biases and weak grading of math and reasoning; agreement is measured on a specific set of models and may not transfer to all domains.</p></div><div class="field"><h3>Relation to the Field</h3><p>Foundational reference for the LLM-as-Judge family; later works in this area (fair-evaluators, PoLL, JudgeBench, Reliability-without-Validity) directly extend or critique its bias and reliability findings.</p></div>
 <div class="nav"><a href="large-language-models-are-not-fair-evaluators.html">← Large Language Models are not Fair Eva</a><span class="sp"></span><a href="training-verifiers-to-solve-math-word-problems.html">Training Verifiers to Solve Math Word  →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Let&#x27;s Verify Step by Step / PRM800K (Lightman et al. 2023)</h1>
 <div class="pmeta"><span class="b">M070</span><span class="b y">arXiv preprint (OpenAI); ICLR 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A process reward model scoring each reasoning step is a stronger verifier for best-of-N selection than an outcome reward model.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Let&#x27;s Verify Step by Step / PRM800K
+## TL;DR 
+- A process reward model scoring each reasoning step is a stronger verifier for best-of-N selection than an outcome reward model.
+## Problem
+- It was unclear whether supervising the correctness of each reasoning step (process supervision) yields a better verifier than supervising only the…
+## Insight
+- Rewarding correct reasoning at every step gives a denser, more reliable training signal than a single outcome label, producing a process reward model…
+## Method
+- They train an outcome reward model and a process reward model on the MATH dataset, use each to re-rank sampled solutions (best-of-N), and release…
+## Setup
+- Evaluation on the MATH benchmark comparing PRM vs ORM vs majority voting for solution selection, plus active-learning ablations.
+## Results
+- The process-supervised PRM solves 78% of problems from a representative MATH test subset and significantly outperforms outcome supervision; 800K…
+## Challenges
+- Process supervision requires expensive step-level human labels; the authors also show active learning is needed to make the labeling efficient.
+## Limitations
+- Requires costly human step-level annotation; results are demonstrated primarily on MATH and may not transfer to all reasoning domains without new…
+</script></div>
 <div class="field"><h3>Background</h3><p>Large language models produce multi-step reasoning chains that are often unreliable, and reward models used to rank candidate solutions can be trained on the final outcome or on each intermediate step.</p></div><div class="field"><h3>Problem</h3><p>It was unclear whether supervising the correctness of each reasoning step (process supervision) yields a better verifier than supervising only the final answer (outcome supervision).</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Better verifiers enable best-of-N selection and safer reasoning, and per-step feedback is more interpretable and could catch errors that outcome-only signals miss.</p></div><div class="field"><h3>Key Insight</h3><p>Rewarding correct reasoning at every step gives a denser, more reliable training signal than a single outcome label, producing a process reward model (PRM) that selects far better solutions.</p></div><div class="field"><h3>Challenges</h3><p>Process supervision requires expensive step-level human labels; the authors also show active learning is needed to make the labeling efficient.</p></div><div class="field"><h3>Method</h3><p>They train an outcome reward model and a process reward model on the MATH dataset, use each to re-rank sampled solutions (best-of-N), and release PRM800K, ~800K step-level human feedback labels.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluation on the MATH benchmark comparing PRM vs ORM vs majority voting for solution selection, plus active-learning ablations.</p></div><div class="field"><h3>Results</h3><p>The process-supervised PRM solves 78% of problems from a representative MATH test subset and significantly outperforms outcome supervision; 800K step-level labels (PRM800K) are released (confirmed in abstract).</p></div><div class="field"><h3>Limitations</h3><p>Requires costly human step-level annotation; results are demonstrated primarily on MATH and may not transfer to all reasoning domains without new labels.</p></div><div class="field"><h3>Relation to the Field</h3><p>The canonical process-reward-model verifier; downstream works (Generative Verifiers, Scaling Test-Time Compute, DataPRM, AgentV-RL) build on or generalize its PRM verifier to gate generation quality.</p></div>
 <div class="nav"><a href="scaling-llm-test-time-compute-optimally.html">← Scaling LLM Test-Time Compute Optimall</a><span class="sp"></span><a href="self-taught-evaluators.html">Self-Taught Evaluators (Wang et al. 20 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

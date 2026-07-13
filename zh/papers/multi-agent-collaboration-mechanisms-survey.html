@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,8 +103,30 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Multi-Agent Collaboration Mechanisms: A Survey of LLMs (Tran et al. 2025)</h1>
 <div class="pmeta"><span class="b">M300</span><span class="b y">arXiv preprint (Jan 2025)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2501.06322" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">一篇关于 LLM 多智能体系统协作维度的广泛综述，提出了一个可扩展框架，从 actors、types、structures、strategies 和 coordination protocols 五个维度刻画协作机制。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Multi-Agent Collaboration Mechanisms: A Survey of LLMs
+## 一句话 
+- 一篇关于 LLM 多智能体系统协作维度的广泛综述，提出了一个可扩展框架，从 actors、types、structures、strategies 和 coordination protocols 五个维度刻画协作机制。
+## 问题
+- 多智能体系统的协作维度散见于大量工作中，缺乏共享词汇，难以比较各种机制或推理设计选择。
+## 洞见
+- 协作机制可以沿一小组正交维度系统地刻画，使各种系统能够在同一框架内被定位和比较。
+## 方法
+- 综述 LLM 多智能体系统中的协作，并提出一个框架，涵盖 actors（涉及的智能体）、interaction…
+## 设置
+- 覆盖范围：对 MAS 协作方法的广泛综述，涉及 5G/6G networks、Industry 5.0、question answering 以及社会与文化场景等应用领域；未开展新实验。
+## 结果
+- 在五维框架内组织既有协作方法，并报告了 actor 组成、交互类型、结构和协调如何塑造集体问题求解的经验。
+## 挑战
+- 指出在扩展协作、协调异构智能体以及迈向稳健的人工集体智能方面的开放挑战。
+## 局限
+- 这是一篇概念性综述与框架，而非实证研究；为尚无确认发表场所的 arXiv preprint，且无新的测量结果。
+</script></div>
 <div class="field"><h3>背景</h3><p>LLM 的进步催生了 Agentic AI，LLM 智能体能够协作地感知、学习、推理和行动，使该领域从孤立模型转向以协作为中心的多智能体系统。</p></div><div class="field"><h3>问题</h3><p>多智能体系统的协作维度散见于大量工作中，缺乏共享词汇，难以比较各种机制或推理设计选择。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个统一、可扩展的框架来厘清 LLM 多智能体系统的协作，并引导该领域走向人工集体智能。</p></div><div class="field"><h3>关键洞见</h3><p>协作机制可以沿一小组正交维度系统地刻画，使各种系统能够在同一框架内被定位和比较。</p></div><div class="field"><h3>挑战</h3><p>指出在扩展协作、协调异构智能体以及迈向稳健的人工集体智能方面的开放挑战。</p></div><div class="field"><h3>方法</h3><p>综述 LLM 多智能体系统中的协作，并提出一个框架，涵盖 actors（涉及的智能体）、interaction types（cooperation、competition、coopetition）、structures（peer-to-peer、centralized、distributed）、strategies（role-based 或 model-based）以及 coordination protocols。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：对 MAS 协作方法的广泛综述，涉及 5G/6G networks、Industry 5.0、question answering 以及社会与文化场景等应用领域；未开展新实验。</p></div><div class="field"><h3>结果</h3><p>在五维框架内组织既有协作方法，并报告了 actor 组成、交互类型、结构和协调如何塑造集体问题求解的经验。</p></div><div class="field"><h3>局限</h3><p>这是一篇概念性综述与框架，而非实证研究；为尚无确认发表场所的 arXiv preprint，且无新的测量结果。</p></div><div class="field"><h3>与领域的关系</h3><p>是本图谱多智能体协作主题的总纲性参考，以协作机制分类体系补充了 ensemble（M041）、routing（M129）和 protocol（M096）综述。</p></div>
-<div class="nav"><a href="multiagentbench.html">← MultiAgentBench (Zhu et al. 2025)</a><span class="sp"></span><a href="survey-ai-agent-protocols.html">A Survey of AI Agent Protocols (Yang e →</a></div></article></div>
+<div class="nav"><a href="workflow-optimization-llm-agents-survey.html">← From Static Templates to Dynamic Runti</a><span class="sp"></span><a href="survey-ai-agent-protocols.html">A Survey of AI Agent Protocols (Yang e →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

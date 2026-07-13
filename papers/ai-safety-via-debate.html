@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>AI Safety via Debate (Irving, Christiano, Amodei 2018, OpenAI)</h1>
 <div class="pmeta"><span class="b">M060</span><span class="b y">arXiv 2018 (OpenAI)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/1805.00899" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A foundational alignment proposal: two agents debate a question and a weaker human judge picks the more truthful/useful side, with the adversarial structure making lying harder than exposing a lie.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# AI Safety via Debate
+## TL;DR 
+- A foundational alignment proposal: two agents debate a question and a weaker human judge picks the more truthful/useful side, with the adversarial structure…
+## Problem
+- How can humans train AI to pursue complex goals correctly when the task exceeds a human&#x27;s ability to judge the answer directly?
+## Insight
+- Framed as a zero-sum debate game, truth-telling is favored because it is harder to defend a lie against a capable opponent than to point out that…
+## Method
+- Two agents alternate making short statements about a question or proposed action up to a limit, then a human judge decides which agent was most…
+## Setup
+- A proof-of-concept MNIST &#x27;sparse classifier&#x27; game where two agents reveal a limited number of pixels to convince a judge classifier, plus…
+## Results
+- Theoretically, with optimal play debate lets polynomial-time judges answer any question in PSPACE, versus only NP for direct judging.
+## Challenges
+- Whether real (human or model) judges can be reliably swayed toward truth, and potential failure modes as debaters scale (e.g.
+## Limitations
+- Only a toy MNIST demonstration; effectiveness on real complex tasks and with real human judges is left as an open empirical question, and robustness…
+</script></div>
 <div class="field"><h3>Background</h3><p>A common way to align agents is to have humans judge their behavior, but this fails when the task is too complex for a human to evaluate directly. This predates modern LLMs and frames alignment as an oversight problem.</p></div><div class="field"><h3>Problem</h3><p>How can humans train AI to pursue complex goals correctly when the task exceeds a human&#x27;s ability to judge the answer directly?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If a human cannot verify an answer alone, perhaps they can verify it with the help of a competing agent whose incentive is to expose any flaw in the other&#x27;s argument.</p></div><div class="field"><h3>Key Insight</h3><p>Framed as a zero-sum debate game, truth-telling is favored because it is harder to defend a lie against a capable opponent than to point out that lie; optimal debate lets a bounded judge decide far harder questions than direct judging.</p></div><div class="field"><h3>Challenges</h3><p>Whether real (human or model) judges can be reliably swayed toward truth, and potential failure modes as debaters scale (e.g. persuasive-but-wrong arguments).</p></div><div class="field"><h3>Method</h3><p>Two agents alternate making short statements about a question or proposed action up to a limit, then a human judge decides which agent was most truthful and useful; agents are trained via self-play on this zero-sum game.</p></div><div class="field"><h3>Experimental Setup</h3><p>A proof-of-concept MNIST &#x27;sparse classifier&#x27; game where two agents reveal a limited number of pixels to convince a judge classifier, plus theoretical/complexity analysis.</p></div><div class="field"><h3>Results</h3><p>Theoretically, with optimal play debate lets polynomial-time judges answer any question in PSPACE, versus only NP for direct judging. Empirically, the sparse-classifier judge&#x27;s accuracy rose from 59.4% to 88.9% (6 pixels) and 48.2% to 85.2% (4 pixels) under debate.</p></div><div class="field"><h3>Limitations</h3><p>Only a toy MNIST demonstration; effectiveness on real complex tasks and with real human judges is left as an open empirical question, and robustness under strong persuasive agents is unresolved.</p></div><div class="field"><h3>Relation to the Field</h3><p>The conceptual origin of debate-as-oversight, later empirically tested with LLMs by Khan et al. (M061) and Kenton et al. (M062); its judge-mediated framing distinguishes it from consensus-style debate (M002).</p></div>
 <div class="nav"><a href="chateval.html">← ChatEval (Chan et al. 2023)</a><span class="sp"></span><a href="reliability-without-validity.html">Reliability without Validity (Norman e →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

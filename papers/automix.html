@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>AutoMix (Madaan/Aggarwal et al. 2023)</h1>
 <div class="pmeta"><span class="b">M027</span><span class="b y">NeurIPS 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2310.12963" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A small LM few-shot self-verifies its own answer, and a POMDP meta-verifier decides whether to escalate to a larger model based on that noisy confidence signal.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# AutoMix
+## TL;DR 
+- A small LM few-shot self-verifies its own answer, and a POMDP meta-verifier decides whether to escalate to a larger model based on that noisy confidence signal.
+## Problem
+- Route context-grounded reasoning queries from a small to a large LM without training a separate difficulty predictor, using only the small model&#x27;s…
+## Insight
+- Few-shot self-verification gives a usable (if noisy) correctness estimate, and treating routing as a POMDP lets a meta-verifier account for that…
+## Method
+- The small LM generates an answer and few-shot self-verifies it; a POMDP-based meta-verifier maps the (noisy) verification signal to a decision to…
+## Setup
+- Five context-grounded reasoning datasets using LLaMA2-13B and LLaMA2-70B (small/large pair) across five models; compared against strong…
+## Results
+- Improves incremental benefit per cost by up to 89% over baselines across the 5 datasets, and reduces computational cost by over 50% for comparable…
+## Challenges
+- Self-verification is unreliable; the POMDP meta-verifier must be robust to noisy confidence to avoid over- or under-escalating.
+## Limitations
+- Relies on the small model&#x27;s self-verification ability; evaluated on context-grounded reasoning, so gains may differ on other task types.
+</script></div>
 <div class="field"><h3>Background</h3><p>Cloud LLM services offer models of many sizes; efficiently mixing them requires deciding when a small model&#x27;s answer is trustworthy enough to keep.</p></div><div class="field"><h3>Problem</h3><p>Route context-grounded reasoning queries from a small to a large LM without training a separate difficulty predictor, using only the small model&#x27;s self-assessment.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Prior cascades needed labeled data or dedicated scorers; a training-light approach that reuses the small model for verification is more practical, but raw self-verification is noisy.</p></div><div class="field"><h3>Key Insight</h3><p>Few-shot self-verification gives a usable (if noisy) correctness estimate, and treating routing as a POMDP lets a meta-verifier account for that noise when deciding to escalate.</p></div><div class="field"><h3>Challenges</h3><p>Self-verification is unreliable; the POMDP meta-verifier must be robust to noisy confidence to avoid over- or under-escalating.</p></div><div class="field"><h3>Method</h3><p>The small LM generates an answer and few-shot self-verifies it; a POMDP-based meta-verifier maps the (noisy) verification signal to a decision to accept or route the query to the larger LM.</p></div><div class="field"><h3>Experimental Setup</h3><p>Five context-grounded reasoning datasets using LLaMA2-13B and LLaMA2-70B (small/large pair) across five models; compared against strong cascade/routing baselines.</p></div><div class="field"><h3>Results</h3><p>Improves incremental benefit per cost by up to 89% over baselines across the 5 datasets, and reduces computational cost by over 50% for comparable performance (verified in claim_checked).</p></div><div class="field"><h3>Limitations</h3><p>Relies on the small model&#x27;s self-verification ability; evaluated on context-grounded reasoning, so gains may differ on other task types.</p></div><div class="field"><h3>Relation to the Field</h3><p>Extends the FrugalGPT-style cascade with self-verification and a principled POMDP escalation policy; related to confidence-calibration approaches like Gatekeeper and UCCI.</p></div>
 <div class="nav"><a href="hybrid-llm.html">← Hybrid LLM (Ding et al. 2024)</a><span class="sp"></span><a href="routerbench.html">RouterBench (Hu et al. 2024) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

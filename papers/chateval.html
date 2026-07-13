@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>ChatEval (Chan et al. 2023)</h1>
 <div class="pmeta"><span class="b">M064</span><span class="b y">arXiv 2023</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2308.07201" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A multi-agent &#x27;referee team&#x27; of LLMs debates to evaluate generated text, improving LLM-as-judge alignment with human judgment beyond single-agent prompting.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# ChatEval
+## TL;DR 
+- A multi-agent &#x27;referee team&#x27; of LLMs debates to evaluate generated text, improving LLM-as-judge alignment with human judgment beyond single-agent prompting.
+## Problem
+- Can a group of LLM evaluators, rather than one, produce assessments that better match human judgment on open-ended and NLG tasks?
+## Insight
+- Framing evaluation as an autonomous multi-agent debate lets referees exchange and defend judgments, yielding a more human-mimicking, reliable…
+## Method
+- Builds ChatEval, a multi-agent referee team where multiple LLM agents discuss and debate the quality of responses from different models under…
+## Setup
+- Applied to two evaluation settings — open-ended question responses and traditional NLG tasks — judging outputs from different models.
+## Results
+- ChatEval&#x27;s multi-agent debate improves LLM-as-evaluator alignment with human judgment over single-agent prompting, delivering a more human-mimicking,…
+## Challenges
+- Designing communication/role strategies for the referee team, keeping debate from collapsing to conformity, and demonstrating gains over strong…
+## Limitations
+- Abstract does not report specific correlation/accuracy numbers; adds inference cost from multiple agents and rounds, and evaluator debate can still…
+</script></div>
 <div class="field"><h3>Background</h3><p>Text evaluation is labor-intensive, and LLMs are increasingly used as substitute evaluators, but single-agent LLM evaluators still fall short of human-level reliability.</p></div><div class="field"><h3>Problem</h3><p>Can a group of LLM evaluators, rather than one, produce assessments that better match human judgment on open-ended and NLG tasks?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Human evaluation often involves discussion among multiple reviewers; a team of debating LLM referees could similarly combine diverse strengths and reduce single-model bias.</p></div><div class="field"><h3>Key Insight</h3><p>Framing evaluation as an autonomous multi-agent debate lets referees exchange and defend judgments, yielding a more human-mimicking, reliable evaluation process than isolated single-agent scoring.</p></div><div class="field"><h3>Challenges</h3><p>Designing communication/role strategies for the referee team, keeping debate from collapsing to conformity, and demonstrating gains over strong single-agent evaluators.</p></div><div class="field"><h3>Method</h3><p>Builds ChatEval, a multi-agent referee team where multiple LLM agents discuss and debate the quality of responses from different models under configurable communication strategies and roles, then produce an evaluation.</p></div><div class="field"><h3>Experimental Setup</h3><p>Applied to two evaluation settings — open-ended question responses and traditional NLG tasks — judging outputs from different models.</p></div><div class="field"><h3>Results</h3><p>ChatEval&#x27;s multi-agent debate improves LLM-as-evaluator alignment with human judgment over single-agent prompting, delivering a more human-mimicking, reliable assessment process. (Abstract emphasizes the qualitative improvement; specific correlation numbers are in the full paper.)</p></div><div class="field"><h3>Limitations</h3><p>Abstract does not report specific correlation/accuracy numbers; adds inference cost from multiple agents and rounds, and evaluator debate can still inherit conformity/diversity-collapse issues.</p></div><div class="field"><h3>Relation to the Field</h3><p>Applies the debate mechanism (M002) to the evaluation/LLM-as-judge problem rather than task-solving, complementing judge-mediated oversight debate (M061/M062).</p></div>
 <div class="nav"><a href="reflexion.html">← Reflexion (Shinn et al. 2023)</a><span class="sp"></span><a href="ai-safety-via-debate.html">AI Safety via Debate (Irving, Christia →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

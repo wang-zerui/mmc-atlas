@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>DistServe (Zhong et al. 2024)</h1>
 <div class="pmeta"><span class="b">M112</span><span class="b y">USENIX OSDI 2024</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2401.09670" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">DistServe将prefill阶段与decode阶段解耦（disaggregate）到不同的GPU上，消除阶段间干扰，并独立优化TTFT与TPOT，从而在延迟SLO内服务更多请求。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# DistServe
+## 一句话 
+- DistServe将prefill阶段与decode阶段解耦（disaggregate）到不同的GPU上，消除阶段间干扰，并独立优化TTFT与TPOT，从而在延迟SLO内服务更多请求。
+## 问题
+- 将prefill与decode共置（colocate）并一起批处理会造成强烈的prefill-decode干扰，并耦合它们的资源/并行度决策，因此系统必须牺牲其中一个延迟指标，或过度配置硬件才能同时满足两者。
+## 洞见
+- 将prefill与decode分配到不同的GPU上可消除干扰，并让各阶段挑选自己的并行度/资源方案；放置策略可依据集群带宽来限制解耦带来的通信成本。
+## 方法
+- 将prefill与decode跨GPU解耦；在给定TTFT/TPOT目标下协同优化各阶段的资源分配与并行度；依据集群带宽放置各阶段以减少跨阶段通信。
+## 设置
+- 在延迟SLO约束下、跨serving workload与最先进的共置serving系统进行对比评估。
+## 结果
+- 在满足&gt;90%请求延迟的同时，相比SOTA可服务7.4x更多请求或满足12.6x更严格的SLO；开创了prefill/decode解耦（参见Splitwise、Mooncake）；OSDI 2024。经USENIX/摘要验证。
+## 挑战
+- 最小化在prefill与decode GPU之间搬移状态所引入的KV-cache传输开销，并在TTFT/TPOT约束下对各阶段进行联合资源规划。
+## 局限
+- 解耦增加了必须靠带宽感知放置来隐藏的KV-cache传输流量；收益取决于集群互联和workload的阶段平衡。
+</script></div>
 <div class="field"><h3>背景</h3><p>LLM应用关注两个分阶段延迟：来自prefill的time-to-first-token（TTFT）和来自decoding的time-per-output-token（TPOT）。</p></div><div class="field"><h3>问题</h3><p>将prefill与decode共置（colocate）并一起批处理会造成强烈的prefill-decode干扰，并耦合它们的资源/并行度决策，因此系统必须牺牲其中一个延迟指标，或过度配置硬件才能同时满足两者。</p></div><div class="field"><h3>动机 / 分析</h3><p>由于两个阶段具有不同的计算特性和延迟目标，将它们分开可以让各自独立地进行资源和并行度优化。</p></div><div class="field"><h3>关键洞见</h3><p>将prefill与decode分配到不同的GPU上可消除干扰，并让各阶段挑选自己的并行度/资源方案；放置策略可依据集群带宽来限制解耦带来的通信成本。</p></div><div class="field"><h3>挑战</h3><p>最小化在prefill与decode GPU之间搬移状态所引入的KV-cache传输开销，并在TTFT/TPOT约束下对各阶段进行联合资源规划。</p></div><div class="field"><h3>方法</h3><p>将prefill与decode跨GPU解耦；在给定TTFT/TPOT目标下协同优化各阶段的资源分配与并行度；依据集群带宽放置各阶段以减少跨阶段通信。</p></div><div class="field"><h3>实验设置</h3><p>在延迟SLO约束下、跨serving workload与最先进的共置serving系统进行对比评估。</p></div><div class="field"><h3>结果</h3><p>在满足&gt;90%请求延迟的同时，相比SOTA可服务7.4x更多请求或满足12.6x更严格的SLO；开创了prefill/decode解耦（参见Splitwise、Mooncake）；OSDI 2024。经USENIX/摘要验证。</p></div><div class="field"><h3>局限</h3><p>解耦增加了必须靠带宽感知放置来隐藏的KV-cache传输流量；收益取决于集群互联和workload的阶段平衡。</p></div><div class="field"><h3>与领域的关系</h3><p>确立了被后续多模型系统（如PrefillShare）采纳的prefill/decode解耦；与共置引擎vLLM/SGLang形成对比，并与Splitwise/Mooncake并行。</p></div>
 <div class="nav"><a href="parrot.html">← Parrot / Semantic Variable (Lin et al.</a><span class="sp"></span><a href="vllm.html">vLLM / PagedAttention (Kwon et al. 202 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

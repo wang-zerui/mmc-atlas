@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>LLM-as-a-Judge / MT-Bench &amp; Chatbot Arena (Zheng et al. 2023)</h1>
 <div class="pmeta"><span class="b">M016</span><span class="b y">NeurIPS 2023 Datasets &amp; Benchmarks Track</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2306.05685" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">强大的 LLM 评判者可以大规模地近似人类偏好，但会表现出位置偏差、冗长偏差和自我增强偏差。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# LLM-as-a-Judge / MT-Bench &amp; Chatbot Arena
+## 一句话 
+- 强大的 LLM 评判者可以大规模地近似人类偏好，但会表现出位置偏差、冗长偏差和自我增强偏差。
+## 问题
+- 此前缺乏一种可扩展、可解释的方法来衡量聊天模型在多轮、开放式对话上与人类偏好的契合程度。
+## 洞见
+- 像 GPT-4 这样能力强的模型，在被提示去比较或打分时，其与人类的一致率与人类之间的一致率相当。因此，只要理解并控制其系统性偏差，它就能充当自动化评判者。
+## 方法
+- 作者提出了 MT-bench（涵盖 8 个类别的 80 道多轮问题）和 Chatbot Arena（众包的成对对战），随后以 GPT-4 作为评判者研究了单答案打分、成对比较和参考引导式评判；文中对各类偏差进行了刻画并做了部分缓解。
+## 设置
+- 他们在 MT-bench 上收集了约 3K 条专家成对投票，并从 Chatbot Arena 收集了约 30K 条众包对话，针对人类判断评估了 LLaMA/Vicuna 系列及其他模型。
+## 结果
+- 作为评判者的 GPT-4 与人类偏好的一致率超过 80%，与人类之间的一致率处于同一水平（摘要中已确认）；MT-bench 问题、3K 条专家投票和 30K 条对话均已公开发布。
+## 挑战
+- LLM 评判者存在位置偏差（偏好第一个答案）、冗长偏差（偏好更长的答案）、自我增强偏差（偏好自身风格），并且在数学/逻辑问题上的推理能力有限。
+## 局限
+- 评判者仍保留位置/冗长/自我增强偏差，以及在数学和推理上的薄弱评分能力；一致率是在特定模型集合上测得的，未必能迁移到所有领域。
+</script></div>
 <div class="field"><h3>背景</h3><p>评估开放式聊天助手的回复很困难：传统基准衡量的是封闭式答案的准确率，而非与人类偏好的对齐程度，而收集人类偏好标注既缓慢又昂贵。</p></div><div class="field"><h3>问题</h3><p>此前缺乏一种可扩展、可解释的方法来衡量聊天模型在多轮、开放式对话上与人类偏好的契合程度。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果一个强大的 LLM 能够可靠地替代人类评分者，评估就会变得廉价且可复现，从而支持对聊天模型的快速迭代。</p></div><div class="field"><h3>关键洞见</h3><p>像 GPT-4 这样能力强的模型，在被提示去比较或打分时，其与人类的一致率与人类之间的一致率相当。因此，只要理解并控制其系统性偏差，它就能充当自动化评判者。</p></div><div class="field"><h3>挑战</h3><p>LLM 评判者存在位置偏差（偏好第一个答案）、冗长偏差（偏好更长的答案）、自我增强偏差（偏好自身风格），并且在数学/逻辑问题上的推理能力有限。</p></div><div class="field"><h3>方法</h3><p>作者提出了 MT-bench（涵盖 8 个类别的 80 道多轮问题）和 Chatbot Arena（众包的成对对战），随后以 GPT-4 作为评判者研究了单答案打分、成对比较和参考引导式评判；文中对各类偏差进行了刻画并做了部分缓解。</p></div><div class="field"><h3>实验设置</h3><p>他们在 MT-bench 上收集了约 3K 条专家成对投票，并从 Chatbot Arena 收集了约 30K 条众包对话，针对人类判断评估了 LLaMA/Vicuna 系列及其他模型。</p></div><div class="field"><h3>结果</h3><p>作为评判者的 GPT-4 与人类偏好的一致率超过 80%，与人类之间的一致率处于同一水平（摘要中已确认）；MT-bench 问题、3K 条专家投票和 30K 条对话均已公开发布。</p></div><div class="field"><h3>局限</h3><p>评判者仍保留位置/冗长/自我增强偏差，以及在数学和推理上的薄弱评分能力；一致率是在特定模型集合上测得的，未必能迁移到所有领域。</p></div><div class="field"><h3>与领域的关系</h3><p>LLM-as-Judge 系列的奠基性参考文献；该领域后续工作（fair-evaluators、PoLL、JudgeBench、Reliability-without-Validity）直接扩展或批判了它关于偏差与可靠性的发现。</p></div>
 <div class="nav"><a href="large-language-models-are-not-fair-evaluators.html">← Large Language Models are not Fair Eva</a><span class="sp"></span><a href="training-verifiers-to-solve-math-word-problems.html">Training Verifiers to Solve Math Word  →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

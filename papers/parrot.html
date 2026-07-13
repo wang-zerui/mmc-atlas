@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Parrot / Semantic Variable (Lin et al. 2024)</h1>
 <div class="pmeta"><span class="b">M111</span><span class="b y">USENIX OSDI 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2405.19888" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Parrot exposes application-level dataflow to the LLM service via &#x27;Semantic Variables&#x27; that annotate request I/O, enabling data-flow analysis across correlated requests for DAG-aware scheduling, cross-request batching, and prefix sharing.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Parrot / Semantic Variable
+## TL;DR 
+- Parrot exposes application-level dataflow to the LLM service via &#x27;Semantic Variables&#x27; that annotate request I/O, enabling data-flow analysis across correlated…
+## Problem
+- Today&#x27;s request-level LLM APIs discard application-level context, forcing services to blindly optimize individual requests and yielding sub-optimal…
+## Insight
+- A unified &#x27;Semantic Variable&#x27; abstraction that annotates prompt input/output variables reconstructs the data pipeline across connected requests,…
+## Method
+- Semantic Variables annotate request I/O and link requests into data pipelines; the ServeCore/Engine performs dataflow analysis to enable DAG-aware…
+## Setup
+- Evaluated on practical LLM-application use cases (multi-agent / multi-call workflows) representative of real deployments.
+## Results
+- Reports up to an order-of-magnitude end-to-end improvement for common practical LLM-application use cases; OSDI 2024.
+## Challenges
+- Designing an abstraction general enough for diverse apps while keeping the API simple, and deriving useful optimizations (batching, parallelization,…
+## Limitations
+- Requires applications to annotate requests with Semantic Variables; the order-of-magnitude gain is for favorable multi-request workloads and may not…
+</script></div>
 <div class="field"><h3>Background</h3><p>LLM-based applications (AI agents, co-pilots) combine LLMs with conventional software and build complex multi-request workflows spanning multiple tenants.</p></div><div class="field"><h3>Problem</h3><p>Today&#x27;s request-level LLM APIs discard application-level context, forcing services to blindly optimize individual requests and yielding sub-optimal end-to-end performance for multi-call apps.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If the service could see how requests in a workflow relate, it could apply classic dataflow analysis to unlock cross-request optimizations invisible at the single-request level.</p></div><div class="field"><h3>Key Insight</h3><p>A unified &#x27;Semantic Variable&#x27; abstraction that annotates prompt input/output variables reconstructs the data pipeline across connected requests, exposing correlations the service can optimize over.</p></div><div class="field"><h3>Challenges</h3><p>Designing an abstraction general enough for diverse apps while keeping the API simple, and deriving useful optimizations (batching, parallelization, prefix sharing) from the recovered dataflow.</p></div><div class="field"><h3>Method</h3><p>Semantic Variables annotate request I/O and link requests into data pipelines; the ServeCore/Engine performs dataflow analysis to enable DAG-aware scheduling, cross-request parallelization/batching, and prefix sharing.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on practical LLM-application use cases (multi-agent / multi-call workflows) representative of real deployments.</p></div><div class="field"><h3>Results</h3><p>Reports up to an order-of-magnitude end-to-end improvement for common practical LLM-application use cases; OSDI 2024. Verified via USENIX/abstract; detailed per-benchmark numbers not audited.</p></div><div class="field"><h3>Limitations</h3><p>Requires applications to annotate requests with Semantic Variables; the order-of-magnitude gain is for favorable multi-request workloads and may not hold for single-shot requests.</p></div><div class="field"><h3>Relation to the Field</h3><p>Complements request-level engines (vLLM, SGLang) by adding application-level dataflow awareness; a precursor to workflow-aware serving systems like HeraSys and agentic-serving frameworks.</p></div>
 <div class="nav"><a href="faster-cascades-via-speculative-decoding.html">← Faster Cascades via Speculative Decodi</a><span class="sp"></span><a href="distserve.html">DistServe (Zhong et al. 2024) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

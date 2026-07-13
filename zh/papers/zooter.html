@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Zooter (Lu et al. 2023, NAACL 2024)</h1>
 <div class="pmeta"><span class="b">M029</span><span class="b y">NAACL 2024</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2311.08692" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">Zooter 将奖励蒸馏到训练查询上，训练出一个轻量 router，把每个查询发给最擅长的 LLM，从而避免在推理时运行奖励模型的开销。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Zooter
+## 一句话 
+- Zooter 将奖励蒸馏到训练查询上，训练出一个轻量 router，把每个查询发给最擅长的 LLM，从而避免在推理时运行奖励模型的开销。
+## 问题
+- 现有的集成方法在推理时用奖励模型对候选答案排序，这在计算上很昂贵，因为必须查询并评分每一个模型。
+## 洞见
+- 奖励模型在训练查询上给出的奖励，可以蒸馏进一个仅依赖查询的路由函数，因此推理时只需一个便宜的 router 即可预测最佳模型，无需任何奖励排序。
+## 方法
+- 奖励引导的路由：奖励模型为训练查询的答案打分，其奖励通过 KL 蒸馏进一个 BERT 式的路由函数，并用基于 tag 的标签增强对监督去噪；推理时只运行 router，仅增加极小开销。
+## 设置
+- 一个涵盖多领域/任务、由 26 个子集组成的综合基准集合；与最佳单模型以及奖励模型排序的集成方法比较。
+## 结果
+- 平均上优于最佳单模型，并在 26 个基准子集中的 44% 上排名第一，采用了 KL 奖励蒸馏加基于 tag 的标签增强（已在 claim_checked 中核实），同时以远低的开销超越了多种奖励排序方法。
+## 挑战
+- 用作银标监督的奖励信号带有噪声；论文引入基于标签（tag）的标签增强来缓解蒸馏标签中的不确定性。
+## 局限
+- 路由质量受限于用于蒸馏的奖励模型；尽管有增强，银标签仍带有噪声。
+</script></div>
 <div class="field"><h3>背景</h3><p>现成的 LLM 在不同领域各有互补的强项，因此在它们之间做集成/路由能够超越任何单一模型。</p></div><div class="field"><h3>问题</h3><p>现有的集成方法在推理时用奖励模型对候选答案排序，这在计算上很昂贵，因为必须查询并评分每一个模型。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果能仅凭查询就预测出擅长的模型，路由便可避免生成并评分所有候选答案，从而大幅削减开销。</p></div><div class="field"><h3>关键洞见</h3><p>奖励模型在训练查询上给出的奖励，可以蒸馏进一个仅依赖查询的路由函数，因此推理时只需一个便宜的 router 即可预测最佳模型，无需任何奖励排序。</p></div><div class="field"><h3>挑战</h3><p>用作银标监督的奖励信号带有噪声；论文引入基于标签（tag）的标签增强来缓解蒸馏标签中的不确定性。</p></div><div class="field"><h3>方法</h3><p>奖励引导的路由：奖励模型为训练查询的答案打分，其奖励通过 KL 蒸馏进一个 BERT 式的路由函数，并用基于 tag 的标签增强对监督去噪；推理时只运行 router，仅增加极小开销。</p></div><div class="field"><h3>实验设置</h3><p>一个涵盖多领域/任务、由 26 个子集组成的综合基准集合；与最佳单模型以及奖励模型排序的集成方法比较。</p></div><div class="field"><h3>结果</h3><p>平均上优于最佳单模型，并在 26 个基准子集中的 44% 上排名第一，采用了 KL 奖励蒸馏加基于 tag 的标签增强（已在 claim_checked 中核实），同时以远低的开销超越了多种奖励排序方法。</p></div><div class="field"><h3>局限</h3><p>路由质量受限于用于蒸馏的奖励模型；尽管有增强，银标签仍带有噪声。</p></div><div class="field"><h3>与领域的关系</h3><p>一个开创性的奖励蒸馏 router；在概念上与 RouterDC（对比式路由）及后续的基于查询的 router 相关，并与顺序查询模型的 cascade 方法形成对照。</p></div>
 <div class="nav"><a href="routerbench.html">← RouterBench (Hu et al. 2024)</a><span class="sp"></span><a href="routerdc.html">RouterDC (Chen et al. 2024, NeurIPS 20 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

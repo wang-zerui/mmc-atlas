@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>LLMBoost (Chen et al. 2025)</h1>
 <div class="pmeta"><span class="b">M133</span><span class="b y">arXiv 2025</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2512.22309" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A boosting-style ensemble fine-tuning framework that fuses predecessor models&#x27; hidden states via cross-model attention under an error-suppression chain-training objective, with near-parallel layer-pipelined inference, going beyond black-box output voting.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# LLMBoost
+## TL;DR 
+- A boosting-style ensemble fine-tuning framework that fuses predecessor models&#x27; hidden states via cross-model attention under an error-suppression…
+## Problem
+- Black-box combination discards the rich information in intermediate hidden states, limiting how much complementary knowledge can be transferred…
+## Insight
+- Cross-model attention over hidden states plus a chain-training error-suppression objective enables hierarchical error correction and knowledge…
+## Method
+- Three components: cross-model attention letting successor models merge predecessors&#x27; hidden states; a chain-training paradigm that progressively…
+## Setup
+- Evaluated on commonsense reasoning and arithmetic reasoning tasks.
+## Results
+- LLMBoost consistently boosts accuracy while reducing inference latency, with a claimed guarantee of monotonic improvement under bounded-correction…
+## Challenges
+- Aligning and attending across models&#x27; hidden states efficiently, and avoiding the latency blow-up of sequential model chains.
+## Limitations
+- Requires fine-tuning and white-box hidden-state access (not API-only models); the abstract gives no numeric results, and its ICLR 2026 submission…
+</script></div>
 <div class="field"><h3>Background</h3><p>Current LLM ensemble methods treat models as black boxes, combining only inputs or final outputs and ignoring internal representations.</p></div><div class="field"><h3>Problem</h3><p>Black-box combination discards the rich information in intermediate hidden states, limiting how much complementary knowledge can be transferred between models.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>The boosting paradigm, where each learner corrects its predecessor&#x27;s errors, can be adapted to LLMs by letting successor models attend to predecessors&#x27; hidden states.</p></div><div class="field"><h3>Key Insight</h3><p>Cross-model attention over hidden states plus a chain-training error-suppression objective enables hierarchical error correction and knowledge transfer, with theoretical monotonic improvement under bounded-correction assumptions.</p></div><div class="field"><h3>Challenges</h3><p>Aligning and attending across models&#x27; hidden states efficiently, and avoiding the latency blow-up of sequential model chains.</p></div><div class="field"><h3>Method</h3><p>Three components: cross-model attention letting successor models merge predecessors&#x27; hidden states; a chain-training paradigm that progressively fine-tunes linked models with an error-suppression objective; and near-parallel inference that pipelines hidden states layer-by-layer to approach single-model decoding speed.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on commonsense reasoning and arithmetic reasoning tasks.</p></div><div class="field"><h3>Results</h3><p>LLMBoost consistently boosts accuracy while reducing inference latency, with a claimed guarantee of monotonic improvement under bounded-correction assumptions (confirmed vs abstract; submitted 26 Dec 2025; no specific numeric scores in abstract).</p></div><div class="field"><h3>Limitations</h3><p>Requires fine-tuning and white-box hidden-state access (not API-only models); the abstract gives no numeric results, and its ICLR 2026 submission acceptance is unconfirmed, so no venue is claimed.</p></div><div class="field"><h3>Relation to the Field</h3><p>A white-box, training-based fusion contrasting with black-box voting (M017, M018) and inference-time fusers (DeePEn M037, PackLLM M038); shares FuseLLM&#x27;s hidden-knowledge-transfer spirit (M039) but via boosting rather than distillation.</p></div>
 <div class="nav"><a href="beyond-majority-voting.html">← Beyond Majority Voting (Ai et al. 2026</a><span class="sp"></span><a href="mixture-of-agents.html">Mixture-of-Agents (Wang et al. 2024) →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

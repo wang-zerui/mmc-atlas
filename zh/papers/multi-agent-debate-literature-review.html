@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Literature Review of Multi-Agent Debate for Problem-Solving (Tillmann 2025)</h1>
 <div class="pmeta"><span class="b">M309</span><span class="b y">arXiv preprint (May 2025)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2506.00066" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">一篇聚焦 LLM 多智能体辩论的文献综述，综合了关于 agent profiles、communication structures 与 decision-making 的发现，以及 scalability 与结构如何影响性能。</div>
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Literature Review of Multi-Agent Debate for Problem-Solving
+## 一句话 
+- 一篇聚焦 LLM 多智能体辩论的文献综述，综合了关于 agent profiles、communication structures 与 decision-making 的发现，以及 scalability 与结构如何影响性能。
+## 问题
+- 多智能体辩论领域缺乏直接比较，难以判断哪些设计选择真正驱动了性能。
+## 洞见
+- 借助经典多智能体系统与近期 MA-LLM 工作，该综述得以分离出通信结构与决策（而不仅是规模）如何影响结果。
+## 方法
+- 综述内容：面向问题求解的多智能体辩论，综合来自传统 MAS 与 MA-LLM 研究的关于 agent profiles、communication structures 与 decision-making 过程的发现。
+## 设置
+- 覆盖范围：一篇连接传统多智能体系统与前沿 MA-LLM 研究的 11 页综述；未开展新实验。
+## 结果
+- 报告多智能体方法可带来更优结果但伴随更高计算成本，并阐明 scalability、结构与决策如何塑造辩论性能。
+## 挑战
+- 将缺乏直接比较、计算成本升高以及 MA-LLM 特有挑战列为开放问题。
+## 局限
+- 这是一篇较短（11 页）的综述而非实证研究；为尚无确认发表场所的 arXiv preprint。
+</script></div>
 <div class="field"><h3>背景</h3><p>多智能体 LLM（MA-LLMs）使用多个交互智能体求解复杂问题，据报道其表现已超越单智能体方法。</p></div><div class="field"><h3>问题</h3><p>多智能体辩论领域缺乏直接比较，难以判断哪些设计选择真正驱动了性能。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一份综合，以比较 scalability、communication structure 与 decision-making 等因素如何影响多智能体辩论的结果。</p></div><div class="field"><h3>关键洞见</h3><p>借助经典多智能体系统与近期 MA-LLM 工作，该综述得以分离出通信结构与决策（而不仅是规模）如何影响结果。</p></div><div class="field"><h3>挑战</h3><p>将缺乏直接比较、计算成本升高以及 MA-LLM 特有挑战列为开放问题。</p></div><div class="field"><h3>方法</h3><p>综述内容：面向问题求解的多智能体辩论，综合来自传统 MAS 与 MA-LLM 研究的关于 agent profiles、communication structures 与 decision-making 过程的发现。</p></div><div class="field"><h3>实验设置</h3><p>覆盖范围：一篇连接传统多智能体系统与前沿 MA-LLM 研究的 11 页综述；未开展新实验。</p></div><div class="field"><h3>结果</h3><p>报告多智能体方法可带来更优结果但伴随更高计算成本，并阐明 scalability、结构与决策如何塑造辩论性能。</p></div><div class="field"><h3>局限</h3><p>这是一篇较短（11 页）的综述而非实证研究；为尚无确认发表场所的 arXiv preprint。</p></div><div class="field"><h3>与领域的关系</h3><p>是本图谱专注辩论的参考，以问题求解辩论视角补充了更宽泛的协作综述（M300/M301）。</p></div>
 <div class="nav"><a href="survey-evaluation-llm-agents.html">← Survey on Evaluation of LLM-based Agen</a><span class="sp"></span><a href="ensemble-learning-llm-text-code-survey.html">Ensemble Learning for LLMs in Text and →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

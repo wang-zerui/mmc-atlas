@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Why Do Multi-Agent LLM Systems Fail? / MAST (Cemri et al. 2025)</h1>
 <div class="pmeta"><span class="b">M023</span><span class="b y">NeurIPS 2025 Datasets &amp; Benchmarks (arXiv v3)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">An empirical study builds MAST, the first Multi-Agent System failure Taxonomy, cataloguing 14 failure modes in 3 categories, derived from human annotation of real MAS execution traces.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Why Do Multi-Agent LLM Systems Fail? / MAST
+## TL;DR 
+- An empirical study builds MAST, the first Multi-Agent System failure Taxonomy, cataloguing 14 failure modes in 3 categories, derived from human annotation of…
+## Problem
+- Prior work lacked a grounded, empirical account of how and why MAS fail; failures were discussed anecdotally rather than through a structured…
+## Insight
+- MAS failures are not just model errors but organizational: they cluster into system-design flaws, inter-agent misalignment, and task-verification…
+## Method
+- Experts analyzed 150 traces to inductively derive the 14-mode / 3-category taxonomy, then an LLM-as-a-Judge pipeline was validated against human…
+## Setup
+- Failure patterns were annotated across 7 popular MAS frameworks and multiple models (GPT-4, Claude 3, Qwen2.5, CodeLlama) on coding, math, and…
+## Results
+- 14 failure modes in 3 categories; inter-annotator agreement Cohen&#x27;s kappa = 0.88; task-verification-related failures are a major share (verification…
+## Challenges
+- Manually analyzing long multi-agent traces is expensive and subjective; the authors had to establish reliable inter-annotator agreement and then…
+## Limitations
+- The taxonomy is descriptive rather than prescriptive, offers no guaranteed fixes, and coverage is bounded by the 7 frameworks and models studied;…
+</script></div>
 <div class="field"><h3>Background</h3><p>Multi-agent LLM systems attract enormous excitement, yet their benchmark gains over single agents are often small and inconsistent, and there was no systematic understanding of why they break.</p></div><div class="field"><h3>Problem</h3><p>Prior work lacked a grounded, empirical account of how and why MAS fail; failures were discussed anecdotally rather than through a structured taxonomy backed by annotated traces.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A rigorous failure taxonomy plus a labeled dataset would let researchers diagnose MAS problems, target fixes, and measure progress instead of treating failures as opaque.</p></div><div class="field"><h3>Key Insight</h3><p>MAS failures are not just model errors but organizational: they cluster into system-design flaws, inter-agent misalignment, and task-verification breakdowns, so better orchestration and verification matter as much as stronger models.</p></div><div class="field"><h3>Challenges</h3><p>Manually analyzing long multi-agent traces is expensive and subjective; the authors had to establish reliable inter-annotator agreement and then scale annotation without losing fidelity.</p></div><div class="field"><h3>Method</h3><p>Experts analyzed 150 traces to inductively derive the 14-mode / 3-category taxonomy, then an LLM-as-a-Judge pipeline was validated against human labels to scale annotation across MAST-Data (1600+ traces from 7 MAS frameworks).</p></div><div class="field"><h3>Experimental Setup</h3><p>Failure patterns were annotated across 7 popular MAS frameworks and multiple models (GPT-4, Claude 3, Qwen2.5, CodeLlama) on coding, math, and general agent tasks.</p></div><div class="field"><h3>Results</h3><p>14 failure modes in 3 categories; inter-annotator agreement Cohen&#x27;s kappa = 0.88; task-verification-related failures are a major share (verification failures reported around ~13.48%), and the dataset, taxonomy, and annotator are released publicly.</p></div><div class="field"><h3>Limitations</h3><p>The taxonomy is descriptive rather than prescriptive, offers no guaranteed fixes, and coverage is bounded by the 7 frameworks and models studied; LLM-judge annotation can inherit model biases.</p></div><div class="field"><h3>Relation to the Field</h3><p>Foundational failure-mode reference for family Z; complements benchmark-style diagnoses like AgentCollabBench and attribution work like TraceElephant, and motivates single-vs-multi-agent scrutiny (Tran &amp; Kiela).</p></div>
 <div class="nav"><a href="more-capable-less-cooperative.html">← More Capable, Less Cooperative? When L</a><span class="sp"></span><a href="talk-isn-t-always-cheap.html">Talk Isn&#x27;t Always Cheap: Understanding →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

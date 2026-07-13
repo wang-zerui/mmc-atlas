@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>HieraMAS (Yao et al. 2026)</h1>
 <div class="pmeta"><span class="b">M216</span><span class="b y">ICML 2026 (Poster)</span><span class="b g">verified</span> <a href="https://icml.cc/virtual/2026/poster/61537" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">HieraMAS jointly optimizes intra-node LLM mixtures (&#x27;supernodes&#x27; of heterogeneous LLMs in a propose-synthesis structure) and inter-node communication topology, using multi-level reward attribution plus graph classification for whole-topology credit assignment.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# HieraMAS
+## TL;DR 
+- HieraMAS jointly optimizes intra-node LLM mixtures (&#x27;supernodes&#x27; of heterogeneous LLMs in a propose-synthesis structure) and inter-node communication topology,…
+## Problem
+- Existing methods optimize communication topology, role assignment, or LLM routing separately and treat each agent as a single unit, ignoring the…
+## Insight
+- Each functional role can be a &#x27;supernode&#x27; of multiple heterogeneous LLMs arranged in a propose-synthesis structure, and topology selection should be…
+## Method
+- A hierarchical collaboration framework that jointly optimizes intra-node LLM mixtures and inter-node topology, trained with a two-stage algorithm:…
+## Setup
+- Evaluated on reasoning and coding benchmarks against existing multi-agent optimization methods.
+## Results
+- Reported to significantly outperform existing methods and achieve better cost-performance trade-offs; the ICML poster page does not expose specific…
+## Challenges
+- Credit assignment is hard because overall task success can wrongly reinforce weak intra-node or topology choices, so feedback must be attributed at…
+## Limitations
+- Public poster abstract gives qualitative rather than numeric results; the joint intra-/inter-node search space is large and its optimization cost is…
+</script></div>
 <div class="field"><h3>Background</h3><p>LLM-based multi-agent systems benefit from good communication topology, role assignment, and LLM routing.</p></div><div class="field"><h3>Problem</h3><p>Existing methods optimize communication topology, role assignment, or LLM routing separately and treat each agent as a single unit, ignoring the benefit of combining multiple LLMs within one role.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Jointly optimizing both what happens inside a node (a mixture of models) and how nodes communicate should yield stronger and more cost-efficient systems than optimizing either alone.</p></div><div class="field"><h3>Key Insight</h3><p>Each functional role can be a &#x27;supernode&#x27; of multiple heterogeneous LLMs arranged in a propose-synthesis structure, and topology selection should be treated as a holistic graph-classification problem rather than per-edge optimization to avoid reinforcing weak configurations.</p></div><div class="field"><h3>Challenges</h3><p>Credit assignment is hard because overall task success can wrongly reinforce weak intra-node or topology choices, so feedback must be attributed at multiple levels.</p></div><div class="field"><h3>Method</h3><p>A hierarchical collaboration framework that jointly optimizes intra-node LLM mixtures and inter-node topology, trained with a two-stage algorithm: multi-level reward attribution (node and system level) and graph classification for holistic topology selection.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on reasoning and coding benchmarks against existing multi-agent optimization methods.</p></div><div class="field"><h3>Results</h3><p>Reported to significantly outperform existing methods and achieve better cost-performance trade-offs; the ICML poster page does not expose specific numeric metrics publicly.</p></div><div class="field"><h3>Limitations</h3><p>Public poster abstract gives qualitative rather than numeric results; the joint intra-/inter-node search space is large and its optimization cost is not quantified in the abstract.</p></div><div class="field"><h3>Relation to the Field</h3><p>Extends single-unit-per-agent graph optimizers like GPTSwarm and AgentPrune by adding intra-node model mixtures; related to OMAC and MAS-Orchestra as holistic MAS optimizers at ICML 2026.</p></div>
 <div class="nav"><a href="flexmarl.html">← FlexMARL: Rollout-Training Co-Design f</a><span class="sp"></span><a href="mas-orchestra-masbench.html">MAS-Orchestra + MASBENCH (Ke et al. 20 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

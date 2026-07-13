@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Mesh Memory Protocol (Xu 2026)</h1>
 <div class="pmeta"><span class="b">M213</span><span class="b y">arXiv 2026 (v0.2.3 specification, CC BY 4.0)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2604.19540" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">The Mesh Memory Protocol (MMP) is a proposed semantic-infrastructure layer that lets teams of LLM agents share, evaluate, and combine each other&#x27;s cognitive state across sessions, built from four composable primitives (CAT7, SVAF, inter-agent lineage, remix).</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Mesh Memory Protocol
+## TL;DR 
+- The Mesh Memory Protocol (MMP) is a proposed semantic-infrastructure layer that lets teams of LLM agents share, evaluate, and combine each other&#x27;s cognitive…
+## Problem
+- Cross-session agent-to-agent cognitive collaboration is unsolved: agents accept peer content wholesale, cannot trace claims to their source (so…
+## Insight
+- Cognitive state should be exchanged as structured blocks that the receiver evaluates field-by-field against its own role-indexed anchors, storing…
+## Method
+- Four composable primitives: CAT7 (a fixed seven-field schema for each Cognitive Memory Block), SVAF (role-indexed field-by-field…
+## Setup
+- A specification-style paper with reference deployments rather than benchmarks; described as specified, shipped, and running in production across…
+## Results
+- No benchmark numbers are reported; the verified contribution is the MMP v0.2.3 spec, its cross-session agent-to-agent cognitive-collaboration…
+## Challenges
+- Designing a fixed schema expressive enough for cognitive state, evaluating peer content per field, tracking provenance across content-hash keys, and…
+## Limitations
+- The paper provides no quantitative evaluation of the protocol&#x27;s effectiveness; claims of production use are described rather than empirically…
+</script></div>
 <div class="field"><h3>Background</h3><p>Existing agent protocols cover tool access and task delegation, but there is no standard semantic layer for agents to exchange cognitive state, and multi-agent setups often just run agents in parallel.</p></div><div class="field"><h3>Problem</h3><p>Cross-session agent-to-agent cognitive collaboration is unsolved: agents accept peer content wholesale, cannot trace claims to their source (so echoes of their own thinking look like new evidence), and retain memory based on retrieval rather than principled storage.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Real collaboration requires agents to selectively integrate peers&#x27; reasoning, know where each claim came from, and keep memory that stays relevant across sessions - a missing semantic-infrastructure layer.</p></div><div class="field"><h3>Key Insight</h3><p>Cognitive state should be exchanged as structured blocks that the receiver evaluates field-by-field against its own role-indexed anchors, storing only its own re-evaluated understanding (never the raw peer signal) with full provenance.</p></div><div class="field"><h3>Challenges</h3><p>Designing a fixed schema expressive enough for cognitive state, evaluating peer content per field, tracking provenance across content-hash keys, and preventing self-echo from being mistaken for external evidence.</p></div><div class="field"><h3>Method</h3><p>Four composable primitives: CAT7 (a fixed seven-field schema for each Cognitive Memory Block), SVAF (role-indexed field-by-field acceptance/rejection), inter-agent lineage (provenance via parent/ancestor content-hash keys), and remix (storing only the receiver&#x27;s role-evaluated understanding).</p></div><div class="field"><h3>Experimental Setup</h3><p>A specification-style paper with reference deployments rather than benchmarks; described as specified, shipped, and running in production across three reference deployments, each session an autonomous mesh peer with its own identity and memory.</p></div><div class="field"><h3>Results</h3><p>No benchmark numbers are reported; the verified contribution is the MMP v0.2.3 spec, its cross-session agent-to-agent cognitive-collaboration framing, the four-primitive design, and reference implementations published on npm (@sym-bot/sym, @sym-bot/mesh-channel).</p></div><div class="field"><h3>Limitations</h3><p>The paper provides no quantitative evaluation of the protocol&#x27;s effectiveness; claims of production use are described rather than empirically measured.</p></div><div class="field"><h3>Relation to the Field</h3><p>Extends single-agent memory work (MemGPT, A-MEM) to the multi-agent, cross-session setting, and answers the semantic-alignment gap identified by &#x27;Beyond Message Passing&#x27; by adding a memory/semantics layer above transport protocols like A2A and MCP.</p></div>
 <div class="nav"><a href="position.html">← Position: Collaborative Agentic AI Nee</a><span class="sp"></span><a href="a2a-protocol.html">A2A (Agent2Agent) Protocol (Google 202 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

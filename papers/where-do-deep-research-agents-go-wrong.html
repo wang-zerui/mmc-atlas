@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Where Do Deep-Research Agents Go Wrong? / TELBench + DRIFT (2026)</h1>
 <div class="pmeta"><span class="b">M228</span><span class="b y">arXiv 2026 (cs.AI; no formal venue listed)</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2606.02060" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Span-level error localization for long deep-research agent trajectories: TELBench is a 1,000-instance benchmark for spotting harmful error spans, and DRIFT is a claim-centric auditing framework that improves localization by up to 30 percentage points.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Where Do Deep-Research Agents Go Wrong? / TELBench + DRIFT
+## TL;DR 
+- Span-level error localization for long deep-research agent trajectories: TELBench is a 1,000-instance benchmark for spotting harmful error spans, and DRIFT is…
+## Problem
+- Outcome-only evaluation cannot localize where within a long trajectory an error originates, especially amid normal exploration, failed searches,…
+## Insight
+- Tracking agent claims and verifying them against trajectory evidence isolates the spans where unsupported or conflicting claims actually corrupt the…
+## Method
+- The authors gather 2,790 real trajectories (two agent frameworks, three backbone models, three benchmarks), convert logs into semantic spans with…
+## Setup
+- DRIFT is evaluated on TELBench for span-level error localization and first-error accuracy across model families and auditing frameworks.
+## Results
+- DRIFT improves span-level error localization and first-error accuracy by up to 30 percentage points across model families and auditing frameworks.
+## Challenges
+- Collecting and annotating long real trajectories, converting raw logs into semantic spans, and labeling which spans are genuinely harmful versus…
+## Limitations
+- Scope is deep-research agents specifically; annotation relies on LLM-assisted expert review which may carry bias, and the headline gain has not been…
+</script></div>
 <div class="field"><h3>Background</h3><p>Deep-research agents run long trajectories of search, tool use, and answer synthesis, and final-answer evaluation shows whether they succeeded but not which parts of the trajectory make the answer unreliable.</p></div><div class="field"><h3>Problem</h3><p>Outcome-only evaluation cannot localize where within a long trajectory an error originates, especially amid normal exploration, failed searches, tentative hypotheses, and harmless noise.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A process-level view that pinpoints harmful error spans is needed to diagnose and improve deep-research agent reliability beyond pass/fail metrics.</p></div><div class="field"><h3>Key Insight</h3><p>Tracking agent claims and verifying them against trajectory evidence isolates the spans where unsupported or conflicting claims actually corrupt the answer path, separating harmful errors from benign exploration.</p></div><div class="field"><h3>Challenges</h3><p>Collecting and annotating long real trajectories, converting raw logs into semantic spans, and labeling which spans are genuinely harmful versus harmless noise.</p></div><div class="field"><h3>Method</h3><p>The authors gather 2,790 real trajectories (two agent frameworks, three backbone models, three benchmarks), convert logs into semantic spans with LLM-assisted expert labeling to build TELBench (1,000 instances), and propose DRIFT, a claim-centric auditing framework that flags spans with unsupported or conflicting claims.</p></div><div class="field"><h3>Experimental Setup</h3><p>DRIFT is evaluated on TELBench for span-level error localization and first-error accuracy across model families and auditing frameworks.</p></div><div class="field"><h3>Results</h3><p>DRIFT improves span-level error localization and first-error accuracy by up to 30 percentage points across model families and auditing frameworks. The +30pp figure is from the abstract and is not independently audited (status verified_pending_audit).</p></div><div class="field"><h3>Limitations</h3><p>Scope is deep-research agents specifically; annotation relies on LLM-assisted expert review which may carry bias, and the headline gain has not been independently verified.</p></div><div class="field"><h3>Relation to the Field</h3><p>The span-level analogue of TraceElephant&#x27;s agent/step attribution, applied to single deep-research trajectories; part of the family-Z shift from outcome metrics to process-level failure diagnosis.</p></div>
 <div class="nav"><a href="seeing-the-whole-elephant.html">← Seeing the Whole Elephant / TraceEleph</a><span class="sp"></span><a href="more-capable-less-cooperative.html">More Capable, Less Cooperative? When L →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

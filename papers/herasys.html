@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>HeraSys (Li et al. 2026)</h1>
 <div class="pmeta"><span class="b">M223</span><span class="b y">ICML 2026</span><span class="b g">verified</span> <a href="https://icml.cc/virtual/2026/poster/66472" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">HeraSys is a cross-workflow serving system for concurrent multi-tenant agentic workflows that eliminates inter-workflow redundancy via structural node merging/reuse, plus load-aware joint scheduling and resource skewing with adaptive batching.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# HeraSys
+## TL;DR 
+- HeraSys is a cross-workflow serving system for concurrent multi-tenant agentic workflows that eliminates inter-workflow redundancy via structural node…
+## Problem
+- Existing systems focus on intra-workflow optimization and largely neglect the significant potential for inter-workflow optimization across…
+## Insight
+- Merging and reusing structurally identical nodes across workflows, combined with scheduling that weighs both inter- and intra-query priorities,…
+## Method
+- Structural node merging and reuse to remove cross-workflow redundancy; load-aware joint scheduling over inter/intra-query priorities; a resource…
+## Setup
+- Evaluated on concurrent multi-tenant agentic-workflow serving under strict latency guarantees against prior serving systems.
+## Results
+- Reduces P99 latency by up to 2.17x and increases serving throughput by up to 1.85x under strict latency guarantees; accepted at ICML 2026.
+## Challenges
+- Detecting reusable structure across heterogeneous workflows, and jointly scheduling under load to reduce tail latency without inflating average…
+## Limitations
+- Cross-workflow gains depend on structural overlap between concurrently served workflows; benefits are strongest under multi-tenant load with…
+</script></div>
 <div class="field"><h3>Background</h3><p>LLM serving has moved from handling single requests toward managing many concurrent, multi-tenant agentic workflows.</p></div><div class="field"><h3>Problem</h3><p>Existing systems focus on intra-workflow optimization and largely neglect the significant potential for inter-workflow optimization across concurrently served workflows.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Different concurrent workflows share structural nodes and computation, so a serving system aware of cross-workflow structure could remove redundancy and schedule globally.</p></div><div class="field"><h3>Key Insight</h3><p>Merging and reusing structurally identical nodes across workflows, combined with scheduling that weighs both inter- and intra-query priorities, unlocks end-to-end gains invisible to single-workflow optimizers.</p></div><div class="field"><h3>Challenges</h3><p>Detecting reusable structure across heterogeneous workflows, and jointly scheduling under load to reduce tail latency without inflating average latency.</p></div><div class="field"><h3>Method</h3><p>Structural node merging and reuse to remove cross-workflow redundancy; load-aware joint scheduling over inter/intra-query priorities; a resource skewing mechanism with adaptive batching and pipeline decomposition to cut tail latency.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on concurrent multi-tenant agentic-workflow serving under strict latency guarantees against prior serving systems.</p></div><div class="field"><h3>Results</h3><p>Reduces P99 latency by up to 2.17x and increases serving throughput by up to 1.85x under strict latency guarantees; accepted at ICML 2026. Verified via ICML 2026 poster abstract.</p></div><div class="field"><h3>Limitations</h3><p>Cross-workflow gains depend on structural overlap between concurrently served workflows; benefits are strongest under multi-tenant load with shareable nodes.</p></div><div class="field"><h3>Relation to the Field</h3><p>Elevates serving optimization from the single-workflow scope of Parrot/SGLang to the inter-workflow scope; complements cross-model KV-sharing work like PrefillShare and RelayCaching.</p></div>
 <div class="nav"><a href="relaycaching.html">← RelayCaching (Geng et al. 2026)</a><span class="sp"></span><a href="software-defined-agentic-serving.html">Software-Defined Agentic Serving (Agar →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>

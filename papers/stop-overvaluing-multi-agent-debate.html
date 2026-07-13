@@ -77,6 +77,15 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg)}
+.mm-src{display:none}
+svg.markmap{display:block}
+svg.markmap text{fill:var(--ink);font-family:var(--sans)}
+svg.markmap a{fill:var(--accent)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -94,6 +103,28 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Stop Overvaluing Multi-Agent Debate / Heter-MAD (Wang et al. 2025)</h1>
 <div class="pmeta"><span class="b">M043</span><span class="b y">arXiv 2025</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2502.08788" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A position/evaluation paper arguing multi-agent debate is overvalued: across 5 MAD methods x 9 benchmarks x 4 models it often fails to beat CoT/self-consistency at far higher compute, but model heterogeneity (Heter-MAD) recovers gains.</div>
+<div class="mm-card">
+<div class="mm-head"><span>Mind map</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><svg class="markmap" style="width:100%;height:340px"></svg></div>
+<script type="text/template" class="mm-src">
+# Stop Overvaluing Multi-Agent Debate / Heter-MAD
+## TL;DR 
+- A position/evaluation paper arguing multi-agent debate is overvalued: across 5 MAD methods x 9 benchmarks x 4 models it often fails to beat…
+## Problem
+- Does MAD, in its typical single-model form, actually justify its large compute cost relative to simple single-agent baselines?
+## Insight
+- MAD frequently underperforms single-agent CoT and self-consistency despite consuming much more compute; introducing model heterogeneity acts as a…
+## Method
+- Systematic evaluation of 5 representative MAD methods across 9 benchmarks using 4 foundational models, benchmarked against Chain-of-Thought and…
+## Setup
+- The 5x9x4 evaluation grid comparing MAD to CoT/SC baselines, plus ablations enabling heterogeneous-model access within MAD frameworks.
+## Results
+- MAD frequently fails to outperform single-agent CoT/SC at higher compute, while heterogeneous-model access (Heter-MAD) consistently boosts MAD…
+## Challenges
+- Establishing fair baselines and consistent setups across methods, and isolating heterogeneity as the effective ingredient.
+## Limitations
+- A position paper focused on evaluation reform; the abstract reports structural figures rather than precise gains, and heterogeneity benefits depend…
+</script></div>
 <div class="field"><h3>Background</h3><p>Multi-agent debate aims to improve LLM factuality and reasoning, but is often evaluated with narrow benchmarks, weak baselines, and inconsistent setups.</p></div><div class="field"><h3>Problem</h3><p>Does MAD, in its typical single-model form, actually justify its large compute cost relative to simple single-agent baselines?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Flawed evaluation practices may have inflated MAD&#x27;s perceived value, and a systematic study is needed to reset expectations and identify what actually helps.</p></div><div class="field"><h3>Key Insight</h3><p>MAD frequently underperforms single-agent CoT and self-consistency despite consuming much more compute; introducing model heterogeneity acts as a &#x27;universal antidote&#x27; that consistently improves MAD frameworks.</p></div><div class="field"><h3>Challenges</h3><p>Establishing fair baselines and consistent setups across methods, and isolating heterogeneity as the effective ingredient.</p></div><div class="field"><h3>Method</h3><p>Systematic evaluation of 5 representative MAD methods across 9 benchmarks using 4 foundational models, benchmarked against Chain-of-Thought and Self-Consistency, then augmenting MAD with heterogeneous (mixed) models (Heter-MAD).</p></div><div class="field"><h3>Experimental Setup</h3><p>The 5x9x4 evaluation grid comparing MAD to CoT/SC baselines, plus ablations enabling heterogeneous-model access within MAD frameworks.</p></div><div class="field"><h3>Results</h3><p>MAD frequently fails to outperform single-agent CoT/SC at higher compute, while heterogeneous-model access (Heter-MAD) consistently boosts MAD (confirmed in abstract); no single headline accuracy figure in the abstract.</p></div><div class="field"><h3>Limitations</h3><p>A position paper focused on evaluation reform; the abstract reports structural figures rather than precise gains, and heterogeneity benefits depend on model availability.</p></div><div class="field"><h3>Relation to the Field</h3><p>Extends the MAD skepticism of Should we be going MAD? (M042) with a larger grid, and its pro-heterogeneity conclusion aligns with Co-Failure Ceiling&#x27;s (M135) low-correlation-ensemble argument while contrasting Self-MoA&#x27;s single-model stance (M036).</p></div>
 <div class="nav"><a href="llm-ensemble-survey.html">← LLM Ensemble Survey (Chen et al. 2025)</a><span class="sp"></span><a href="beyond-majority-voting.html">Beyond Majority Voting (Ai et al. 2026 →</a></div></article></div>
 </div></div>
@@ -129,6 +160,31 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
    tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js"></script>
+<script>
+(function(){
+ function draw(){
+  if(!(window.markmap&&window.markmap.Markmap&&window.markmap.Transformer)){return setTimeout(draw,120);}
+  var T=new window.markmap.Transformer();
+  document.querySelectorAll('.mm-card').forEach(function(card){
+    var src=card.querySelector('.mm-src'), svg=card.querySelector('svg.markmap');
+    if(!src||!svg||svg.dataset.done)return;
+    try{var r=T.transform(src.textContent.trim());
+      window.markmap.Markmap.create(svg,{autoFit:true,duration:200,paddingX:16},r.root);
+      svg.dataset.done='1';}catch(e){svg.outerHTML='<pre style="white-space:pre-wrap;color:var(--mut);font-size:13px">'+src.textContent+'</pre>';}
+  });
+ }
+ draw();
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
 })();
 </script>
 </body></html>
