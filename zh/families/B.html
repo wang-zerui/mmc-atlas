@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B. 集成与聚合 — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../families/B.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 篇论文 · 10 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
+<article><h1>B. 集成与聚合</h1>
+<div class="pmeta"><span class="b">20 篇论文</span></div>
+<div class="tldr">把多个输出融合、排序或投票成一个。</div>
+<div class="summ-body"><p><strong>基础方法。</strong> self-consistency (<a href="../papers/self-consistency.html">M017</a>) 与 More Agents (<a href="../papers/more-agents-is-all-you-need.html">M018</a>) 进行投票；LLM-Blender (<a href="../papers/llm-blender.html">M009</a>)<br>先排序再融合；Mixture-of-Agents (<a href="../papers/mixture-of-agents.html">M001</a>) 在聚合器下分层部署提议者<br>（开源模型 MoA 65.1% vs GPT-4o 57.5%）。Logit/分布融合（DeePEn <a href="../papers/deepen.html">M037</a>、<br>PackLLM <a href="../papers/packllm.html">M038</a>、FuseLLM <a href="../papers/fusellm.html">M039</a>）可跨词表工作。<strong>2026 SOTA。</strong> 聚合<br>获得了理论支撑与更精细的多样性核算：Beyond Majority Voting（<a href="../papers/beyond-majority-voting.html">M132</a>，ICML&#x27;26）<br>利用一阶+二阶信息（Optimal Weight / Inverse Surprising Popularity）<br>以带保证的方式击败等权投票；RL-Focal（<a href="../papers/rl-focal.html">M218</a>，ICML&#x27;26）为每个查询学习<br>一个误差多样化的集成 + 一个解决冲突的融合智能体（较最佳单模型 +8.48%）；<br>Self-Consistent MoA (<a href="../papers/self-consistent-mixture-of-agents.html">M117</a>) 主张聚合单元应是<br>推理*轨迹*，且单模型扰动轨迹优于异构<br>池（一种&quot;聚合悖论&quot;）；Structured Message Passing (<a href="../papers/structured-message-passing-for-multi-llm-aggrega.html">M119</a>) 使用带<br>非对称阻尼的因子图来屏蔽强锚点（token 削减 97%）。有争议的<br>杠杆：Self-MoA (<a href="../papers/self-moa.html">M036</a>) 已表明混合可能*有害*（最佳模型自混合 +6.6%），<br>而 Are-More-Calls (<a href="../papers/are-more-llm-calls-all-you-need.html">M040</a>) 证明投票在调用次数上是非单调的——这些主题被<br>2026 年的协同失败工作（§4）所推广。</p></div>
+<div class="field"><h3>本族论文</h3></div>
+<div class="grid"><a class="card" href="../papers/self-consistent-mixture-of-agents.html"><div class="w">Self-Consistent Mixture of Agents / Trace-Level Synthesis (Fadnavis et al. 2026)</div><div class="t">主张聚合的单元应当是推理 TRACE（轨迹）而非最终答案：一个读取完整轨迹的聚合器即使在全体一致同意的情况下也能恢复出正确解（即“聚合悖论”），并且单模型扰动轨迹优于异质模型池。</div><div class="badges"><span class="b">M117</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/mixture-of-complementary-agents.html"><div class="w">Mixture of Complementary Agents (Zhang et al. 2026)</div><div class="t">将面向 N-to-1 MoA summarizer 的 proposer 选择重构为一个组合特征选择问题，其中一个模型的价值在于它与其他模型的互补性，并通过在小规模标注集上衡量的贪心选择来求解。</div><div class="badges"><span class="b">M118</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/structured-message-passing-for-multi-llm-aggrega.html"><div class="w">Structured Message Passing for Multi-LLM Aggregation (Mehrabi et al. 2026)</div><div class="t">通过一个二部 factor graph 加上受纠错启发的 message passing，在语义层面聚合领域专用 LLM，使用非对称阻尼来保护强“anchor”模型不受弱成员影响，且在精炼过程中不产生额外的 LLM 调用。</div><div class="badges"><span class="b">M119</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/attention-moa.html"><div class="w">Attention-MoA (Wen et al. 2026)</div><div class="t">一个 Mixture-of-Agents 变体，增加了 Inter-Agent Semantic Attention 以及跨层残差合成和自适应提前停止，以抑制深层 MoA 中的信息损失，用小型开源模型在 AlpacaEval 2.0 上达到 91.15% 的 LC 胜率、在 MT-Bench 上达到 8.83。</div><div class="badges"><span class="b">M134</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/co-failure-ceiling.html"><div class="w">Co-Failure Ceiling: When Does Combining Models Help? (Chen 2026)</div><div class="t">一篇跨 67 个前沿模型的批评性研究，主张 routing、voting、cascades 和 MoA 的收益受限于 &#x27;beta&#x27;，即所有模型在同一 query 上一起失败的比率；平均成对误差相关性无法识别 beta，且在没有强的 query 级路由信号时，组合很少能超过单个最优模型。</div><div class="badges"><span class="b">M135</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/self-moa.html"><div class="w">Self-MoA / Rethinking Mixture-of-Agents (Li et al. 2025)</div><div class="t">一个关于混合的负面结果：聚合来自单一最佳模型的重复采样（Self-MoA）胜过混合了不同 LLM 的标准 Mixture-of-Agents。</div><div class="badges"><span class="b">M036</span><span class="b y">arXiv 2025</span></div></a><a class="card" href="../papers/llm-ensemble-survey.html"><div class="w">LLM Ensemble Survey (Chen et al. 2025)</div><div class="t">首个关于 LLM 集成的系统性综述，按时机将方法组织为 ensemble-before-、during- 和 after-inference 三类，并配有一个精心整理的资源仓库。</div><div class="badges"><span class="b">M041</span><span class="b y">arXiv 2025 (ACL&#x27;25 findings)</span></div></a><a class="card" href="../papers/stop-overvaluing-multi-agent-debate.html"><div class="w">Stop Overvaluing Multi-Agent Debate / Heter-MAD (Wang et al. 2025)</div><div class="t">一篇立场/评测论文，主张 multi-agent debate 被高估：在 5 种 MAD 方法 x 9 个基准 x 4 个模型的组合下，它往往无法以远高得多的算力超越 CoT/self-consistency，但模型异质性 (Heter-MAD) 能重新带来收益。</div><div class="badges"><span class="b">M043</span><span class="b y">arXiv 2025</span></div></a><a class="card" href="../papers/beyond-majority-voting.html"><div class="w">Beyond Majority Voting (Ai et al. 2026)</div><div class="t">一个免训练的聚合框架，通过两种算法 Optimal Weight 和 Inverse Surprising Popularity 同时利用一阶和二阶信息，在带有理论保证的情况下超越等权 majority voting。</div><div class="badges"><span class="b">M132</span><span class="b y">ICML&#x27;26</span></div></a><a class="card" href="../papers/llmboost.html"><div class="w">LLMBoost (Chen et al. 2025)</div><div class="t">一个 boosting 风格的集成微调框架，在误差抑制的链式训练目标下，通过 cross-model attention 融合前序模型的隐状态，并采用近乎并行的逐层流水线推理，超越了黑盒的输出投票。</div><div class="badges"><span class="b">M133</span><span class="b y">arXiv 2025</span></div></a><a class="card" href="../papers/mixture-of-agents.html"><div class="w">Mixture-of-Agents (Wang et al. 2024)</div><div class="t">Mixture-of-Agents (MoA) 将多个 LLM 智能体分层堆叠，每个智能体都以上一层的全部输出为条件进行生成，其中一个纯开源模型组成的集成在 AlpacaEval 2.0 上超越了 GPT-4 Omni。</div><div class="badges"><span class="b">M001</span><span class="b y">arXiv 2024 (COLM&#x27;24)</span></div></a><a class="card" href="../papers/more-agents-is-all-you-need.html"><div class="w">More Agents Is All You Need / Agent Forest (Li et al. 2024)</div><div class="t">一种简单的采样加投票方法（「Agent Forest」）表明 LLM 性能会随实例化的智能体数量而扩展，且这一增益与其他增强技术正交。</div><div class="badges"><span class="b">M018</span><span class="b y">TMLR 2024</span></div></a><a class="card" href="../papers/deepen.html"><div class="w">DeePEn (Huang et al. 2024)</div><div class="t">DeePEn 是一种免训练的集成方法，通过将异质 LLM 逐步的概率分布映射到一个共享的「relative representation」空间来解决词表不匹配问题，从而实现融合。</div><div class="badges"><span class="b">M037</span><span class="b y">NeurIPS 2024</span></div></a><a class="card" href="../papers/packllm.html"><div class="w">PackLLM (Mavromatis et al. 2024)</div><div class="t">PackLLM（「Pack of LLMs」）在测试时融合任意用户指定的 LLM，根据每个模型在输入提示上最小化 perplexity 的程度对其加权，无需任何训练好的融合模块。</div><div class="badges"><span class="b">M038</span><span class="b y">arXiv 2024</span></div></a><a class="card" href="../papers/fusellm.html"><div class="w">FuseLLM / Knowledge Fusion of LLMs (Wan et al. 2024)</div><div class="t">FuseLLM 通过轻量级持续训练蒸馏多个预训练源 LLM 的生成式概率分布，将它们的能力整合进单一目标模型，即使架构不同也可行。</div><div class="badges"><span class="b">M039</span><span class="b y">ICLR 2024</span></div></a><a class="card" href="../papers/are-more-llm-calls-all-you-need.html"><div class="w">Are More LLM Calls All You Need? (Chen et al. 2024)</div><div class="t">一项 scaling-laws 研究表明，majority voting 聚合（Vote 和 Filter-Vote）在 LM 调用次数上是非单调的：当任务同时混合了简单和困难查询时，准确率会先升后降。</div><div class="badges"><span class="b">M040</span><span class="b y">NeurIPS 2024</span></div></a><a class="card" href="../papers/should-we-be-going-mad.html"><div class="w">Should we be going MAD? (Smit et al. 2023)</div><div class="t">一项负面基准评测研究，发现 multi-agent debate (MAD) 并不能可靠地超过 self-consistency 或多路径集成，且对超参数高度敏感。</div><div class="badges"><span class="b">M042</span><span class="b y">ICML 2024</span></div></a><a class="card" href="../papers/smoa.html"><div class="w">SMoA — Sparse Mixture-of-Agents (Li et al. 2024)</div><div class="t">SMoA 将 sparse mixture-of-experts 的原则应用于 Mixture-of-Agents，通过 Response Selection 与 Early Stopping 加上各异的角色描述来稀疏化 agent 间的信息流，改善了 dense MoA 的性能-效率平衡。</div><div class="badges"><span class="b">M120</span><span class="b y">arXiv 2024</span></div></a><a class="card" href="../papers/llm-blender.html"><div class="w">LLM-Blender (Jiang et al. 2023)</div><div class="t">LLM-Blender 通过先对候选输出进行成对排序（PairRanker），再将 top-k 生成式融合为更优答案（GenFuser），实现对开源 LLM 的集成。</div><div class="badges"><span class="b">M009</span><span class="b y">ACL 2023</span></div></a><a class="card" href="../papers/self-consistency.html"><div class="w">Self-Consistency (Wang et al. 2022)</div><div class="t">self-consistency 从单一模型中采样多条多样化的 chain-of-thought 推理路径，并返回 majority voting 得出的答案，是一种同质的单模型集成。</div><div class="badges"><span class="b">M017</span><span class="b y">ICLR 2023</span></div></a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+</body></html>

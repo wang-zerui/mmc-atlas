@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G. 通信与记忆协议 — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../families/G.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 篇论文 · 10 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
+<article><h1>G. 通信与记忆协议</h1>
+<div class="pmeta"><span class="b">9 篇论文</span></div>
+<div class="tldr">规定实例之间如何传消息、共享状态、暴露工具的标准。</div>
+<div class="summ-body"><p><strong>基础方法。</strong> MCP (<a href="../papers/model-context-protocol.html">M020</a>) 标准化了 agent↔tool；A2A (<a href="../papers/a2a-protocol.html">M095</a>) 标准化 agent↔agent；一篇综述<br>(<a href="../papers/survey-of-agent-interoperability-protocols.html">M096</a>) 梳理了 MCP/ACP/A2A/ANP；记忆基底 MemGPT (<a href="../papers/memgpt.html">M098</a>) 与 A-MEM<br>(<a href="../papers/a-mem.html">M099</a>)。<strong>2026 SOTA。</strong> Beyond-Message-Passing (<a href="../papers/beyond-message-passing.html">M097</a>) 形式化了一个 3 层<br>（comm/syntax/semantics）分类法，并表明当前协议对*语义*<br>对齐支持不足（澄清/修复被以技术债的形式推给了 prompt）；<br>Web-of-Agents（<a href="../papers/position.html">M212</a>，ICML&#x27;26 立场文）主张需要最小化的共享标准<br>以避免碎片化；ProtocolBench (<a href="../papers/protocolbench.html">M211</a>) 隔离出协议效应（完成<br>时间差异最高达 36.5%）——不过其 ICLR&#x27;26 状态仍在审稿中，尚未<br>确认；Mesh Memory (<a href="../papers/mesh-memory-protocol.html">M213</a>) 提出跨会话的认知共享。协议<br>在语法上正走向成熟；尚未填补的缺口是语义。</p></div>
+<div class="field"><h3>本族论文</h3></div>
+<div class="grid"><a class="card" href="../papers/beyond-message-passing.html"><div class="w">Beyond Message Passing: A Semantic View of Agent Communication Protocols (Yuan et al. 2026)</div><div class="t">本文将 agent 通信 protocol 组织为受 Shannon-Weaver 和 Grice 语用学启发的三层分类体系（communication、syntactic、semantic），并指出当前 protocol 在传输/语法层已趋成熟，但对澄清与修复等语义对齐的支持严重不足。</div><div class="badges"><span class="b">M097</span><span class="b y">arXiv 2026 (preprint)</span></div></a><a class="card" href="../papers/protocolbench.html"><div class="w">ProtocolBench / ProtocolRouter (Du, Zhu et al. 2025/2026)</div><div class="t">ProtocolBench 通过在保持 LLM、prompt 和硬件不变的同时改变 protocol（A2A/ACP/ANP/Agora）来隔离 agent 通信 protocol 的影响，而 ProtocolRouter 是一个可学习的按模块路由器，从需求和运行时信号中选择 protocol。</div><div class="badges"><span class="b">M211</span><span class="b y">ICML 2026 (accepted per arXiv v3, Jun 2026)</span></div></a><a class="card" href="../papers/position.html"><div class="w">Position: Collaborative Agentic AI Needs Interoperability Across Ecosystems (Sharma et al. 2026)</div><div class="t">这篇 ICML 2026 立场论文主张，协作式 agentic AI 需要最小化的共享标准以避免碎片化为互不兼容的生态系统，并提出以四个组件构建的“Web of Agents”作为最小化的架构基础。</div><div class="badges"><span class="b">M212</span><span class="b y">ICML 2026 (position paper)</span></div></a><a class="card" href="../papers/mesh-memory-protocol.html"><div class="w">Mesh Memory Protocol (Xu 2026)</div><div class="t">Mesh Memory Protocol (MMP) 是一个被提出的语义基础设施层，让 LLM agent 团队能够跨会话共享、评估并组合彼此的认知状态，由四个可组合原语（CAT7、SVAF、inter-agent lineage、remix）构成。</div><div class="badges"><span class="b">M213</span><span class="b y">arXiv 2026 (v0.2.3 specification, CC BY 4.0)</span></div></a><a class="card" href="../papers/a2a-protocol.html"><div class="w">A2A (Agent2Agent) Protocol (Google 2025)</div><div class="t">A2A 是一个开放的点对点 protocol，让基于不同 framework、由不同厂商构建的 AI agent 能够相互发现、委派任务并共享结果，而无需暴露各自的内部 memory、工具或逻辑。</div><div class="badges"><span class="b">M095</span><span class="b y">Open standard (Google, Apr 2025); donated to the Linux Foundation Jun 2025</span></div></a><a class="card" href="../papers/survey-of-agent-interoperability-protocols.html"><div class="w">Survey of Agent Interoperability Protocols (Ehtesham et al. 2025)</div><div class="t">一篇综述，从交互、发现、通信和安全四个维度对比四种新兴的 agent 互操作性 protocol——MCP、ACP、A2A 和 ANP——并提出一条分阶段的采用路线图，用于构建可互操作的 LLM-agent 生态系统。</div><div class="badges"><span class="b">M096</span><span class="b y">arXiv 2025 (preprint)</span></div></a><a class="card" href="../papers/a-mem.html"><div class="w">A-MEM: Agentic Memory for LLM Agents (Xu et al. 2025)</div><div class="t">A-MEM 是一种受 Zettelkasten 启发的 agentic memory，其中每条 memory 都是一个原子笔记，带有 LLM 生成的关键词、标签和上下文描述，动态链接到相关笔记，并允许随新 memory 到来而演进——超越了静态的 RAG 检索。</div><div class="badges"><span class="b">M099</span><span class="b y">NeurIPS 2025</span></div></a><a class="card" href="../papers/model-context-protocol.html"><div class="w">Model Context Protocol (Anthropic 2024)</div><div class="t">MCP 是一个开放的 JSON-RPC 标准，被比喻为“AI 的 USB-C 接口”，通过统一的 client-server 接口将 AI 应用连接到外部数据源、工具和工作流。</div><div class="badges"><span class="b">M020</span><span class="b y">Open standard (Anthropic, Nov 2024); donated to the Agentic AI Foundation (AAIF) Dec 2025</span></div></a><a class="card" href="../papers/memgpt.html"><div class="w">MemGPT (Packer et al. 2023)</div><div class="t">MemGPT 将操作系统的内存层级思想应用于 LLM，让模型通过 function call 自我管理分层 memory——固定的 main context（类似 RAM）加上外部存储（类似 disk）——从而表现得仿佛拥有远大于实际的 context window。</div><div class="badges"><span class="b">M098</span><span class="b y">arXiv 2023 (later COLM 2024); now the Letta framework</span></div></a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+</body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>E. 验证门控与 LLM-as-Judge — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../families/E.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 篇论文 · 10 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
+<article><h1>E. 验证门控与 LLM-as-Judge</h1>
+<div class="pmeta"><span class="b">19 篇论文</span></div>
+<div class="tldr">由一个模型对另一个模型的输出打分、验证或把关。</div>
+<div class="summ-body"><p><strong>基础方法。</strong> 训练好的验证器为 best-of-N 把关（ORM <a href="../papers/training-verifiers-to-solve-math-word-problems.html">M071</a>、PRM <a href="../papers/let-s-verify-step-by-step.html">M070</a>、GenRM <a href="../papers/generative-verifiers.html">M072</a>）；<br>计算最优的验证器搜索使一个小模型得以击败一个大 14× 的模型 (<a href="../papers/scaling-llm-test-time-compute-optimally.html">M078</a>)；<br>LLM-as-judge 达到 &gt;80% 的人类一致率 (<a href="../papers/llm-as-a-judge.html">M016</a>)，但存在位置/冗长偏差<br>(<a href="../papers/large-language-models-are-not-fair-evaluators.html">M076</a>)，且在困难的客观配对上接近随机（<a href="../papers/judgebench.html">M077</a>，JudgeBench）；由不相交的小型<br>评判员组成的评审团比单个大评判员更便宜且更优（<a href="../papers/replacing-judges-with-juries.html">M075</a>，PoLL）。<strong>2026 SOTA。</strong> 有两步<br>举措。(i) *智能体化验证*：Agent-as-Judge（综述 <a href="../papers/agent-as-a-judge-survey.html">M184</a>；AJ-Bench <a href="../papers/aj-bench.html">M185</a>，<br>ACL&#x27;26）、环境感知的生成式 PRM（DataPRM <a href="../papers/dataprm.html">M186</a>，KDD&#x27;26：ScienceAgentBench<br>+7.21%）以及 RL 训练的审议式验证器（AgentV-RL <a href="../papers/agentv-rl.html">M187</a>，ACL&#x27;26：<br>4B 以 25.2% 的优势击败 SOTA ORM）将评判员变成使用工具的智能体。(ii) *可靠性<br>审计*：RewardBench 2（<a href="../papers/rewardbench-2.html">M183</a>，ICLR&#x27;26）难度提升约 20pt，却仍能预测下游<br>BoN/PPO；但 Reliability-without-Validity（<a href="../papers/reliability-without-validity.html">M181</a>，约 54.1 万条判断）表明精确匹配<br>一致率相比经过随机校正的 κ <strong>将评判员质量夸大了 33–41pp</strong>，使排名<br>最多偏移 14 个位次；Judging-the-Judges（<a href="../papers/judging-the-judges.html">M182</a>，TMLR&#x27;26）表明一个去偏的<br>中层评判员以约 15× 更低的成本击败前沿评判员（风格偏差 &gt;&gt; 位置偏差）；<br>CARE (<a href="../papers/care.html">M188</a>) 与 CyclicJudge (<a href="../papers/cyclicjudge.html">M189</a>) 修复了受混淆/昂贵的评审团。验证<br>是最站得住脚的*质量*杠杆——但需注意的是，评判员可靠性如今<br>本身也是一个被度量的、且往往被高估的量。</p></div>
+<div class="field"><h3>本族论文</h3></div>
+<div class="grid"><a class="card" href="../papers/reliability-without-validity.html"><div class="w">Reliability without Validity (Norman et al. 2026)</div><div class="t">迄今规模最大的 LLM-as-judge 审计表明，相比经机遇校正的一致性，exact-match 一致性会夸大裁判的表面质量，因此一个裁判可能可靠却无效。</div><div class="badges"><span class="b">M181</span><span class="b y">arXiv preprint (no venue confirmed)</span></div></a><a class="card" href="../papers/judging-the-judges.html"><div class="w">Judging the Judges (Soumik 2026, TMLR)</div><div class="t">一项跨裁判和提供方系列的去偏策略系统性对比发现，一个经过去偏的中端裁判能以约 15x 更低的成本击败前沿裁判，且风格偏差比位置偏差更为主导。</div><div class="badges"><span class="b">M182</span><span class="b y">TMLR 2026</span></div></a><a class="card" href="../papers/rewardbench-2.html"><div class="w">RewardBench 2 (Malik et al. 2026, ICLR&#x27;26)</div><div class="t">一个更难、多技能、基于准确率的 reward-model 基准，构建于全新采集的人类 prompt 之上，模型得分比 RewardBench-1 低约 20 分，却与下游 best-of-N 和 PPO 表现强相关。</div><div class="badges"><span class="b">M183</span><span class="b y">ICLR 2026</span></div></a><a class="card" href="../papers/agent-as-a-judge-survey.html"><div class="w">Agent-as-a-Judge Survey (You et al. 2026)</div><div class="t">首篇全面综述，梳理了从 LLM-as-Judge 到 Agent-as-Judge 的转变——agentic 裁判通过加入规划、工具增强的验证、多智能体协作和持久记忆，来克服单次裁判的偏差。</div><div class="badges"><span class="b">M184</span><span class="b y">arXiv preprint (Jan 2026)</span></div></a><a class="card" href="../papers/aj-bench.html"><div class="w">AJ-Bench (Shi et al. 2026, ACL&#x27;26 Findings)</div><div class="t">一个面向 Agent-as-a-Judge 的环境感知基准，覆盖搜索、数据和 GUI 领域，通过工具与环境交互来测试裁判的信息获取、状态验证和过程验证能力。</div><div class="badges"><span class="b">M185</span><span class="b y">ACL 2026 Findings</span></div></a><a class="card" href="../papers/dataprm.html"><div class="w">DataPRM (Qiu et al. 2026, KDD&#x27;26)</div><div class="t">一种具备环境感知能力的生成式过程奖励模型（PRM），作为主动 verifier 与环境交互以捕捉静默错误，并采用反思感知的三元奖励用于智能体式数据分析。</div><div class="badges"><span class="b">M186</span><span class="b y">KDD 2026</span></div></a><a class="card" href="../papers/agentv-rl.html"><div class="w">AgentV-RL / Agentic Verifier (Zhang et al. 2026, ACL&#x27;26)</div><div class="t">将 reward modeling 重构为一个多轮、工具增强的审议过程，包含前向和后向验证智能体，并通过 RL 训练，使 verifier 本身能在并行与串行两种 test-time scaling 下于测试时扩展。</div><div class="badges"><span class="b">M187</span><span class="b y">ACL 2026</span></div></a><a class="card" href="../papers/care.html"><div class="w">CARE: Confounder-Aware Aggregation (Zhao et al. 2026)</div><div class="t">一种 judge 集成聚合方法，将分数建模为真实质量加上共享的混杂因子（冗长度、风格），在无需真值标签的情况下将信号与偏差分离；朴素的多数投票/平均投票可能会放大相关联的 judge 误差。</div><div class="badges"><span class="b">M188</span><span class="b y">arXiv preprint</span></div></a><a class="card" href="../papers/cyclicjudge.html"><div class="w">CyclicJudge (Zhu et al. 2026)</div><div class="t">一种将 judge 评审团轮询式（round-robin）分配到各场景的方案，以单个 judge 的成本精确恢复出全评审团的平均分，并由一个基于场景、生成、judge 和残差因子的方差分解作为支撑。</div><div class="badges"><span class="b">M189</span><span class="b y">arXiv preprint</span></div></a><a class="card" href="../papers/generative-verifiers.html"><div class="w">Generative Verifiers / GenRM (Zhang et al. 2024)</div><div class="t">用 next-token prediction 训练 verifier（借助 chain-of-thought 以生成方式验证），在 best-of-N 上优于判别式 reward model 和 LLM-as-judge。</div><div class="badges"><span class="b">M072</span><span class="b y">ICLR 2025</span></div></a><a class="card" href="../papers/judgebench.html"><div class="w">JudgeBench (Tan et al. 2024)</div><div class="t">在可客观核验但具有挑战性的回复对上，即便是强大的 LLM judge 也仅略高于随机水平，暴露出其可靠性的局限。</div><div class="badges"><span class="b">M077</span><span class="b y">ICLR 2025</span></div></a><a class="card" href="../papers/scaling-llm-test-time-compute-optimally.html"><div class="w">Scaling LLM Test-Time Compute Optimally (Snell et al. 2024)</div><div class="t">计算最优的 PRM-verifier 搜索结合顺序修订，能让一个小模型在 FLOPs 匹配的条件下击败大 14 倍的模型，通过 verifier 而非参数量来把关质量。</div><div class="badges"><span class="b">M078</span><span class="b y">arXiv preprint (UC Berkeley / Google DeepMind); ICLR 2025</span></div></a><a class="card" href="../papers/let-s-verify-step-by-step.html"><div class="w">Let&#x27;s Verify Step by Step / PRM800K (Lightman et al. 2023)</div><div class="t">对每一步推理进行打分的 process reward model，是比 outcome reward model 更强的 best-of-N 选择 verifier。</div><div class="badges"><span class="b">M070</span><span class="b y">arXiv preprint (OpenAI); ICLR 2024</span></div></a><a class="card" href="../papers/self-taught-evaluators.html"><div class="w">Self-Taught Evaluators (Wang et al. 2024)</div><div class="t">一个迭代循环在合成的对比输出上训练 LLM-as-judge，完全不需要人类偏好标注，其表现可与用人类数据训练的 reward model 相媲美。</div><div class="badges"><span class="b">M073</span><span class="b y">arXiv preprint (Meta FAIR)</span></div></a><a class="card" href="../papers/criticgpt.html"><div class="w">CriticGPT / LLM Critics Help Catch LLM Bugs (McAleese et al., OpenAI 2024)</div><div class="t">一个经 RLHF 训练的 critic 模型为代码撰写自然语言评述，训练员更偏好这些评述而非人类评述，且能发现更多 bug；人类+critic 组队的幻觉比 critic 单独工作时更少。</div><div class="badges"><span class="b">M074</span><span class="b y">arXiv preprint (OpenAI)</span></div></a><a class="card" href="../papers/replacing-judges-with-juries.html"><div class="w">Replacing Judges with Juries / Panel of LLM evaluators (PoLL) (Verga et al. 2024)</div><div class="t">由若干来自不同模型家族的较小 judge 组成的评审团，与人类的相关性更好、成本远低，且比单个大型 judge 的模型内偏见更少。</div><div class="badges"><span class="b">M075</span><span class="b y">arXiv preprint (Cohere)</span></div></a><a class="card" href="../papers/large-language-models-are-not-fair-evaluators.html"><div class="w">Large Language Models are not Fair Evaluators (Wang et al. 2023)</div><div class="t">LLM-as-judge 的裁决存在强烈的位置偏见，仅重排候选项的顺序就能翻转结果；多证据校准与位置平衡校准可缓解这一问题。</div><div class="badges"><span class="b">M076</span><span class="b y">ACL 2024</span></div></a><a class="card" href="../papers/llm-as-a-judge.html"><div class="w">LLM-as-a-Judge / MT-Bench &amp; Chatbot Arena (Zheng et al. 2023)</div><div class="t">强大的 LLM 评判者可以大规模地近似人类偏好，但会表现出位置偏差、冗长偏差和自我增强偏差。</div><div class="badges"><span class="b">M016</span><span class="b y">NeurIPS 2023 Datasets &amp; Benchmarks Track</span></div></a><a class="card" href="../papers/training-verifiers-to-solve-math-word-problems.html"><div class="w">Training Verifiers to Solve Math Word Problems (Cobbe et al. 2021, GSM8K)</div><div class="t">由训练好的 verifier（outcome reward model）进行 best-of-N 选择，优于普通微调，且比生成器更好地随数据规模扩展。</div><div class="badges"><span class="b">M071</span><span class="b y">arXiv preprint (OpenAI)</span></div></a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+</body></html>

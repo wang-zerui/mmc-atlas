@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A. 路由与级联 — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../families/A.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 篇论文 · 10 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
+<article><h1>A. 路由与级联</h1>
+<div class="pmeta"><span class="b">23 篇论文</span></div>
+<div class="tldr">对每个 query/turn 在多个模型间路由或逐级升级。</div>
+<div class="summ-body"><p><strong>基础方法。</strong> 由控制器将每个查询发送给单个模型，并可选地从<br>廉价模型升级到昂贵模型。FrugalGPT (<a href="../papers/frugalgpt.html">M003</a>) 以最高 98% 的成本降幅匹敌 GPT-4；<br>RouteLLM (<a href="../papers/routellm.html">M004</a>) 在同等质量下将成本削减 &gt;2×；随后涌现出一批学习式路由器<br>（Hybrid LLM <a href="../papers/hybrid-llm.html">M026</a>、AutoMix <a href="../papers/automix.html">M027</a>、Zooter <a href="../papers/zooter.html">M029</a>、RouterDC <a href="../papers/routerdc.html">M030</a>、GraphRouter<br><a href="../papers/graphrouter.html">M031</a>、Arch-Router <a href="../papers/arch-router.html">M033</a>），而 RouterBench（<a href="../papers/routerbench.html">M028</a>/M113，40.5 万条结果）则标准化了<br>评估。<strong>2026 SOTA。</strong> 前沿已转向*智能体化与预算感知*的<br>路由：SeqRoute (<a href="../papers/seqroute.html">M121</a>) 将多轮会话视为有限时域 MDP<br>（离线 RL），以避免&quot;预算破产&quot;（成本削减 6.0–73.5%）；Switchcraft<br>(<a href="../papers/switchcraft.html">M124</a>) 是首个为工具/函数调用打造的路由器（准确率 82.9%，成本削减 84%，<br>且更大的模型在工具使用上并不可靠地占优）；prefill-activation 路由<br>(<a href="../papers/llm-router.html">M123</a>) 弥合了最优到 oracle 差距的 45.6%；UCCI (<a href="../papers/ucci.html">M125</a>) 加入了保序<br>校准（ECE 0.12→0.03）；Inter-Cascade (<a href="../papers/inter-cascade.html">M126</a>) 将强模型转变为<br>长期教师（强模型调用最多减少 48%）；BudgetMem（<a href="../papers/budgetmem.html">M130</a>，ICML&#x27;26）跨记忆层级<br>进行路由。但同一波研究也产出了最有力的警示性<br>基准 LLMRouterBench（<a href="../papers/llmrouterbench.html">M122</a>，33 个模型）：许多近期及商用路由器<br><strong>无法可靠地击败一个简单基线</strong>，且始终存在 Oracle 差距。总体而言：<br>路由是最可靠为正的家族——*当*存在信息量充足的查询级<br>信号时——而 2026 年表明该信号往往并不存在。</p></div>
+<div class="field"><h3>本族论文</h3></div>
+<div class="grid"><a class="card" href="../papers/seqroute.html"><div class="w">SeqRoute (Xu et al. 2026)</div><div class="t">SeqRoute 让预算感知的 LLM 路由变为序列化的，把多轮会话建模为一个用 offline RL 求解的有限时域 MDP，使 router 学会“延迟满足”，避免过早花光预算。</div><div class="badges"><span class="b">M121</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/llmrouterbench.html"><div class="w">LLMRouterBench (Li et al. 2026)</div><div class="t">一个大规模的统一路由 benchmark（400K+ 实例、21 个数据集、33 个模型、10 个 baseline），其核心发现是许多近期及商用 router 都无法可靠地超越一个简单 baseline，而且 router 的骨干 embedding 几乎无关紧要。</div><div class="badges"><span class="b">M122</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/llm-router.html"><div class="w">LLM Router: Rethinking Routing with Prefill Activations (Varshney et al. 2026)</div><div class="t">使用模型内部的 prefill activations 而非表层查询 embedding 来路由查询，通过 Encoder-Target Decoupling 让 open-weight 编码器能预测闭源模型的正确性。</div><div class="badges"><span class="b">M123</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/switchcraft.html"><div class="w">Switchcraft (Agarwal et al. 2026)</div><div class="t">一个专为 agentic 工具/函数调用（而非 chat）打造的 router：一个 DistilBERT 分类器在延迟预算下内联地挑选最便宜的正确模型，并表明更大的模型在工具使用上并不可靠地占优。</div><div class="badges"><span class="b">M124</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/ucci.html"><div class="w">UCCI: Calibrated Uncertainty for Cost-Optimal Cascade Routing (Kotte 2026)</div><div class="t">一个校准的 cascade router，通过 isotonic regression 将 token-margin 不确定性映射为每条查询的错误概率，再通过带约束的成本最小化来选取升级阈值。</div><div class="badges"><span class="b">M125</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/twinrouterbench.html"><div class="w">TwinRouterBench (Yang et al. 2026)</div><div class="t">面向长程 agentic 应用的 step-level routing 基准，包含一个静态确定性赛道（970 个 router 可见的前缀）和一个在 SWE-bench Verified 上实时运行 router 的动态赛道，用于衡量真实任务解决率与 API 花费。</div><div class="badges"><span class="b">M127</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/dynamic-model-routing-and-cascading.html"><div class="w">Dynamic Model Routing and Cascading: A Survey (Moslem &amp; Kelleher 2026)</div><div class="t">首个专门针对跨模型 LLM routing 与 cascading（区别于模型内部的 MoE）的 2026 年综述，按照决策何时做出、使用何种信息、如何计算三个维度对方法进行分类。</div><div class="badges"><span class="b">M129</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/budgetmem.html"><div class="w">BudgetMem / Query-Aware Budget-Tier Routing (Zhang et al. 2026)</div><div class="t">一个轻量级的 RL 训练 router，在 agent-memory 模块之间执行 query-aware 的预算分层 routing，在 Low/Mid/High 三档之间权衡任务性能与记忆构建成本。</div><div class="badges"><span class="b">M130</span><span class="b y">ICML&#x27;26</span></div></a><a class="card" href="../papers/reward-based-online-llm-routing-via-neuralucb.html"><div class="w">Reward-Based Online LLM Routing via NeuralUCB (Tsai &amp; Tran 2026)</div><div class="t">将 cost-aware 的 LLM routing 建模为 contextual bandit，用 NeuralUCB 求解，从 utility reward 中在线学习，在成本上低于 max-quality 参考基线，同时在 reward 上保持竞争力。</div><div class="badges"><span class="b">M131</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/routellm.html"><div class="w">RouteLLM (Ong et al. 2024)</div><div class="t">基于人类偏好数据训练的 router 模型能针对每个查询动态选择强或弱的 LLM，在质量持平的前提下将成本削减 2 倍以上，并可跨模型对迁移。</div><div class="badges"><span class="b">M004</span><span class="b y">ICLR 2025</span></div></a><a class="card" href="../papers/graphrouter.html"><div class="w">GraphRouter (Feng et al. 2024, ICLR 2025)</div><div class="t">GraphRouter 构建一个归纳式的异构 task-query-LLM 图，通过边预测来预测每条响应的效果与成本，无需重训练即可泛化到新的 LLM。</div><div class="badges"><span class="b">M031</span><span class="b y">ICLR 2025</span></div></a><a class="card" href="../papers/arch-router.html"><div class="w">Arch-Router (Tran et al. 2025)</div><div class="t">一个紧凑的 1.5B router 将查询映射到用户自定义的领域/动作偏好，把路由策略与模型分配解耦，从而无需重新训练即可加入新模型。</div><div class="badges"><span class="b">M033</span><span class="b y">arXiv 2025</span></div></a><a class="card" href="../papers/gatekeeper.html"><div class="w">Gatekeeper / confidence tuning (Rabanser et al. 2025, ICML workshop)</div><div class="t">一个 calibration loss 微调 cascade 中的小模型，使其在正确时自信、在可能出错时 defer，在不改动架构的情况下提升 deferral 质量。</div><div class="badges"><span class="b">M035</span><span class="b y">ICML 2025 workshop (TTODLer-FM)</span></div></a><a class="card" href="../papers/inter-cascade.html"><div class="w">Inter-Cascade / From Deferral to Learning (Wu et al. 2025-2026)</div><div class="t">把 cascade 中的强模型从一次性的帮手变成长期的老师：对已 defer 查询的解答被沉淀为可复用的策略，按相似度检索进入弱模型的 context，形成一种在线的 in-context distillation，从而减少强模型调用。</div><div class="badges"><span class="b">M126</span><span class="b y">arXiv 2025/2026 (under review)</span></div></a><a class="card" href="../papers/llm-routing-with-dueling-feedback.html"><div class="w">LLM Routing with Dueling Feedback (Chiang et al. 2025)</div><div class="t">将 routing 建模为 contextual dueling bandits，从成对偏好反馈而非绝对分数中学习，配合校准的模型 embedding 与 Feel-Good Thompson Sampling 以获得更低的 regret。</div><div class="badges"><span class="b">M128</span><span class="b y">arXiv 2025</span></div></a><a class="card" href="../papers/hybrid-llm.html"><div class="w">Hybrid LLM (Ding et al. 2024)</div><div class="t">一个 router 根据预测的难度和可调的目标质量，将查询分配给小（边缘）模型或大（云端）模型，在不损失质量的前提下减少大模型调用。</div><div class="badges"><span class="b">M026</span><span class="b y">ICLR 2024</span></div></a><a class="card" href="../papers/automix.html"><div class="w">AutoMix (Madaan/Aggarwal et al. 2023)</div><div class="t">一个小型 LM 通过 few-shot 对自己的答案做自我验证，再由一个 POMDP 元验证器根据这一带噪的置信信号决定是否升级到更大的模型。</div><div class="badges"><span class="b">M027</span><span class="b y">NeurIPS 2024</span></div></a><a class="card" href="../papers/routerbench.html"><div class="w">RouterBench (Hu et al. 2024)</div><div class="t">首个面向多 LLM router 的标准化基准，利用一个大规模的预生成推理结果语料，在金钱成本 vs 质量的前沿上对 router 进行评估。</div><div class="badges"><span class="b">M028</span><span class="b y">arXiv 2024</span></div></a><a class="card" href="../papers/zooter.html"><div class="w">Zooter (Lu et al. 2023, NAACL 2024)</div><div class="t">Zooter 将奖励蒸馏到训练查询上，训练出一个轻量 router，把每个查询发给最擅长的 LLM，从而避免在推理时运行奖励模型的开销。</div><div class="badges"><span class="b">M029</span><span class="b y">NAACL 2024</span></div></a><a class="card" href="../papers/routerdc.html"><div class="w">RouterDC (Chen et al. 2024, NeurIPS 2024)</div><div class="t">一个基于查询的 router，用双重对比损失（样本-LLM 与样本-样本）训练，将冻结的现成 LLM 组装起来，胜过最佳单模型和以往的 router。</div><div class="badges"><span class="b">M030</span><span class="b y">NeurIPS 2024</span></div></a><a class="card" href="../papers/metallm.html"><div class="w">MetaLLM (Nguyen et al. 2024)</div><div class="t">MetaLLM 将逐查询的 LLM 选择建模为一个多臂老虎机（multi-armed bandit），优化一个准确率-成本的奖励，无需先查询 LLM 即可选出最佳模型。</div><div class="badges"><span class="b">M032</span><span class="b y">arXiv 2024</span></div></a><a class="card" href="../papers/agreement-based-cascading.html"><div class="w">Agreement-Based Cascading (Kolawole et al. 2024, TMLR)</div><div class="t">cascade 的每一级都运行一个小型 ensemble，并用级内一致性作为是否 defer 的数据相关信号，在成本和准确率上同时优于最佳单一模型。</div><div class="badges"><span class="b">M034</span><span class="b y">TMLR</span></div></a><a class="card" href="../papers/frugalgpt.html"><div class="w">FrugalGPT (Chen et al. 2023)</div><div class="t">一种可学习的 LLM cascade，将每个查询从最便宜的模型开始逐级向上路由，用质量评分器判断当前答案是否已足够好，从而以极低的成本达到 GPT-4 的水平。</div><div class="badges"><span class="b">M003</span><span class="b y">TMLR</span></div></a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+</body></html>

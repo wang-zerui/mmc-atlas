@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D. 辩论 / 批判 / 精修 — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../families/D.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">166 篇论文 · 10 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; 族综述</div>
+<article><h1>D. 辩论 / 批判 / 精修</h1>
+<div class="pmeta"><span class="b">17 篇论文</span></div>
+<div class="tldr">多个实例在若干轮里交换并修正推理。</div>
+<div class="summ-body"><p><strong>基础方法。</strong> Multiagent debate (<a href="../papers/multiagent-debate.html">M002</a>) 与 ReConcile (<a href="../papers/reconcile.html">M022</a>) 通过多轮<br>提升推理能力；Self-Refine (<a href="../papers/self-refine.html">M014</a>)/Reflexion (<a href="../papers/reflexion.html">M015</a>) 在单个检查点内迭代；<br>可扩展监督式辩论（<a href="../papers/ai-safety-via-debate.html">M060</a>/<a href="../papers/debating-with-more-persuasive-llms-leads-to-more.html">M061</a>/<a href="../papers/on-scalable-oversight-with-weak-llms-judging-str.html">M062</a>）呈弱正向。但该基础<br>本身已带有强烈的负面结果：在同等采样下辩论并不能击败 self-consistency<br>(<a href="../papers/llms-cannot-self-correct-reasoning-yet.html">M059</a>)，难以优化（<a href="../papers/should-we-be-going-mad.html">M042</a>/M057），且真正的杠杆是异构性——而非辩论<br>本身（Heter-MAD <a href="../papers/stop-overvaluing-multi-agent-debate.html">M043</a>/M058/M065）。<strong>2026 SOTA。</strong> 2026 年的这波工作<br>将这些转化为机制与准证明。Demystifying-MAD (<a href="../papers/demystifying-multi-agent-debate.html">M159</a>) *证明了*<br>同质 + 均匀更新的辩论会保持期望正确率 → 它无法<br>可靠地击败多数投票；The Cost of Consensus (<a href="../papers/the-cost-of-consensus.html">M158</a>) 表明 7–8B 辩论所耗<br>token 是隔离式自我纠正的 2.1–3.4×，而准确率相等或更差；<br>Detection-Without-Correction (<a href="../papers/detection-without-correction.html">M161</a>) 将自我纠正退化与<br>未复现的辩论增益统一为同一种失败（条件性误纠正率 53–94%）；<br>Not-All-Flips (<a href="../papers/not-all-flips-are-conformity.html">M162</a>) 表明严格从众（29%）大多有害。<br>2026 年的建设性方向是不确定性感知与多样性感知的辩论（Epistemic<br>Gain/Aleatoric Cost，<a href="../papers/epistemic-gain-aleatoric-cost.html">M164</a>，ICML&#x27;26）以及诚实的异构同伴（<a href="../papers/heterogeneous-llm-debate-under-adversarial-peers.html">M160</a>：诚实<br>同伴将有害修订从 89% 降至 35%，对抗性同伴则升至 90%——异构性既是<br>防御面也是攻击面）。</p></div>
+<div class="field"><h3>本族论文</h3></div>
+<div class="grid"><a class="card" href="../papers/the-cost-of-consensus.html"><div class="w">The Cost of Consensus: Isolated Self-Correction Prevails Over Unguided Homogeneous Multi-Agent Debate (Bertalanic &amp; Fortuna 2026)</div><div class="t">一项负面（NEGATIVE）的受控研究：对于 7-8B 的同质智能体团队，无引导的同伴 debate 比孤立的 self-correction 多消耗 2.1-3.4 倍 token，准确率却相当甚至更差；论文还识别出三条知识破坏路径。</div><div class="badges"><span class="b">M158</span><span class="b y">ACM Conference on AI and Agentic Systems 2026</span></div></a><a class="card" href="../papers/demystifying-multi-agent-debate.html"><div class="w">Demystifying Multi-Agent Debate: The Role of Confidence and Diversity (2026)</div><div class="t">证明在同质智能体与均匀信念更新下，debate 仅仅保持期望正确率，无法可靠地胜过 majority vote；两项轻量修正（多样性感知初始化 + 校准置信度调制的 debate）在 6 个 QA benchmark 上恢复了增益。</div><div class="badges"><span class="b">M159</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/heterogeneous-llm-debate-under-adversarial-peers.html"><div class="w">Heterogeneous LLM Debate Under Adversarial Peers (Nilayam et al. 2026)</div><div class="t">跨模型证据表明多样化的同伴是一把双刃剑：诚实的异质同伴大幅削减有害修订（Llama-3.1-70B 在 MATH-hard 上：89%-&gt;35%），而对抗性同伴则将其反转（-&gt;90%）；异质性既是攻击面，也是——在已有对手存在时——一种防御。</div><div class="badges"><span class="b">M160</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/detection-without-correction.html"><div class="w">Detection Without Correction: A Two-Parameter Decomposition of Multi-Stage LLM Pipelines (Nilayam et al. 2026)</div><div class="t">一篇负面机制（NEGATIVE-mechanism）论文，将下游智能体的响应重构为 detection（上游内容是否应被信任？）加上条件生成，把 self-correction 退化与 debate 增益不可复现统一为同一失败模式，其中条件误纠正（conditional miscorrection）以 53-94% 的比例占主导。</div><div class="badges"><span class="b">M161</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/not-all-flips-are-conformity.html"><div class="w">Not All Flips Are Conformity: Decomposing Stance Convergence in Multi-Agent LLM Debate (Hao et al. 2026)</div><div class="t">一项负面（NEGATIVE）分析，表明标准的 &#x27;answer flip rate&#x27; 混淆了自发不稳定性、立场诱导的盲从与推理诱导的说服；严格盲从（29%）大多有害（57-77% 由正确变错误），甚至空洞的推理也能驱动 20-39% 的错误采纳，但有害盲从在 Round 0 就可预测（AUC 0.79）。</div><div class="badges"><span class="b">M162</span><span class="b y">arXiv 2026</span></div></a><a class="card" href="../papers/diversity-collapse-in-multi-agent-llm-systems.html"><div class="w">Diversity Collapse in Multi-Agent LLM Systems (Chen et al. 2026)</div><div class="t">针对开放式创意生成的一项负面（NEGATIVE）结果：多智能体协作减少了创意多样性，其根源在于交互结构而非模型局限；论文记录了算力-效率悖论、权威驱动的多样性抑制，以及稠密拓扑导致的过早收敛。</div><div class="badges"><span class="b">M163</span><span class="b y">ACL 2026 Findings</span></div></a><a class="card" href="../papers/epistemic-gain-aleatoric-cost.html"><div class="w">Epistemic Gain, Aleatoric Cost: Uncertainty Decomposition in Multi-Agent Debate (Qiao et al. 2026)</div><div class="t">一个贝叶斯框架，将 debate 的预测不确定性拆分为认知性（epistemic）&#x27;增益&#x27; 与偶然性（aleatoric）&#x27;代价&#x27;，表明有效的 debate 需要在受控的 aleatoric cost 下获得高 epistemic gain，并构建了一个面向数学推理的不确定性引导 MARL 方法。</div><div class="badges"><span class="b">M164</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/multiagent-debate.html"><div class="w">Multiagent Debate (Du et al. 2023)</div><div class="t">多个 LLM 实例各自独立提出答案，然后经过若干轮 debate 相互协商，直至收敛到一致的最终答案，从而在无需任何训练的情况下提升事实性与推理能力。</div><div class="badges"><span class="b">M002</span><span class="b y">ICML 2024</span></div></a><a class="card" href="../papers/reconcile.html"><div class="w">ReConcile (Chen et al. 2023)</div><div class="t">由多样化 LLM 智能体组成的圆桌会议经过多轮讨论，并采用置信度加权投票（confidence-weighted voting）达成更强的共识答案。</div><div class="badges"><span class="b">M022</span><span class="b y">ACL 2024</span></div></a><a class="card" href="../papers/llms-cannot-self-correct-reasoning-yet.html"><div class="w">LLMs Cannot Self-Correct Reasoning Yet (Huang et al. 2023, DeepMind)</div><div class="t">一项批判性研究，表明内在自我纠正（intrinsic self-correction，无外部反馈）无法可靠地提升推理、甚至可能使其变差；并且在匹配采样预算的条件下，多智能体 debate 并不能胜过 self-consistency。</div><div class="badges"><span class="b">M059</span><span class="b y">ICLR 2024</span></div></a><a class="card" href="../papers/debating-with-more-persuasive-llms-leads-to-more.html"><div class="w">Debating with More Persuasive LLMs Leads to More Truthful Answers (Khan et al. 2024)</div><div class="t">在裁判居中调解的 debate 这一可扩展监督（scalable oversight）场景中，把 debater 优化得更有说服力反而提升了非专家裁判的准确率，且对抗式 debate 胜过非对抗的 consultancy 与朴素基线。</div><div class="badges"><span class="b">M061</span><span class="b y">ICML 2024</span></div></a><a class="card" href="../papers/on-scalable-oversight-with-weak-llms-judging-str.html"><div class="w">On Scalable Oversight with Weak LLMs Judging Strong LLMs (Kenton et al. 2024, DeepMind)</div><div class="t">对以 debate 作监督的一次更广泛检验——弱裁判评判强 debater：debate 胜过单智能体 consultancy 并有助于提升裁判准确率，但相较直接 QA 的优势因任务而异，且说服力效应比早期工作所暗示的更小。</div><div class="badges"><span class="b">M062</span><span class="b y">NeurIPS 2024</span></div></a><a class="card" href="../papers/improving-multi-agent-debate-with-sparse-communi.html"><div class="w">Improving Multi-Agent Debate with Sparse Communication Topology (Li et al. 2024)</div><div class="t">默认的多智能体 debate 采用全连接（all-to-all）通信；本文改用稀疏通信图，在 GPT 与 Mistral 模型上都达到相当甚至更好的准确率，同时显著削减 token/算力开销。</div><div class="badges"><span class="b">M063</span><span class="b y">arXiv 2024</span></div></a><a class="card" href="../papers/self-refine.html"><div class="w">Self-Refine (Madaan et al. 2023)</div><div class="t">单个 LLM 同时扮演生成者、反馈提供者与精修者三种角色，在测试时迭代地批判并改进自身输出，无需任何额外训练。</div><div class="badges"><span class="b">M014</span><span class="b y">NeurIPS 2023</span></div></a><a class="card" href="../papers/reflexion.html"><div class="w">Reflexion (Shinn et al. 2023)</div><div class="t">语言智能体通过对任务反馈进行语言化反思，并将这些反思存入情景记忆缓冲区（episodic memory buffer），在多次试验中不断改进，从而在不更新权重的情况下强化行为。</div><div class="badges"><span class="b">M015</span><span class="b y">NeurIPS 2023</span></div></a><a class="card" href="../papers/chateval.html"><div class="w">ChatEval (Chan et al. 2023)</div><div class="t">由多个 LLM 组成的多智能体 &#x27;裁判团&#x27; 通过 debate 来评估生成文本，使 LLM-as-judge 与人类判断的一致性超越单智能体 prompting。</div><div class="badges"><span class="b">M064</span><span class="b y">arXiv 2023</span></div></a><a class="card" href="../papers/ai-safety-via-debate.html"><div class="w">AI Safety via Debate (Irving, Christiano, Amodei 2018, OpenAI)</div><div class="t">一项奠基性的对齐提案：两个智能体就某一问题展开 debate，由一位较弱的人类裁判选出更真实/更有用的一方；其对抗性结构使得撒谎比揭穿谎言更困难。</div><div class="badges"><span class="b">M060</span><span class="b y">arXiv 2018 (OpenAI)</span></div></a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+</body></html>

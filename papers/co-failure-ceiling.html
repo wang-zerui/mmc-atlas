@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Co-Failure Ceiling: When Does Combining Models Help? (Chen 2026) — MMC Atlas</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<title>Co-Failure Ceiling: When Does Combining Models Help? (Chen 2026) — Multi-Model Collaboration Atlas</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
-:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
 [data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -13,9 +13,11 @@ a{color:var(--accent);text-decoration:none}
 .sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
 .sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
 .sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
-.themebtn{flex:0 0 auto;background:none;border:1px solid var(--line);border-radius:7px;width:30px;height:30px;cursor:pointer;font-size:14px;color:var(--mut)}
-.themebtn:hover{color:var(--ink);border-color:var(--accent)}
 .sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
 .sb-nav{padding:10px 8px 40px}
 .sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
@@ -23,11 +25,10 @@ a{color:var(--accent);text-decoration:none}
 .sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
 .sb-fam{margin:2px 0}
 .sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
-.sb-fam>summary .fname{line-height:1.25}
 .sb-fam>summary::-webkit-details-marker{display:none}
-.sb-fam>summary:hover{background:var(--panel);color:var(--ink)}
-.sb-fam[open]>summary{color:var(--ink)}
-.sb-fam .cnt{font-size:10.5px;opacity:.7}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
 .sb-fam ul{list-style:none;padding:2px 0 8px}
 .sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
 .sb-fam li a:hover{background:var(--panel);color:var(--ink)}
@@ -41,11 +42,10 @@ a{color:var(--accent);text-decoration:none}
  .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
  .sidebar.open{left:0}
  .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
- .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}
- .mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
 .hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
-.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.12}
-.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:66ch}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
 .hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
 .hero .stat b{color:var(--ink);font-size:15px}
 .intro{padding:26px 0 4px}
@@ -56,8 +56,7 @@ a{color:var(--accent);text-decoration:none}
 .callout.goodbox{border-left:3px solid var(--good)}
 .callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
 section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
-.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}
-.fam h2 a{color:inherit}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
 .fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
 .fam .more{font-size:13px;font-family:var(--mono)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
@@ -68,30 +67,30 @@ section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
 .badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
 .b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
 .b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
-.b.g{color:var(--good)} .b.w{color:var(--warn)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
 .crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
 article{padding:12px 0 10px}
-article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.18;letter-spacing:-.01em}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
 .pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
-.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.55}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
 .field{padding:17px 0;border-top:1px solid var(--line)}
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
-.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}
-.nav .sp{flex:1}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
 <div class="layout">
 <aside class="sidebar" id="sidebar">
- <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a><button class="themebtn" id="theme-btn" title="Toggle theme">☾</button></div>
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a>
+   <div class="sb-tools"><a class="langbtn" href="../zh/papers/co-failure-ceiling.html">中文</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
   <div class="tag">166 papers · 10 families</div>
   <input class="sb-search" id="sb-search" placeholder="Filter papers…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
-<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>MMC Atlas</b></div>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>Multi-Model Collaboration Atlas</b></div>
 <div class="mwrap">
-<div class="crumb"><a href="../index.html">Atlas</a> &nbsp;·&nbsp; <a href="../families/B.html">B. Ensembling &amp; Aggregation</a></div>
+<div class="crumb"><a href="../index.html">Multi-Model Collaboration Atlas</a> &nbsp;·&nbsp; <a href="../families/B.html">B. Ensembling &amp; Aggregation</a></div>
 <article><h1>Co-Failure Ceiling: When Does Combining Models Help? (Chen 2026)</h1>
 <div class="pmeta"><span class="b">M135</span><span class="b y">arXiv 2026</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2606.27288" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">A critique across 67 frontier models arguing gains from routing, voting, cascades, and MoA are capped by &#x27;beta&#x27;, the rate at which all models fail on the same query; average pairwise error correlation cannot identify beta, and combining rarely beats the single best model without a strong query-level routing signal.</div>
@@ -99,24 +98,22 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="nav"><a href="attention-moa.html">← Attention-MoA (Wen et al. 2026)</a><span class="sp"></span><a href="self-moa.html">Self-MoA / Rethinking Mixture-of-Agent →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";
+<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
- var inFam=/\/(papers|families)\//.test(location.pathname);
  var side=document.getElementById('sb-nav');
- var homeActive=(cur==='index.html'&&!inFam)?' active':'';
- var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">Overview</a>';
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
-   var name=f.code.replace(/^[A-Z]\.\s*/,'');
-   var summ='<li><a class="summ" href="'+BASE+'families/'+code+'.html"'+((cur===code+'.html')?' class="summ active"':'')+'>▸ overview</a></li>';
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
    var items=f.items.map(function(p){
      var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
      var act=(p.slug+'.html'===cur)?' class="active"':'';
      return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
    }).join('');
    var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
-   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
  }).join('');
  side.innerHTML=html;
  var box=document.getElementById('sb-search');
@@ -129,7 +126,8 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
  var tb=document.getElementById('theme-btn');
  function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
- if(tb)tb.addEventListener('click',function(){var cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';setTheme(cur);});
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
  var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
 })();
 </script>
