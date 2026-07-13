@@ -1,56 +1,129 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DyLAN (Liu et al. 2023) — Multi-Model Collaboration Atlas</title>
+<title>DyLAN (Liu et al. 2023) — MMC Atlas</title>
 <style>
-:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sidebar:#fbfcfd;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
-h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
-.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
-.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
-.meta b{color:var(--ink)}
-.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
-.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
-.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
-.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+/* layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto;padding:0}
+.sb-head{padding:20px 20px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-head a.brand{font-weight:700;font-size:15.5px;color:var(--ink);letter-spacing:-.01em;display:block;line-height:1.25}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:12px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans)}
+.sb-nav{padding:10px 8px 40px}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:7px 12px;border-radius:7px;font-size:12px;font-family:var(--mono);letter-spacing:.03em;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel);color:var(--ink)}
+.sb-fam[open]>summary{color:var(--ink)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:#eef3fc;font-weight:600}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+/* main */
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){
+ :root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.15)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}
+ .mobbar b{font-size:14px}
+ .mwrap{padding:0 20px}
+}
+/* index hero + families */
+.hero{padding:48px 0 26px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.12}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:66ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+section.fam{padding:30px 0 6px;border-top:1px solid var(--line)}
 section.fam:first-of-type{border-top:none}
-.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
-.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:14.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
 .card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
-.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
 .badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
 .b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
 .b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
 .b.g{color:var(--good)} .b.w{color:var(--warn)}
-footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
-a{color:var(--accent)}
-/* paper page */
-.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
-article{padding:14px 0 20px}
-article h1{font-size:clamp(22px,2.8vw,32px)}
-.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
-.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
-.field{padding:16px 0;border-top:1px solid var(--line)}
-.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
-.field p{font-size:16px}
-.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+/* paper */
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.18;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.55}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}
+.nav .sp{flex:1}
+footer.f{padding:30px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:26px}
 </style></head><body>
-<div class="wrap">
-<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; C. Role-Specialized Orchestration</div>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head">
+  <a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a>
+  <div class="tag">166 papers · 10 families</div>
+  <input class="sb-search" id="sb-search" placeholder="Filter papers…" autocomplete="off">
+ </div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main">
+ <div class="mobbar"><button id="mob-toggle">☰</button><b>MMC Atlas</b></div>
+ <div class="mwrap">
+<div class="crumb"><a href="../index.html">Atlas</a> &nbsp;·&nbsp; C. Role-Specialized Orchestration</div>
 <article>
 <h1>DyLAN (Liu et al. 2023)</h1>
-<div class="paper-meta"><span class="b">M053</span><span class="b y">COLM 2024</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2310.02170" target="_blank" rel="noopener">source ↗</a></div>
+<div class="pmeta"><span class="b">M053</span><span class="b y">COLM 2024</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2310.02170" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">DyLAN is a Dynamic LLM-Powered Agent Network that selects a task-specific team using an unsupervised Agent Importance Score and lets agents collaborate dynamically, deactivating weak contributors.</div>
 <div class="field"><h3>Background</h3><p>Multi-agent LLM collaboration usually fixes the number of agents and uses static communication structures regardless of the query.</p></div><div class="field"><h3>Problem</h3><p>Fixed teams and static structures waste computation and include unhelpful agents, hurting task-oriented collaboration.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Dynamically selecting and pruning agents per task could raise accuracy while keeping computational cost moderate.</p></div><div class="field"><h3>Key Insight</h3><p>An unsupervised Agent Importance Score can rank agent contributions without labels, enabling team optimization, while a temporal feed-forward-network view of the network supports dynamic, query-dependent collaboration.</p></div><div class="field"><h3>Challenges</h3><p>Scoring agent contribution without ground truth and deciding mid-run which agents to keep active.</p></div><div class="field"><h3>Method</h3><p>Two stages: (1) Team Optimization selects the best-contributing agents via the Agent Importance Score; (2) Task Solving lets the selected agents collaborate dynamically based on the query.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on code generation, decision-making, general reasoning, and arithmetic reasoning tasks against strong single-agent and multi-agent baselines.</p></div><div class="field"><h3>Results</h3><p>Reports up to +25.0% accuracy on specific MMLU subjects via team selection; abstract also claims outperforming baselines across code generation, decision-making, reasoning, and arithmetic at moderate cost. Cited +13.0% MATH and +13.3% HumanEval over single GPT-3.5-turbo are from secondary summaries and not primary-audited here.</p></div><div class="field"><h3>Limitations</h3><p>Reported magnitudes (MATH/HumanEval) come from summaries and were not independently verified; the Agent Importance Score is heuristic and unsupervised.</p></div><div class="field"><h3>Relation to the Field</h3><p>An early dynamic team-selection method; foreshadows later reward-guided topology evolution (HERA) and diversity-aware scaling analyses.</p></div>
-<div class="nav"><a href="macnet.html">← MacNet / Scaling LLM Multi-Agent Collabo</a><a href="magentic-one.html">Magentic-One (Fourney et al./Microsoft 2 →</a></div>
+<div class="nav"><a href="macnet.html">← MacNet / Scaling LLM Multi-Agent Colla</a><span class="sp"></span><a href="magentic-one.html">Magentic-One (Fourney et al./Microsoft →</a></div>
 </article>
 </div>
-<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</div>
+</div>
+<script src="../nav.js"></script>
+<script>var BASE="../";
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var famHtml=NAV.map(function(f){
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur==='index.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span>'+f.code+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=famHtml;
+ var box=document.getElementById('sb-search');
+ if(box){box.addEventListener('input',function(){
+   var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){
+     var any=false;
+     d.querySelectorAll('li a').forEach(function(a){
+       var ok=!s||a.dataset.s.indexOf(s)>=0; a.parentNode.style.display=ok?'':'none'; if(ok)any=true;
+     });
+     d.style.display=any?'':'none'; if(s)d.open=true;
+   });
+ });}
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ // scroll active into view
+ var a=document.querySelector('.sb-fam li a.active'); if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
 </body></html>
