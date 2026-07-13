@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EAGLE (Li et al. 2024) — Multi-Model Collaboration Atlas</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
+.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
+.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink)}
+.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
+.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+section.fam:first-of-type{border-top:none}
+.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
+.b.g{color:var(--good)} .b.w{color:var(--warn)}
+footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+a{color:var(--accent)}
+/* paper page */
+.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
+article{padding:14px 0 20px}
+article h1{font-size:clamp(22px,2.8vw,32px)}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
+.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
+.field{padding:16px 0;border-top:1px solid var(--line)}
+.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
+.field p{font-size:16px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; F. Strong-Weak Efficiency</div>
+<article>
+<h1>EAGLE (Li et al. 2024)</h1>
+<div class="paper-meta"><span class="b">M007</span><span class="b y">ICML 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2401.15077" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">EAGLE drafts at the second-to-top-layer feature level (not token level) and resolves feature uncertainty by conditioning on a one-step-shifted token sequence, raising acceptance and speedup.</div>
+<div class="field"><h3>Background</h3><p>Speculative sampling accelerates LLM decoding, but token-level drafters have limited acceptance rates because next-token prediction is inherently ambiguous.</p></div><div class="field"><h3>Problem</h3><p>Increase the acceptance rate and speedup of speculative sampling by making the drafting task easier and more accurate at low overhead.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>The authors observe that autoregression at the feature (hidden-state) level is more regular and easier to predict than at the token level, but feature-level uncertainty still limits naive prediction.</p></div><div class="field"><h3>Key Insight</h3><p>Feeding the drafter a token sequence advanced by one time step removes the feature-level uncertainty, enabling accurate second-to-top-layer feature prediction with minimal added cost.</p></div><div class="field"><h3>Challenges</h3><p>Feature-level autoregression carries inherent uncertainty that must be resolved; the drafting head must stay lightweight while accurately predicting features.</p></div><div class="field"><h3>Method</h3><p>A small autoregressive head predicts the target model&#x27;s second-to-top-layer features, conditioned on both prior features and a one-time-step-shifted token sequence; predicted features are mapped to token distributions and verified by the target.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on Vicuna, LLaMA2-Chat (up to 70B), and Mixtral 8x7B Instruct across dialogue, code generation, math reasoning, and instruction following.</p></div><div class="field"><h3>Results</h3><p>2.7x-3.5x latency speedup on LLaMA2-Chat 70B with doubled throughput (verified in claim_checked; EAGLE-3 reaches ~3-6.5x). The method maintains the target&#x27;s text distribution and is distribution-preserving (lossless).</p></div><div class="field"><h3>Limitations</h3><p>Requires training a feature-level drafting head per target model; gains vary by task and model size.</p></div><div class="field"><h3>Relation to the Field</h3><p>Refines token-level speculative sampling (Leviathan, Chen) by drafting in feature space; a strong baseline that later methods like VSD and PARSE compare against and compose with.</p></div>
+<div class="nav"><a href="speculative-sampling.html">← Speculative Sampling (Chen et al. 2023, </a><a href="big-little-decoder.html">Big Little Decoder (Kim et al. 2023) →</a></div>
+</article>
+</div>
+<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</body></html>

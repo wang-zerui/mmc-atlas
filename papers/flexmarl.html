@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlexMARL: Rollout-Training Co-Design for Multi-Agent RL (2026) — Multi-Model Collaboration Atlas</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
+.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
+.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink)}
+.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
+.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+section.fam:first-of-type{border-top:none}
+.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
+.b.g{color:var(--good)} .b.w{color:var(--warn)}
+footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+a{color:var(--accent)}
+/* paper page */
+.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
+article{padding:14px 0 20px}
+article h1{font-size:clamp(22px,2.8vw,32px)}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
+.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
+.field{padding:16px 0;border-top:1px solid var(--line)}
+.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
+.field p{font-size:16px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; H. Training &amp; Optimization</div>
+<article>
+<h1>FlexMARL: Rollout-Training Co-Design for Multi-Agent RL (2026)</h1>
+<div class="paper-meta"><span class="b">M215</span><span class="b y">arXiv 2602.09578 (Feb 2026)</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2602.09578" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">FlexMARL is an end-to-end framework that holistically co-designs rollout, training, and their orchestration for large-scale LLM-based multi-agent reinforcement learning, tackling synchronization barriers, rollout load imbalance, and underused training resources.</div>
+<div class="field"><h3>Background</h3><p>Multi-agent RL for LLMs has advanced at the algorithm level, but the networked training infrastructure for large-scale MARL remains underexplored.</p></div><div class="field"><h3>Problem</h3><p>Existing RL training frameworks are built for the single-agent case and do not handle MARL-specific systems challenges: synchronization barriers, skewed rollout load, and idle training resources.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A disaggregated system that jointly optimizes rollout and training could remove these bottlenecks and scale LLM-based MARL to production clusters.</p></div><div class="field"><h3>Key Insight</h3><p>Treating rollout, training, and orchestration as one co-design problem — with an experience store and asynchronous micro-batch pipeline — eliminates synchronization barriers while preserving consistency, and agent-centric resource allocation removes imbalance.</p></div><div class="field"><h3>Challenges</h3><p>Removing sync barriers without breaking consistency, balancing highly skewed rollout request patterns, and allocating hardware across agents that swap states during training.</p></div><div class="field"><h3>Method</h3><p>A disaggregated architecture with a joint orchestrator for data flow, an experience store plus micro-batch asynchronous pipeline to eliminate sync barriers, a rollout engine with parallel sampling and hierarchical load balancing, and a training engine with agent-centric on-demand hardware binding and location-agnostic communication.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on a large-scale production cluster against existing training frameworks.</p></div><div class="field"><h3>Results</h3><p>Reports up to 7.3x speedup and up to 5.6x improvement in hardware utilization over existing frameworks; the batch note flags these magnitudes as not independently audited.</p></div><div class="field"><h3>Limitations</h3><p>No peer-reviewed venue stated and the reported speedup/utilization numbers are not independently audited; gains are measured on a specific production cluster setup.</p></div><div class="field"><h3>Relation to the Field</h3><p>A systems/infrastructure counterpart to algorithmic MARL co-training work like MAPoRL and Maestro, focused on the training-serving stack rather than the learning objective.</p></div>
+<div class="nav"><a href="online-speculative-decoding.html">← Online Speculative Decoding (Liu et al. </a><a href="hieramas.html">HieraMAS (Yao et al. 2026) →</a></div>
+</article>
+</div>
+<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</body></html>

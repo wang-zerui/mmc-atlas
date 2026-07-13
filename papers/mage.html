@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MAGE: Multi-Agent Comm Graph Generation via Score-Based Diffusion (Zhao et al. 2026) — Multi-Model Collaboration Atlas</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
+.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
+.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink)}
+.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
+.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+section.fam:first-of-type{border-top:none}
+.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
+.b.g{color:var(--good)} .b.w{color:var(--warn)}
+footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+a{color:var(--accent)}
+/* paper page */
+.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
+article{padding:14px 0 20px}
+article h1{font-size:clamp(22px,2.8vw,32px)}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
+.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
+.field{padding:16px 0;border-top:1px solid var(--line)}
+.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
+.field p{font-size:16px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; H. Training &amp; Optimization</div>
+<article>
+<h1>MAGE: Multi-Agent Comm Graph Generation via Score-Based Diffusion (Zhao et al. 2026)</h1>
+<div class="paper-meta"><span class="b">M219</span><span class="b y">ICML 2026 (Poster)</span><span class="b g">verified</span> <a href="https://icml.cc/virtual/2026/poster/61913" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">MAGE reframes multi-agent communication-graph design as an energy-minimization problem grounded in non-equilibrium thermodynamics, generating task-adaptive topologies via score-based diffusion with iterative denoising and first-order gradient guidance.</div>
+<div class="field"><h3>Background</h3><p>The communication graph underlying an LLM-based multi-agent system governs its collective intelligence, but finding task-adaptive structures means searching a large combinatorial space.</p></div><div class="field"><h3>Problem</h3><p>Existing approaches, from heuristic pruning to autoregressive generation, lack a unified theoretical foundation for guiding how agents self-organize.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>A principled generative view could produce better topologies than heuristics and explain why effective structures emerge.</p></div><div class="field"><h3>Key Insight</h3><p>Connect non-equilibrium thermodynamics with generative modeling: treat efficient collaboration as a &#x27;cooling&#x27; process where random interactions settle into a structured low-energy equilibrium, so graph generation becomes navigating an energy landscape via score-based diffusion.</p></div><div class="field"><h3>Challenges</h3><p>Defining an energy landscape over graphs, generating valid task-adaptive topologies, and doing so efficiently over a large combinatorial space.</p></div><div class="field"><h3>Method</h3><p>MAGE is a score-based diffusion method that builds communication graphs by navigating the energy landscape through iterative denoising and first-order gradient guidance, framed as energy minimization.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on representative multi-agent benchmarks, with qualitative analysis of the generated graph structures.</p></div><div class="field"><h3>Results</h3><p>Reported to achieve state-of-the-art performance across representative benchmarks; generated graphs exhibit functional specialization resembling human organizations, supporting the thermodynamic hypothesis. Specific numeric metrics are not exposed in the public poster abstract.</p></div><div class="field"><h3>Limitations</h3><p>Public poster abstract gives qualitative SOTA claims without numbers; the thermodynamic framing&#x27;s benefit over simpler generators is argued qualitatively.</p></div><div class="field"><h3>Relation to the Field</h3><p>A generative, theory-grounded alternative to heuristic communication-graph methods (AgentPrune) and learned graphs (GPTSwarm); part of the ICML 2026 topology-optimization cluster alongside HieraMAS.</p></div>
+<div class="nav"><a href="rl-focal.html">← RL-Focal: Dynamic Optimization of LLM En</a><a href="omac.html">OMAC: Holistic Optimization Framework fo →</a></div>
+</article>
+</div>
+<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</body></html>

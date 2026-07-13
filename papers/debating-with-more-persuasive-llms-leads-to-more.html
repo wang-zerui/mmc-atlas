@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debating with More Persuasive LLMs Leads to More Truthful Answers (Khan et al. 2024) — Multi-Model Collaboration Atlas</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
+.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
+.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink)}
+.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
+.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+section.fam:first-of-type{border-top:none}
+.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
+.b.g{color:var(--good)} .b.w{color:var(--warn)}
+footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+a{color:var(--accent)}
+/* paper page */
+.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
+article{padding:14px 0 20px}
+article h1{font-size:clamp(22px,2.8vw,32px)}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
+.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
+.field{padding:16px 0;border-top:1px solid var(--line)}
+.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
+.field p{font-size:16px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; D. Debate / Critique / Refine</div>
+<article>
+<h1>Debating with More Persuasive LLMs Leads to More Truthful Answers (Khan et al. 2024)</h1>
+<div class="paper-meta"><span class="b">M061</span><span class="b y">ICML 2024</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2402.06782" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">In judge-mediated debate for scalable oversight, optimizing debaters to be more persuasive raises a non-expert judge&#x27;s accuracy, and adversarial debate beats non-adversarial consultancy and naive baselines.</div>
+<div class="field"><h3>Background</h3><p>As models surpass human expertise, oversight shifts to &#x27;non-experts overseeing experts&#x27;. Debate (Irving et al. 2018) proposed adversarial argument as a mechanism, but empirical evidence with LLMs was limited.</p></div><div class="field"><h3>Problem</h3><p>Can a weaker/non-expert judge (LLM or human) that lacks the underlying information reliably identify the correct answer by watching stronger expert models debate, and does optimizing debaters for persuasiveness help or hurt truth?</p></div><div class="field"><h3>Motivation / Analysis</h3><p>If more persuasive debaters made judges less accurate, debate would be a dangerous oversight tool; the authors test whether persuasiveness and truthfulness align in an information-asymmetric setting.</p></div><div class="field"><h3>Key Insight</h3><p>Under information asymmetry, adversarial structure ties persuasiveness to truth: optimizing experts (higher Elo) for persuasiveness increases the non-expert judge&#x27;s accuracy, so debate is a viable oversight mechanism even without ground truth.</p></div><div class="field"><h3>Challenges</h3><p>Constructing genuine information asymmetry (experts have evidence, judges do not), optimizing debaters for persuasiveness unsupervised, and comparing LLM vs human judges fairly.</p></div><div class="field"><h3>Method</h3><p>Two LLM &#x27;expert&#x27; debaters each argue for a different answer on reading-comprehension-style questions where they have access to the source text and the judge does not; a non-expert judge (LLM or human) picks the winner. Debaters are optimized for persuasiveness in an unsupervised way, compared against consultancy and naive baselines.</p></div><div class="field"><h3>Experimental Setup</h3><p>Information-asymmetric QA with LLM judges and human judges, comparing debate vs. naive baselines and consultancy, and measuring effect of debater Elo/persuasiveness on judge accuracy.</p></div><div class="field"><h3>Results</h3><p>Non-expert LLM judges reach 76% accuracy with debate vs. 48% naive baseline; human judges reach 88% with debate vs. 60% baseline. Higher-Elo (more persuasive) debaters yield more truthful judgments, and debate/interactive-debate beats consultancy; humans still outperform LLM judges.</p></div><div class="field"><h3>Limitations</h3><p>Task is a constructed information-asymmetric QA setting; results may not transfer to domains where persuasiveness and truth diverge, and LLM judges remain below humans.</p></div><div class="field"><h3>Relation to the Field</h3><p>Positive empirical evidence for debate-as-oversight (M060); contrasted with the more cautious weak-judge results of Kenton et al. (M062), and relevant to adversarial-peer risks in M160.</p></div>
+<div class="nav"><a href="ai-safety-via-debate.html">← AI Safety via Debate (Irving, Christiano</a><a href="on-scalable-oversight-with-weak-llms-judging-str.html">On Scalable Oversight with Weak LLMs Jud →</a></div>
+</article>
+</div>
+<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</body></html>

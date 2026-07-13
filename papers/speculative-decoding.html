@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Speculative Decoding (Leviathan et al. 2023) — Multi-Model Collaboration Atlas</title>
+<style>
+:root{--bg:#fff;--panel:#f6f7f9;--ink:#14181f;--mut:#5c6672;--line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+header.hero{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.12}
+.sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.6vw,19px);max-width:70ch}
+.meta{margin-top:1.1em;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.meta b{color:var(--ink)}
+.controls{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;z-index:10;margin-bottom:8px}
+.controls .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;font-family:var(--sans)}
+.chip{font-family:var(--mono);font-size:12px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;color:var(--mut);cursor:pointer;user-select:none;white-space:nowrap}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+section.fam{padding:30px 0 8px;border-top:1px solid var(--line)}
+section.fam:first-of-type{border-top:none}
+.fam h2{font-size:clamp(19px,2.2vw,26px);letter-spacing:-.01em}
+.fam .desc{color:var(--mut);margin:.3em 0 1.1em;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15.5px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13.5px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:#eef3fc;color:var(--accent);border-color:#cfe0fa}
+.b.g{color:var(--good)} .b.w{color:var(--warn)}
+footer{padding:40px 0 60px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);margin-top:30px}
+a{color:var(--accent)}
+/* paper page */
+.crumb{font-family:var(--mono);font-size:13px;color:var(--mut);padding:22px 0 0}
+article{padding:14px 0 20px}
+article h1{font-size:clamp(22px,2.8vw,32px)}
+.tldr{background:#eef3fc;border:1px solid #cfe0fa;border-radius:12px;padding:14px 18px;margin:18px 0;font-size:17px}
+.paper-meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut);margin:.5em 0 0}
+.field{padding:16px 0;border-top:1px solid var(--line)}
+.field h3{font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.4em}
+.field p{font-size:16px}
+.nav{display:flex;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--line);margin-top:10px;font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="crumb"><a href="../index.html">← Atlas</a> &nbsp;·&nbsp; F. Strong-Weak Efficiency</div>
+<article>
+<h1>Speculative Decoding (Leviathan et al. 2023)</h1>
+<div class="paper-meta"><span class="b">M005</span><span class="b y">ICML 2023 (Oral)</span><span class="b g">verified</span> <a href="https://arxiv.org/abs/2211.17192" target="_blank" rel="noopener">source ↗</a></div>
+<div class="tldr">A small drafter proposes tokens that the large target model verifies in parallel, giving exact-distribution speedups without retraining or architecture changes.</div>
+<div class="field"><h3>Background</h3><p>Decoding K tokens from a large autoregressive transformer requires K serial forward passes, making inference memory-bandwidth-bound and slow even when hardware parallelism is available.</p></div><div class="field"><h3>Problem</h3><p>Accelerate sampling from a fixed large model without altering its output distribution and without retraining or changing its architecture.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Hard language-modeling sequences contain many easy subtasks that a cheap approximation model can handle, and speculative execution lets the expensive model run in parallel over the drafter&#x27;s guesses.</p></div><div class="field"><h3>Key Insight</h3><p>Running the target model in parallel on a drafter&#x27;s speculative tokens, combined with a novel sampling/acceptance rule, yields multiple tokens per target call while provably matching the target&#x27;s distribution.</p></div><div class="field"><h3>Challenges</h3><p>Designing an acceptance rule that keeps the output distribution exactly unchanged, and choosing a drafter that is both fast and accurate enough to yield a high acceptance rate.</p></div><div class="field"><h3>Method</h3><p>A smaller approximation model speculatively generates candidate tokens; the target model scores them in parallel; a modified rejection-sampling step accepts a prefix and resamples the first rejected token so the composite sampler equals standard decoding.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on T5-XXL (11B) against a standard T5X implementation on translation and summarization, using smaller T5 variants as drafters.</p></div><div class="field"><h3>Results</h3><p>2x-3x wall-clock speedup on T5-XXL with identical outputs (verified in claim_checked). The method is distribution-preserving (lossless): it samples from exactly the target model&#x27;s distribution without changing outputs.</p></div><div class="field"><h3>Limitations</h3><p>Speedup depends on drafter acceptance rate and task difficulty; a poorly matched drafter yields little gain, and extra parallel compute is spent on rejected tokens.</p></div><div class="field"><h3>Relation to the Field</h3><p>The foundational modern draft-verify method; directly extended by Speculative Sampling (Chen et al.), SpecInfer&#x27;s token trees, EAGLE&#x27;s feature-level drafting, and self-drafting variants.</p></div>
+<div class="nav"><a href="cyclicjudge.html">← CyclicJudge (Zhu et al. 2026)</a><a href="speculative-sampling.html">Speculative Sampling (Chen et al. 2023,  →</a></div>
+</article>
+</div>
+<footer><div class="wrap">Multi-Model Collaboration Atlas · generated from the survey findings base · <a href="../index.html">index</a></div></footer>
+</body></html>
