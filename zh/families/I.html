@@ -87,6 +87,18 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
+table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
+table.cmp th{background:var(--panel);font-weight:600;position:sticky;top:0}
+table.cmp .ch-n{font-size:12px;line-height:1.25}
+table.cmp .ch-s{font-family:var(--mono);font-size:10px;color:var(--mut);font-weight:400;margin-top:2px}
+table.cmp td.rowlab,table.cmp th.rowlab{position:sticky;left:0;background:var(--sidebar);font-weight:600;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--mut);min-width:120px;z-index:1}
+table.cmp .ours{background:var(--accsoft)}
+table.cmp th.ours{color:var(--accent);border-bottom:2px solid var(--accent)}
+table.cmp td.neg{color:var(--bad)}
+table.cmp tr:last-child td{border-bottom:none}
+.hero .cmp-link{display:inline-block;margin-top:1em;font-size:14px;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -109,12 +121,13 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="grid"><a class="card" href="../papers/prefillshare.html"><div class="w">PrefillShare (Woo et al. 2026)</div><div class="t">PrefillShare将模型分解为prefill模块和decode模块，冻结prefill模块，只微调decode模块，从而在基于vLLM的解耦serving架构中，让多个任务专用模型共享同一个prefill阶段及其KV cache。</div><div class="badges"><span class="b">M221</span><span class="b y">arXiv 2026 (cs.LG/cs.DC)</span></div></a><a class="card" href="../papers/relaycaching.html"><div class="w">RelayCaching (Geng et al. 2026)</div><div class="t">RelayCaching是一种training-free方法，将较早agent在decoding阶段的KV cache回收进较晚agent的prefill，只对偏离的稀疏位置进行选择性重算，从而削减LLM协作流水线中级联的上下文冗余开销。</div><div class="badges"><span class="b">M222</span><span class="b y">arXiv 2026 (cs.LG/cs.AI)</span></div></a><a class="card" href="../papers/herasys.html"><div class="w">HeraSys (Li et al. 2026)</div><div class="t">HeraSys是一个面向并发多租户agentic工作流的跨工作流serving系统，通过结构化节点合并/复用消除工作流间冗余，并配以负载感知的联合调度以及带自适应批处理的资源倾斜机制。</div><div class="badges"><span class="b">M223</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/software-defined-agentic-serving.html"><div class="w">Software-Defined Agentic Serving (Agarwal et al. 2026)</div><div class="t">一个受SDN启发的框架，主张多agent LLM serving系统应当是可编程且系统感知的，基于运行时状态动态控制通信属性，而非使用静态编码的参数。</div><div class="badges"><span class="b">M224</span><span class="b y">arXiv 2026 (cs.DC/cs.MA)</span></div></a><a class="card" href="../papers/faster-cascades-via-speculative-decoding.html"><div class="w">Faster Cascades via Speculative Decoding (Narasimhan et al. 2024)</div><div class="t">将级联（cascade）的延迟决策与speculative decoding的并行验证结合为“speculative cascades”，通过speculative execution来实现延迟规则，从而获得比单独使用任一技术都更优的成本-质量权衡。</div><div class="badges"><span class="b">M021</span><span class="b y">arXiv 2024 (cs.CL)</span></div></a><a class="card" href="../papers/parrot.html"><div class="w">Parrot / Semantic Variable (Lin et al. 2024)</div><div class="t">Parrot通过“Semantic Variable”将应用层的dataflow暴露给LLM服务，用其标注请求的I/O，从而在相关请求之间进行数据流分析，实现DAG感知调度、跨请求批处理和prefix共享。</div><div class="badges"><span class="b">M111</span><span class="b y">USENIX OSDI 2024</span></div></a><a class="card" href="../papers/distserve.html"><div class="w">DistServe (Zhong et al. 2024)</div><div class="t">DistServe将prefill阶段与decode阶段解耦（disaggregate）到不同的GPU上，消除阶段间干扰，并独立优化TTFT与TPOT，从而在延迟SLO内服务更多请求。</div><div class="badges"><span class="b">M112</span><span class="b y">USENIX OSDI 2024</span></div></a><a class="card" href="../papers/vllm.html"><div class="w">vLLM / PagedAttention (Kwon et al. 2023)</div><div class="t">PagedAttention像操作系统的虚拟内存分页那样管理KV cache，实现近乎零碎片以及请求内和跨请求的引用计数block共享，从而让vLLM能批处理更多请求，将serving吞吐提升2-4x。</div><div class="badges"><span class="b">M109</span><span class="b y">SOSP 2023 (Best Paper)</span></div></a><a class="card" href="../papers/sglang.html"><div class="w">SGLang / RadixAttention (Zheng et al. 2024)</div><div class="t">SGLang将用于编写结构化LLM程序的前端语言与一个运行时相配合，其RadixAttention通过LRU radix tree自动在多次生成调用之间复用KV cache，吞吐最高可提升6.4x。</div><div class="badges"><span class="b">M110</span><span class="b y">arXiv 2023 (NeurIPS 2024)</span></div></a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

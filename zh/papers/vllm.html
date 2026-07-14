@@ -87,6 +87,18 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
+table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
+table.cmp th{background:var(--panel);font-weight:600;position:sticky;top:0}
+table.cmp .ch-n{font-size:12px;line-height:1.25}
+table.cmp .ch-s{font-family:var(--mono);font-size:10px;color:var(--mut);font-weight:400;margin-top:2px}
+table.cmp td.rowlab,table.cmp th.rowlab{position:sticky;left:0;background:var(--sidebar);font-weight:600;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--mut);min-width:120px;z-index:1}
+table.cmp .ours{background:var(--accsoft)}
+table.cmp th.ours{color:var(--accent);border-bottom:2px solid var(--accent)}
+table.cmp td.neg{color:var(--bad)}
+table.cmp tr:last-child td{border-bottom:none}
+.hero .cmp-link{display:inline-block;margin-top:1em;font-size:14px;font-family:var(--mono)}
 .nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
 footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
 </style></head><body>
@@ -127,12 +139,13 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="nav"><a href="distserve.html">← DistServe (Zhong et al. 2024)</a><span class="sp"></span><a href="sglang.html">SGLang / RadixAttention (Zheng et al.  →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述"};
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
