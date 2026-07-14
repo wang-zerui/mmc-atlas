@@ -91,6 +91,19 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
+.rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
+.rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
+.rm-badge{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:var(--accsoft);color:var(--accent);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:15px;z-index:1}
+.rm-body{flex:1;min-width:0;padding-top:2px}
+.rm-when{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;text-transform:uppercase}
+.rm-title{font-size:clamp(18px,2vw,23px);margin:.15em 0 .3em;letter-spacing:-.01em}
+.rm-goal{color:var(--ink);font-size:15.5px;margin-bottom:.6em}
+.rm-acts{margin:.4em 0 .8em}
+.rm-acts li{padding-left:1.2em;position:relative;margin:.42em 0;font-size:15px}
+.rm-acts li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.rm-succ{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:9px 13px;font-size:13.5px;color:var(--mut)}
+.rm-succ span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--good);margin-right:8px}
 .cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
 table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
 table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
@@ -125,13 +138,14 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="grid"><a class="card" href="../papers/agentdiet.html"><div class="w">AgentDiet (Xiao et al. 2025)</div><div class="t">An inference-time trajectory-reduction method that automatically prunes redundant, useless, and expired information from a software agent&#x27;s growing context to cut input-token cost without hurting performance.</div><div class="badges"><span class="b">M092</span><span class="b y">FSE 2026</span></div></a><a class="card" href="../papers/acon.html"><div class="w">ACON: Agent Context Optimization (Kang et al. 2025)</div><div class="t">Optimizes natural-language compression guidelines from failure analysis, then distills the LLM compressor into a small model so a weak model condenses context for a strong long-horizon agent.</div><div class="badges"><span class="b">M093</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/llmlingua-2.html"><div class="w">LLMLingua-2 (Pan et al. 2024)</div><div class="t">Distills GPT-4&#x27;s compression knowledge into a small bidirectional encoder that does prompt compression as token classification, faster and more faithful than LLMLingua.</div><div class="badges"><span class="b">M090</span><span class="b y">ACL 2024 (Findings)</span></div></a><a class="card" href="../papers/big-little-decoder.html"><div class="w">Big Little Decoder (Kim et al. 2023)</div><div class="t">A small model decodes autoregressively while a large model is called occasionally to refine only uncertain predictions non-autoregressively, via learned fallback and rollback policies.</div><div class="badges"><span class="b">M008</span><span class="b y">NeurIPS 2023</span></div></a><a class="card" href="../papers/llmlingua.html"><div class="w">LLMLingua (Jiang et al. 2023)</div><div class="t">A small aligned LM compresses prompts coarse-to-fine before the large model reads them, delegating context reduction to a weak model to cut cost.</div><div class="badges"><span class="b">M089</span><span class="b y">EMNLP 2023</span></div></a><a class="card" href="../papers/orca.html"><div class="w">Orca (Mukherjee et al. 2023)</div><div class="t">Distillation as strong-weak transfer: a 13B model imitates GPT-4&#x27;s step-by-step explanation traces rather than just output style, a training-time coupling that later runs solo.</div><div class="badges"><span class="b">M091</span><span class="b y">arXiv 2023 (Microsoft Research)</span></div></a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys"};
+<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
+ html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

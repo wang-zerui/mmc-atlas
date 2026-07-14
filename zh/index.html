@@ -91,6 +91,19 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
+.rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
+.rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
+.rm-badge{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:var(--accsoft);color:var(--accent);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:15px;z-index:1}
+.rm-body{flex:1;min-width:0;padding-top:2px}
+.rm-when{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;text-transform:uppercase}
+.rm-title{font-size:clamp(18px,2vw,23px);margin:.15em 0 .3em;letter-spacing:-.01em}
+.rm-goal{color:var(--ink);font-size:15.5px;margin-bottom:.6em}
+.rm-acts{margin:.4em 0 .8em}
+.rm-acts li{padding-left:1.2em;position:relative;margin:.42em 0;font-size:15px}
+.rm-acts li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.rm-succ{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:9px 13px;font-size:13.5px;color:var(--mut)}
+.rm-succ span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--good);margin-right:8px}
 .cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
 table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
 table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
@@ -120,6 +133,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="sub">一个结构化图谱,收录 166 项关于“两个或多个模型如何协作完成任务”的工作,按九大家族分类学组织。每篇论文都有独立页面:背景 · 问题 · 动机 · 洞见 · 挑战 · 方法 · 实验 · 结果。</div>
 <div class="stat"><span><b>168</b> 篇论文</span><span><b>11</b> 个族</span><span><b>70</b> 篇来自 2026 会议</span></div>
 <a class="cmp-link" href="comparison.html">对比:我们 vs 现有综述 →</a>
+<a class="cmp-link" href="roadmap.html" style="margin-left:18px">技术路线图 →</a>
 </header>
 <div class="intro"><h2>这是什么</h2>
 <p><strong>多模型协作</strong>是指任何推理时或训练时的组织安排，其中<br>*两个或更多模型实例*——作为彼此独立的生成单元被调用——<br>共同产出单一任务结果，且该结果依赖于它们之间的一套结构化<br>协议（消息传递、输出聚合、委派、<br>验证或 token 级交接），而非依赖单个实例。<br>实例可以是不同的检查点（家族/规模）、同一检查点上不同的角色/人设，<br>或是同一检查点的独立采样。协作<br>要求 (a) 有不止一次生成调用被组合进结果，以及 (b) 一套<br>显式协议（拓扑 + 交换介质）。我们将智能体化、工具使用、<br>长时域的场景视为主要但非唯一的关注对象。</p><p>作为极限情形予以保留：单模型的 <strong>self-consistency</strong> (<a href="papers/self-consistency.html">M017</a>) 与<br><strong>self-refine</strong> (<a href="papers/self-refine.html">M014</a>)——角色分化的同质化角落，予以标注，从而使<br>能力多样性的主张永远不会被归因于它们。予以排除（附<br>理由）：检查点内的 <strong>MoE</strong> 门控（M024，属于架构，而非可调用的实例）、<br><strong>纯 RAG</strong>（M025，是模型到索引而非模型到模型）、作为协作单元的<br>人在回路，以及非生成式的工具调用。</p>
@@ -129,13 +143,14 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <footer class="f">以定义为起点的综述 · 166 篇去重论文。状态:verified / pending audit / analysis。每个 headline 数字都可追溯到各页链接的一手来源。</footer></div>
 </div></div>
 <script src="nav.js"></script>
-<script>var BASE="";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比"};
+<script>var BASE="";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
+ html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

@@ -91,6 +91,19 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
+.rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
+.rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
+.rm-badge{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:var(--accsoft);color:var(--accent);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:15px;z-index:1}
+.rm-body{flex:1;min-width:0;padding-top:2px}
+.rm-when{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;text-transform:uppercase}
+.rm-title{font-size:clamp(18px,2vw,23px);margin:.15em 0 .3em;letter-spacing:-.01em}
+.rm-goal{color:var(--ink);font-size:15.5px;margin-bottom:.6em}
+.rm-acts{margin:.4em 0 .8em}
+.rm-acts li{padding-left:1.2em;position:relative;margin:.42em 0;font-size:15px}
+.rm-acts li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.rm-succ{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:9px 13px;font-size:13.5px;color:var(--mut)}
+.rm-succ span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--good);margin-right:8px}
 .cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
 table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
 table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
@@ -125,13 +138,14 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="grid"><a class="card" href="../papers/single-agent-llms-outperform-mas-under-equal-tok.html"><div class="w">Single-Agent LLMs Outperform MAS under Equal Token Budget (Tran &amp; Kiela 2026)</div><div class="t">当测试时计算被归一化为相等的思考 token 预算时，单智能体系统在多跳推理上追平或击败多种多智能体架构，暗示许多已报告的 MAS 收益是计算/上下文层面的混杂因素。</div><div class="badges"><span class="b">M115</span><span class="b y">arXiv 2026 (cs.CL / cs.MA; no formal venue listed)</span></div></a><a class="card" href="../papers/agentcollabbench.html"><div class="w">AgentCollabBench (2026)</div><div class="t">一个包含 900 个任务、经人工验证的 benchmark，在固定协议下诊断进程级 MAS 失败，隔离出四种行为风险，并揭示了收敛型 DAG 拓扑特有的综合瓶颈。</div><div class="badges"><span class="b">M225</span><span class="b y">arXiv 2026 (cs.CL; no formal venue listed)</span></div></a><a class="card" href="../papers/when-kv-cache-reuse-fails-in-multi-agent-systems.html"><div class="w">When KV Cache Reuse Fails in Multi-Agent Systems (Liang et al. 2026)</div><div class="t">加速生成型智能体的 KV cache 复用技巧会破坏 LLM judge：它们削弱了跨候选注意力，使 judge 的选择与 dense prefill 不一致，即便任务准确率看似稳定。</div><div class="badges"><span class="b">M226</span><span class="b y">arXiv 2026 (cs.MA / cs.CL; no formal venue listed)</span></div></a><a class="card" href="../papers/seeing-the-whole-elephant.html"><div class="w">Seeing the Whole Elephant / TraceElephant (Chen et al. 2026)</div><div class="t">一个面向 LLM 多智能体系统失败归因的 benchmark，提供完整的执行轨迹和可复现环境，以识别是哪个智能体、哪一步导致了失败。</div><div class="badges"><span class="b">M227</span><span class="b y">ACL 2026</span></div></a><a class="card" href="../papers/where-do-deep-research-agents-go-wrong.html"><div class="w">Where Do Deep-Research Agents Go Wrong? / TELBench + DRIFT (2026)</div><div class="t">面向冗长 deep-research 智能体轨迹的跨度级错误定位：TELBench 是一个含 1,000 个实例、用于识别有害错误跨度的 benchmark，DRIFT 是一个以断言为中心的审计框架，将定位能力提升最多 30 个百分点。</div><div class="badges"><span class="b">M228</span><span class="b y">arXiv 2026 (cs.AI; no formal venue listed)</span></div></a><a class="card" href="../papers/more-capable-less-cooperative.html"><div class="w">More Capable, Less Cooperative? When LLMs Fail at Zero-Cost Collaboration (Yadav et al. 2026)</div><div class="t">即便在帮助他人毫无代价的无摩擦设定中，LLM 也未能遵循协作目标，且能力并不预示合作：o3 仅达到最优集体性能的 17%，而 o3-mini 达到 50%。</div><div class="badges"><span class="b">M229</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/why-do-multi-agent-llm-systems-fail.html"><div class="w">Why Do Multi-Agent LLM Systems Fail? / MAST (Cemri et al. 2025)</div><div class="t">一项实证研究构建了 MAST——首个多智能体系统失败分类法（Multi-Agent System failure Taxonomy），基于对真实 MAS 执行轨迹的人工标注，归纳出分属 3 大类的 14 种失败模式。</div><div class="badges"><span class="b">M023</span><span class="b y">NeurIPS 2025 Datasets &amp; Benchmarks (arXiv v3)</span></div></a><a class="card" href="../papers/talk-isn-t-always-cheap.html"><div class="w">Talk Isn&#x27;t Always Cheap: Understanding Failure Modes in Multi-Agent Debate (Wynn et al. 2025)</div><div class="t">多智能体辩论可能降低而非提升准确率，因为智能体在同伴压力下会从正确答案转向错误答案，且较弱的少数派能拖垮较强的多数派。</div><div class="badges"><span class="b">M114</span><span class="b y">ICML 2025 Multi-Agent Systems Workshop (arXiv)</span></div></a><a class="card" href="../papers/multiagentbench.html"><div class="w">MultiAgentBench (Zhu et al. 2025)</div><div class="t">一个面向 LLM 多智能体协作与竞争的综合性 benchmark，采用基于里程碑的 KPI，不仅衡量任务完成度，还衡量跨多种通信拓扑的协调质量。</div><div class="badges"><span class="b">M116</span><span class="b y">arXiv 2025 (cs.MA; no formal venue listed)</span></div></a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比"};
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
  var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
+ html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
