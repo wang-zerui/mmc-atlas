@@ -77,6 +77,10 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.ov-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.ov-head{padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.ov-wrap{background:var(--bg);padding:14px 16px;overflow-x:auto}
+.ov-wrap svg{display:block;max-width:100%;height:auto;margin:0 auto}
 .mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
@@ -116,6 +120,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>Understanding Agent Scaling in LLM-Based Multi-Agent Systems via Diversity (2026)</h1>
 <div class="pmeta"><span class="b">M157</span><span class="b y">arXiv 2026 (preprint)</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2602.03794" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">对增加 agent 为何会饱和的一种信息论解释：同质输出彼此相关，因此收益封顶于任务不确定性，而异构 agent 则增加了互补的信道；实证上 2 个多样化 agent 就能匹配或超过 16 个同质 agent。</div>
+
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
 <div class="mm-wrap"><div class="markmap"># Understanding Agent Scaling in LLM-Based Multi-Agent Systems via Diversity

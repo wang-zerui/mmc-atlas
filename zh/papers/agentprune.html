@@ -77,6 +77,10 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.ov-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.ov-head{padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.ov-wrap{background:var(--bg);padding:14px 16px;overflow-x:auto}
+.ov-wrap svg{display:block;max-width:100%;height:auto;margin:0 auto}
 .mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
@@ -116,6 +120,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>AgentPrune / &#x27;Cut the Crap&#x27; (Zhang et al. 2024)</h1>
 <div class="pmeta"><span class="b">M107</span><span class="b y">arXiv 2410.02506</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2410.02506" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">AgentPrune 识别并形式化定义了 LLM 多智能体系统中的通信冗余，对时空消息传递图进行一次性剪枝，以移除冗余或恶意消息，得到一个 token 经济且高性能的拓扑。</div>
+
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
 <div class="mm-wrap"><div class="markmap"># AgentPrune / &#x27;Cut the Crap&#x27;

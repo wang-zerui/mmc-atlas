@@ -77,6 +77,10 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
 .field p{font-size:15.5px}
 .summ-body p{font-size:15.5px;margin:.7em 0}
+.ov-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.ov-head{padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.ov-wrap{background:var(--bg);padding:14px 16px;overflow-x:auto}
+.ov-wrap svg{display:block;max-width:100%;height:auto;margin:0 auto}
 .mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
 .mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
 .mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
@@ -116,6 +120,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <article><h1>JudgeBench (Tan et al. 2024)</h1>
 <div class="pmeta"><span class="b">M077</span><span class="b y">ICLR 2025</span><span class="b w">待审计</span> <a href="https://arxiv.org/abs/2410.12784" target="_blank" rel="noopener">原文 ↗</a></div>
 <div class="tldr">在可客观核验但具有挑战性的回复对上，即便是强大的 LLM judge 也仅略高于随机水平，暴露出其可靠性的局限。</div>
+
 <div class="mm-card">
 <div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
 <div class="mm-wrap"><div class="markmap"># JudgeBench
