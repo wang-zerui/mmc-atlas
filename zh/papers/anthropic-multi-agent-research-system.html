@@ -146,7 +146,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/anthropic-multi-agent-research-system.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">250 篇论文 · 11 个族</div>
+  <div class="tag">253 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -177,7 +177,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 鉴于约 15x 的 token 成本，仅在高价值任务上才具经济可行性；不适用于子 agent 需要共享状态的紧耦合任务。</div></div></div>
 <div class="field"><h3>背景</h3><p>开放式研究查询需要探索多个方向，无法像静态 RAG 检索那样预先规划。</p></div><div class="field"><h3>问题</h3><p>拥有单一上下文窗口的单个 agent 是广域研究的瓶颈：它无法并行探索众多方面，也难以有效地扩展 token 预算。</p></div><div class="field"><h3>动机 / 分析</h3><p>将子任务委派给拥有独立上下文窗口的并行子 agent，可让系统动态地发现并适应相关信息。</p></div><div class="field"><h3>关键洞见</h3><p>研究性能的大部分方差由总 token 预算驱动；在多个子 agent 间并行化探索，既提升质量，又降低了复杂查询的时延。</p></div><div class="field"><h3>挑战</h3><p>协调子 agent、避免重复劳动、进行来源溯源，以及控制运行大量 agent 所带来的高昂 token 成本。</p></div><div class="field"><h3>方法</h3><p>主导 agent 分析查询、制定策略，并派生子 agent 并行运行各自的检索；主导 agent 综合返回的发现，并判断是否需要进一步研究，最后由一个 CitationAgent 将各项论断归因到来源。</p></div><div class="field"><h3>实验设置</h3><p>内部研究评测以及 BrowseComp benchmark；针对 token 用量、工具调用次数与模型选择的消融实验。</p></div><div class="field"><h3>结果</h3><p>Opus-4 主导 + Sonnet-4 子 agent 的系统在内部研究评测上比单 agent 的 Opus 4 高出 90.2%；在 BrowseComp 上，三个因素解释了 95% 的方差，其中仅 token 用量就约占 80%；多 agent 消耗的 token 约为聊天场景的 15x；并行化最多可将研究时间缩短 90%。</p></div><div class="field"><h3>局限</h3><p>鉴于约 15x 的 token 成本，仅在高价值任务上才具经济可行性；不适用于子 agent 需要共享状态的紧耦合任务。</p></div><div class="field"><h3>与领域的关系</h3><p>orchestrator-worker 角色专业化在生产规模上的一个实例，与 Magentic-One 的 manager-worker 设计高度并行，并推动了在编排轨迹上做 RL 的相关工作。</p></div>
-<div class="nav"><a href="understanding-agent-scaling-in-llm-based-multi-a.html">← Understanding Agent Scaling in LLM-Bas</a><span class="sp"></span><a href="macnet.html">MacNet / Scaling LLM Multi-Agent Colla →</a></div></article></div>
+<div class="nav"><a href="sakana-fugu.html">← Sakana Fugu Technical Report (Sakana A</a><span class="sp"></span><a href="macnet.html">MacNet / Scaling LLM Multi-Agent Colla →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};
