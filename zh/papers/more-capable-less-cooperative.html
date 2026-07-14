@@ -137,7 +137,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><a class="langbtn" href="../../papers/more-capable-less-cooperative.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">206 篇论文 · 11 个族</div>
+  <div class="tag">236 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -168,7 +168,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 无摩擦设计刻意剥离了策略复杂性，因此结果可能无法迁移到竞争性或高风险设定；发现与所研究的具体模型和收益最大化任务相绑定。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体 LLM 系统依赖合作，人们常假定当激励一致时，能力更强的模型会协调得更好。</p></div><div class="field"><h3>问题</h3><p>此前尚不清楚合作失败源于策略性冲突，还是源于更基本的、无法遵循协作目标的能力缺陷，也不清楚扩展模型能力是否会改善合作。</p></div><div class="field"><h3>动机 / 分析</h3><p>把合作与策略复杂性隔离开来，能揭示协调问题是否仅凭构建能力更强的模型就能解决。</p></div><div class="field"><h3>关键洞见</h3><p>能力与合作是相互脱钩的：即便个人代价可忽略且有明确的帮助指令，能力更强的模型反而合作更少，因此单靠扩展智能无法解决协调问题，需要有意的协作式设计。</p></div><div class="field"><h3>挑战</h3><p>将合作失败与能力失败区分开来，需要一个受控的无摩擦环境以及一种自动化智能体通信一方的因果分解方法。</p></div><div class="field"><h3>方法</h3><p>作者构建了一个无摩擦环境，其中帮助他人对帮助者既无益也无害，指示智能体最大化群体收益，并使用因果分解（自动化通信的一方）加推理轨迹分析来归因失败。</p></div><div class="field"><h3>实验设置</h3><p>在零代价协作设定中评估 OpenAI o3 和 o3-mini（及其他模型），并通过加入显式协议和小额分享激励进行干预。</p></div><div class="field"><h3>结果</h3><p>在指令完全相同的情况下，o3 仅达到最优集体性能的 17%，而 o3-mini 达到 50%，证明能力并不预示合作；显式协议使低能力模型的性能翻倍，小额分享激励对合作能力弱的模型有帮助。</p></div><div class="field"><h3>局限</h3><p>无摩擦设计刻意剥离了策略复杂性，因此结果可能无法迁移到竞争性或高风险设定；发现与所研究的具体模型和收益最大化任务相绑定。</p></div><div class="field"><h3>与领域的关系</h3><p>一个关于 MAS 失败行为根源的负面结果，补充了辩论失败（Talk Isn&#x27;t Always Cheap）与结构失败（AgentCollabBench）的发现，并强化了架构与协议比原始能力更重要的观点。</p></div>
-<div class="nav"><a href="where-do-deep-research-agents-go-wrong.html">← Where Do Deep-Research Agents Go Wrong</a><span class="sp"></span><a href="why-do-multi-agent-llm-systems-fail.html">Why Do Multi-Agent LLM Systems Fail? / →</a></div></article></div>
+<div class="nav"><a href="where-do-deep-research-agents-go-wrong.html">← Where Do Deep-Research Agents Go Wrong</a><span class="sp"></span><a href="route-to-rome-attack.html">Route to Rome Attack: Directing Router →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};

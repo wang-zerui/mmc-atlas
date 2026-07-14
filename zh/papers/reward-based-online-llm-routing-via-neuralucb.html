@@ -137,7 +137,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><a class="langbtn" href="../../papers/reward-based-online-llm-routing-via-neuralucb.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">206 篇论文 · 11 个族</div>
+  <div class="tag">236 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -168,7 +168,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 在区分相似模型与探索效率方面存在开放问题；仅在 RouterBench 上评测；未声明发表 venue。</div></div></div>
 <div class="field"><h3>背景</h3><p>Router 应当随着观察到 reward 而在线自适应，而非仅依赖固定的离线训练策略。</p></div><div class="field"><h3>问题</h3><p>从 utility 反馈中在线学习一个 cost-aware 的 routing 策略，在探索模型与利用当前最优模型之间取得平衡。</p></div><div class="field"><h3>动机 / 分析</h3><p>带神经函数逼近的 contextual bandits（NeuralUCB）既能刻画非线性的 query-model utility，又能在不确定性下给出有原则的探索。</p></div><div class="field"><h3>关键洞见</h3><p>把 routing 建模为带 NeuralUCB 探索奖励项的 contextual bandit，能让 router 针对每条 query 在线学习 utility reward（质量减去成本）。</p></div><div class="field"><h3>挑战</h3><p>相似模型之间的探索与动作区分仍是已知的开放问题；在 utility 信号中平衡 reward 与 cost。</p></div><div class="field"><h3>方法</h3><p>将 cost-aware routing 建模为 contextual bandit，用 NeuralUCB 求解，从 utility reward（结合质量与成本）中在线学习，并带有一个 upper-confidence-bound 探索奖励项。</p></div><div class="field"><h3>实验设置</h3><p>在 RouterBench 上相对 random、min-cost 与一个 max-quality 参考基线进行评测，衡量 utility reward 与成本。</p></div><div class="field"><h3>结果</h3><p>超越 random 与 min-cost 基线，并在成本上低于 max-quality 参考，同时在 reward 上保持竞争力（在 claim_checked 中已核实）；2026 年 3 月 31 日提交，预印本，并指出在动作区分与探索方面存在开放问题。</p></div><div class="field"><h3>局限</h3><p>在区分相似模型与探索效率方面存在开放问题；仅在 RouterBench 上评测；未声明发表 venue。</p></div><div class="field"><h3>与领域的关系</h3><p>与 MetaLLM（M032）和 dueling-feedback routing（M128）并列的在线 contextual-bandit router，并与离线 RL 的顺序方法 SeqRoute（M121）互补。</p></div>
-<div class="nav"><a href="budgetmem.html">← BudgetMem / Query-Aware Budget-Tier Ro</a><span class="sp"></span><a href="routellm.html">RouteLLM (Ong et al. 2024) →</a></div></article></div>
+<div class="nav"><a href="budgetmem.html">← BudgetMem / Query-Aware Budget-Tier Ro</a><span class="sp"></span><a href="disrouter.html">DiSRouter: Distributed Self-Routing fo →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};
