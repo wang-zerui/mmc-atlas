@@ -91,6 +91,20 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.ls-wide{max-width:1180px}
+.ls-stage{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:10px;overflow-x:auto}
+.ls-node{cursor:pointer}
+.ls-node:hover rect,.ls-node:focus rect{stroke:var(--accent);stroke-width:2}
+.ls-node:focus{outline:none}
+.ls-panel{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;min-height:60px}
+.ls-panel .lp-h{font-size:16px}.ls-panel .lp-n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:6px}
+.ls-panel .lp-r{color:var(--mut);font-size:13.5px;margin:.3em 0 .6em}
+.ls-panel .lp-list{list-style:none;padding:0;max-height:320px;overflow-y:auto;column-gap:26px}
+.ls-panel .lp-list li{padding:3px 0;font-size:14px;line-height:1.4}
+.ls-panel .lp-y{font-family:var(--mono);font-size:11px;color:var(--mut);display:inline-block;min-width:38px}
+.ls-panel .lp-neg{color:var(--warn)}
+.ls-panel .lp-empty{color:var(--mut);font-size:13.5px;font-style:italic}
+@media(min-width:720px){.ls-panel .lp-list{column-count:2}}
 .rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
 .rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
 .rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
@@ -138,7 +152,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="grid"><a class="card" href="../papers/prefillshare.html"><div class="w">PrefillShare (Woo et al. 2026)</div><div class="t">PrefillShare factorizes a model into prefill and decode modules, freezes the prefill module, and fine-tunes only the decode module, so multiple task-specific models can share one prefill stage and its KV cache in a vLLM-based disaggregated serving setup.</div><div class="badges"><span class="b">M221</span><span class="b y">arXiv 2026 (cs.LG/cs.DC)</span></div></a><a class="card" href="../papers/relaycaching.html"><div class="w">RelayCaching (Geng et al. 2026)</div><div class="t">RelayCaching is a training-free method that recycles earlier agents&#x27; decoding-phase KV caches into later agents&#x27; prefill, selectively recomputing only the sparse positions that deviate, to cut cascading context-redundancy overhead in LLM collaboration pipelines.</div><div class="badges"><span class="b">M222</span><span class="b y">arXiv 2026 (cs.LG/cs.AI)</span></div></a><a class="card" href="../papers/herasys.html"><div class="w">HeraSys (Li et al. 2026)</div><div class="t">HeraSys is a cross-workflow serving system for concurrent multi-tenant agentic workflows that eliminates inter-workflow redundancy via structural node merging/reuse, plus load-aware joint scheduling and resource skewing with adaptive batching.</div><div class="badges"><span class="b">M223</span><span class="b y">ICML 2026</span></div></a><a class="card" href="../papers/software-defined-agentic-serving.html"><div class="w">Software-Defined Agentic Serving (Agarwal et al. 2026)</div><div class="t">An SDN-inspired framework arguing that multi-agent LLM serving systems should be programmable and system-aware, dynamically controlling communication attributes based on runtime state instead of statically encoded parameters.</div><div class="badges"><span class="b">M224</span><span class="b y">arXiv 2026 (cs.DC/cs.MA)</span></div></a><a class="card" href="../papers/faster-cascades-via-speculative-decoding.html"><div class="w">Faster Cascades via Speculative Decoding (Narasimhan et al. 2024)</div><div class="t">Combines cascade deferral with speculative verification into &#x27;speculative cascades&#x27;, implementing the deferral rule via speculative execution for better cost-quality than either technique alone.</div><div class="badges"><span class="b">M021</span><span class="b y">arXiv 2024 (cs.CL)</span></div></a><a class="card" href="../papers/parrot.html"><div class="w">Parrot / Semantic Variable (Lin et al. 2024)</div><div class="t">Parrot exposes application-level dataflow to the LLM service via &#x27;Semantic Variables&#x27; that annotate request I/O, enabling data-flow analysis across correlated requests for DAG-aware scheduling, cross-request batching, and prefix sharing.</div><div class="badges"><span class="b">M111</span><span class="b y">USENIX OSDI 2024</span></div></a><a class="card" href="../papers/distserve.html"><div class="w">DistServe (Zhong et al. 2024)</div><div class="t">DistServe disaggregates the prefill and decode phases onto different GPUs to remove phase interference and independently optimize TTFT versus TPOT, serving far more requests within latency SLOs.</div><div class="badges"><span class="b">M112</span><span class="b y">USENIX OSDI 2024</span></div></a><a class="card" href="../papers/vllm.html"><div class="w">vLLM / PagedAttention (Kwon et al. 2023)</div><div class="t">PagedAttention manages the KV cache like OS virtual-memory paging, giving near-zero fragmentation and ref-counted block sharing within and across requests, which lets vLLM batch more requests and raise serving throughput 2-4x.</div><div class="badges"><span class="b">M109</span><span class="b y">SOSP 2023 (Best Paper)</span></div></a><a class="card" href="../papers/sglang.html"><div class="w">SGLang / RadixAttention (Zheng et al. 2024)</div><div class="t">SGLang pairs a frontend language for structured LLM programs with a runtime whose RadixAttention automatically reuses KV cache across generation calls via an LRU radix tree, reaching up to 6.4x higher throughput.</div><div class="badges"><span class="b">M110</span><span class="b y">arXiv 2023 (NeurIPS 2024)</span></div></a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap"};
+<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap", "landscape": "Field landscape"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
@@ -146,6 +160,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
+ html+='<a class="home'+(cur==='landscape.html'?' active':'')+'" href="'+BASE+'landscape.html">'+T.landscape+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

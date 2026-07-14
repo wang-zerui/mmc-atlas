@@ -91,6 +91,20 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.ls-wide{max-width:1180px}
+.ls-stage{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:10px;overflow-x:auto}
+.ls-node{cursor:pointer}
+.ls-node:hover rect,.ls-node:focus rect{stroke:var(--accent);stroke-width:2}
+.ls-node:focus{outline:none}
+.ls-panel{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;min-height:60px}
+.ls-panel .lp-h{font-size:16px}.ls-panel .lp-n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:6px}
+.ls-panel .lp-r{color:var(--mut);font-size:13.5px;margin:.3em 0 .6em}
+.ls-panel .lp-list{list-style:none;padding:0;max-height:320px;overflow-y:auto;column-gap:26px}
+.ls-panel .lp-list li{padding:3px 0;font-size:14px;line-height:1.4}
+.ls-panel .lp-y{font-family:var(--mono);font-size:11px;color:var(--mut);display:inline-block;min-width:38px}
+.ls-panel .lp-neg{color:var(--warn)}
+.ls-panel .lp-empty{color:var(--mut);font-size:13.5px;font-style:italic}
+@media(min-width:720px){.ls-panel .lp-list{column-count:2}}
 .rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
 .rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
 .rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
@@ -138,7 +152,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="grid"><a class="card" href="../papers/beyond-message-passing.html"><div class="w">Beyond Message Passing: A Semantic View of Agent Communication Protocols (Yuan et al. 2026)</div><div class="t">本文将 agent 通信 protocol 组织为受 Shannon-Weaver 和 Grice 语用学启发的三层分类体系（communication、syntactic、semantic），并指出当前 protocol 在传输/语法层已趋成熟，但对澄清与修复等语义对齐的支持严重不足。</div><div class="badges"><span class="b">M097</span><span class="b y">arXiv 2026 (preprint)</span></div></a><a class="card" href="../papers/protocolbench.html"><div class="w">ProtocolBench / ProtocolRouter (Du, Zhu et al. 2025/2026)</div><div class="t">ProtocolBench 通过在保持 LLM、prompt 和硬件不变的同时改变 protocol（A2A/ACP/ANP/Agora）来隔离 agent 通信 protocol 的影响，而 ProtocolRouter 是一个可学习的按模块路由器，从需求和运行时信号中选择 protocol。</div><div class="badges"><span class="b">M211</span><span class="b y">ICML 2026 (accepted per arXiv v3, Jun 2026)</span></div></a><a class="card" href="../papers/position.html"><div class="w">Position: Collaborative Agentic AI Needs Interoperability Across Ecosystems (Sharma et al. 2026)</div><div class="t">这篇 ICML 2026 立场论文主张，协作式 agentic AI 需要最小化的共享标准以避免碎片化为互不兼容的生态系统，并提出以四个组件构建的“Web of Agents”作为最小化的架构基础。</div><div class="badges"><span class="b">M212</span><span class="b y">ICML 2026 (position paper)</span></div></a><a class="card" href="../papers/mesh-memory-protocol.html"><div class="w">Mesh Memory Protocol (Xu 2026)</div><div class="t">Mesh Memory Protocol (MMP) 是一个被提出的语义基础设施层，让 LLM agent 团队能够跨会话共享、评估并组合彼此的认知状态，由四个可组合原语（CAT7、SVAF、inter-agent lineage、remix）构成。</div><div class="badges"><span class="b">M213</span><span class="b y">arXiv 2026 (v0.2.3 specification, CC BY 4.0)</span></div></a><a class="card" href="../papers/a2a-protocol.html"><div class="w">A2A (Agent2Agent) Protocol (Google 2025)</div><div class="t">A2A 是一个开放的点对点 protocol，让基于不同 framework、由不同厂商构建的 AI agent 能够相互发现、委派任务并共享结果，而无需暴露各自的内部 memory、工具或逻辑。</div><div class="badges"><span class="b">M095</span><span class="b y">Open standard (Google, Apr 2025); donated to the Linux Foundation Jun 2025</span></div></a><a class="card" href="../papers/survey-of-agent-interoperability-protocols.html"><div class="w">Survey of Agent Interoperability Protocols (Ehtesham et al. 2025)</div><div class="t">一篇综述，从交互、发现、通信和安全四个维度对比四种新兴的 agent 互操作性 protocol——MCP、ACP、A2A 和 ANP——并提出一条分阶段的采用路线图，用于构建可互操作的 LLM-agent 生态系统。</div><div class="badges"><span class="b">M096</span><span class="b y">arXiv 2025 (preprint)</span></div></a><a class="card" href="../papers/a-mem.html"><div class="w">A-MEM: Agentic Memory for LLM Agents (Xu et al. 2025)</div><div class="t">A-MEM 是一种受 Zettelkasten 启发的 agentic memory，其中每条 memory 都是一个原子笔记，带有 LLM 生成的关键词、标签和上下文描述，动态链接到相关笔记，并允许随新 memory 到来而演进——超越了静态的 RAG 检索。</div><div class="badges"><span class="b">M099</span><span class="b y">NeurIPS 2025</span></div></a><a class="card" href="../papers/model-context-protocol.html"><div class="w">Model Context Protocol (Anthropic 2024)</div><div class="t">MCP 是一个开放的 JSON-RPC 标准，被比喻为“AI 的 USB-C 接口”，通过统一的 client-server 接口将 AI 应用连接到外部数据源、工具和工作流。</div><div class="badges"><span class="b">M020</span><span class="b y">Open standard (Anthropic, Nov 2024); donated to the Agentic AI Foundation (AAIF) Dec 2025</span></div></a><a class="card" href="../papers/memgpt.html"><div class="w">MemGPT (Packer et al. 2023)</div><div class="t">MemGPT 将操作系统的内存层级思想应用于 LLM，让模型通过 function call 自我管理分层 memory——固定的 main context（类似 RAM）加上外部存储（类似 disk）——从而表现得仿佛拥有远大于实际的 context window。</div><div class="badges"><span class="b">M098</span><span class="b y">arXiv 2023 (later COLM 2024); now the Letta framework</span></div></a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图"};
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
@@ -146,6 +160,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
+ html+='<a class="home'+(cur==='landscape.html'?' active':'')+'" href="'+BASE+'landscape.html">'+T.landscape+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

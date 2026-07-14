@@ -91,6 +91,20 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.ls-wide{max-width:1180px}
+.ls-stage{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:10px;overflow-x:auto}
+.ls-node{cursor:pointer}
+.ls-node:hover rect,.ls-node:focus rect{stroke:var(--accent);stroke-width:2}
+.ls-node:focus{outline:none}
+.ls-panel{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;min-height:60px}
+.ls-panel .lp-h{font-size:16px}.ls-panel .lp-n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:6px}
+.ls-panel .lp-r{color:var(--mut);font-size:13.5px;margin:.3em 0 .6em}
+.ls-panel .lp-list{list-style:none;padding:0;max-height:320px;overflow-y:auto;column-gap:26px}
+.ls-panel .lp-list li{padding:3px 0;font-size:14px;line-height:1.4}
+.ls-panel .lp-y{font-family:var(--mono);font-size:11px;color:var(--mut);display:inline-block;min-width:38px}
+.ls-panel .lp-neg{color:var(--warn)}
+.ls-panel .lp-empty{color:var(--mut);font-size:13.5px;font-style:italic}
+@media(min-width:720px){.ls-panel .lp-list{column-count:2}}
 .rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
 .rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
 .rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
@@ -157,7 +171,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="nav"><a href="dylan.html">← DyLAN (Liu et al. 2023)</a><span class="sp"></span><a href="openai-swarm.html">OpenAI Swarm / Agents SDK (2024-2025) →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
-<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap"};
+<script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap", "landscape": "Field landscape"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
@@ -165,6 +179,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
+ html+='<a class="home'+(cur==='landscape.html'?' active':'')+'" href="'+BASE+'landscape.html">'+T.landscape+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';

@@ -91,6 +91,20 @@ article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01e
 .markmap svg text{fill:var(--ink)}
 .markmap svg a{fill:var(--accent)}
 pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.ls-wide{max-width:1180px}
+.ls-stage{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:10px;overflow-x:auto}
+.ls-node{cursor:pointer}
+.ls-node:hover rect,.ls-node:focus rect{stroke:var(--accent);stroke-width:2}
+.ls-node:focus{outline:none}
+.ls-panel{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;min-height:60px}
+.ls-panel .lp-h{font-size:16px}.ls-panel .lp-n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:6px}
+.ls-panel .lp-r{color:var(--mut);font-size:13.5px;margin:.3em 0 .6em}
+.ls-panel .lp-list{list-style:none;padding:0;max-height:320px;overflow-y:auto;column-gap:26px}
+.ls-panel .lp-list li{padding:3px 0;font-size:14px;line-height:1.4}
+.ls-panel .lp-y{font-family:var(--mono);font-size:11px;color:var(--mut);display:inline-block;min-width:38px}
+.ls-panel .lp-neg{color:var(--warn)}
+.ls-panel .lp-empty{color:var(--mut);font-size:13.5px;font-style:italic}
+@media(min-width:720px){.ls-panel .lp-list{column-count:2}}
 .rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
 .rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
 .rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
@@ -134,6 +148,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="stat"><span><b>168</b> 篇论文</span><span><b>11</b> 个族</span><span><b>70</b> 篇来自 2026 会议</span></div>
 <a class="cmp-link" href="comparison.html">对比:我们 vs 现有综述 →</a>
 <a class="cmp-link" href="roadmap.html" style="margin-left:18px">技术路线图 →</a>
+<a class="cmp-link" href="landscape.html" style="margin-left:18px">领域全景图 →</a>
 </header>
 <div class="intro"><h2>这是什么</h2>
 <p><strong>多模型协作</strong>是指任何推理时或训练时的组织安排，其中<br>*两个或更多模型实例*——作为彼此独立的生成单元被调用——<br>共同产出单一任务结果，且该结果依赖于它们之间的一套结构化<br>协议（消息传递、输出聚合、委派、<br>验证或 token 级交接），而非依赖单个实例。<br>实例可以是不同的检查点（家族/规模）、同一检查点上不同的角色/人设，<br>或是同一检查点的独立采样。协作<br>要求 (a) 有不止一次生成调用被组合进结果，以及 (b) 一套<br>显式协议（拓扑 + 交换介质）。我们将智能体化、工具使用、<br>长时域的场景视为主要但非唯一的关注对象。</p><p>作为极限情形予以保留：单模型的 <strong>self-consistency</strong> (<a href="papers/self-consistency.html">M017</a>) 与<br><strong>self-refine</strong> (<a href="papers/self-refine.html">M014</a>)——角色分化的同质化角落，予以标注，从而使<br>能力多样性的主张永远不会被归因于它们。予以排除（附<br>理由）：检查点内的 <strong>MoE</strong> 门控（M024，属于架构，而非可调用的实例）、<br><strong>纯 RAG</strong>（M025，是模型到索引而非模型到模型）、作为协作单元的<br>人在回路，以及非生成式的工具调用。</p>
@@ -143,7 +158,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <footer class="f">以定义为起点的综述 · 166 篇去重论文。状态:verified / pending audit / analysis。每个 headline 数字都可追溯到各页链接的一手来源。</footer></div>
 </div></div>
 <script src="nav.js"></script>
-<script>var BASE="";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图"};
+<script>var BASE="";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};
 (function(){
  var cur=(location.pathname.split('/').pop()||'index.html');
  var side=document.getElementById('sb-nav');
@@ -151,6 +166,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
  var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
  html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
  html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
+ html+='<a class="home'+(cur==='landscape.html'?' active':'')+'" href="'+BASE+'landscape.html">'+T.landscape+'</a>';
  html+=NAV.map(function(f){
    var code=f.code.split('.')[0];
    var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
