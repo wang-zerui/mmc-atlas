@@ -137,7 +137,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a>
    <div class="sb-tools"><a class="langbtn" href="../zh/papers/acon.html">中文</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">166 papers · 10 families</div>
+  <div class="tag">187 papers · 11 families</div>
   <input class="sb-search" id="sb-search" placeholder="Filter papers…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -145,7 +145,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <div class="mwrap">
 <div class="crumb"><a href="../index.html">Multi-Model Collaboration Atlas</a> &nbsp;·&nbsp; <a href="../families/F.html">F. Strong-Weak Efficiency</a></div>
 <article><h1>ACON: Agent Context Optimization (Kang et al. 2025)</h1>
-<div class="pmeta"><span class="b">M093</span><span class="b y">ICML 2026</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2510.00615" target="_blank" rel="noopener">source ↗</a></div>
+<div class="pmeta"><span class="b">M093</span><span class="b y">ICLR 2026 Lifelong Agent Workshop</span><span class="b w">pending audit</span> <a href="https://arxiv.org/abs/2510.00615" target="_blank" rel="noopener">source ↗</a></div>
 <div class="tldr">Optimizes natural-language compression guidelines from failure analysis, then distills the LLM compressor into a small model so a weak model condenses context for a strong long-horizon agent.</div>
 
 <div class="mm-card">
@@ -168,7 +168,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Limitations
 - Lossy compression; results not independently audited; gains depend on quality of failure-driven guideline optimization and the distillation.</div></div></div>
 <div class="field"><h3>Background</h3><p>LLM agents in long-horizon tasks face growing memory costs and reasoning degradation from irrelevant accumulated context.</p></div><div class="field"><h3>Problem</h3><p>Compress both observations and history for long-horizon agents to cut token usage while preserving (or improving) task success.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Compression rules can be improved by analyzing where the agent fails, and running the compressor cheaply requires distilling it into a small model.</p></div><div class="field"><h3>Key Insight</h3><p>Optimizing compression guidelines in natural-language space (via failure analysis, no fine-tuning of the agent) preserves critical state, and distilling that compressor into a small model makes weak-model context condensation practical for a strong agent.</p></div><div class="field"><h3>Challenges</h3><p>Refining compression guidelines without destabilizing the agent; distilling the compressor into a small model while retaining most of its quality; avoiding context distraction.</p></div><div class="field"><h3>Method</h3><p>ACON iteratively refines natural-language compression guidelines based on failure analysis of the agent to compress observations and history, then distills the optimized LLM compressor into smaller models used at inference.</p></div><div class="field"><h3>Experimental Setup</h3><p>Evaluated on AppWorld, OfficeBench, and Multi-objective QA with strong agents and smaller LMs.</p></div><div class="field"><h3>Results</h3><p>Cuts peak token usage by 26-54%; the distilled small compressor preserves &gt;95% of teacher performance, and enabling small LMs as agents yields up to 20-46% performance improvement by mitigating context distraction (verified in claim_checked; not independently audited). Context compression is lossy but reported to improve task success over baselines.</p></div><div class="field"><h3>Limitations</h3><p>Lossy compression; results not independently audited; gains depend on quality of failure-driven guideline optimization and the distillation.</p></div><div class="field"><h3>Relation to the Field</h3><p>Combines prompt-compression (LLMLingua-style) with distillation (Orca-style) at the agent level; closely related to AgentDiet&#x27;s trajectory reduction for cost-efficient long-horizon agents.</p></div>
-<div class="nav"><a href="agentdiet.html">← AgentDiet (Xiao et al. 2025)</a><span class="sp"></span><a href="llmlingua-2.html">LLMLingua-2 (Pan et al. 2024) →</a></div></article></div>
+<div class="nav"><a href="agentdiet.html">← AgentDiet (Xiao et al. 2025)</a><span class="sp"></span><a href="mem1.html">MEM1: Learning to Synergize Memory and →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap", "landscape": "Field landscape"};

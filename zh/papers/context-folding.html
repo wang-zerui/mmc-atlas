@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scaling Long-Horizon LLM Agent via Context-Folding (2025) — 多模型协作图谱</title><script>(function(){try{var t=localStorage.getItem('mmc-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root{--bg:#fff;--panel:#f7f8fa;--ink:#1a1f28;--mut:#636b78;--line:#e6e9ef;--accent:#2563d8;--accsoft:#eef3fc;--accbd:#cfe0fa;--good:#177a45;--warn:#9a6a10;--sidebar:#fbfcfd;--tldrbg:#eef3fc;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace;--sbw:320px}
+[data-theme=dark]{--bg:#0f1115;--panel:#171a21;--ink:#e7ebf0;--mut:#9aa4b2;--line:#262c38;--accent:#6ea8fe;--accsoft:#16233b;--accbd:#274063;--good:#5fd08a;--warn:#e0b23b;--sidebar:#12141a;--tldrbg:#14233b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--accent);text-decoration:none}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sbw);flex:0 0 var(--sbw);background:var(--sidebar);border-right:1px solid var(--line);height:100vh;position:sticky;top:0;overflow-y:auto}
+.sb-head{padding:18px 20px 13px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sidebar);z-index:2}
+.sb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sb-head a.brand{font-weight:700;font-size:15px;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+.sb-tools{display:flex;gap:6px;flex:0 0 auto}
+.themebtn,.langbtn{background:none;border:1px solid var(--line);border-radius:7px;height:30px;cursor:pointer;font-size:12.5px;color:var(--mut);padding:0 9px;display:flex;align-items:center}
+.themebtn{width:30px;justify-content:center;font-size:14px}
+.themebtn:hover,.langbtn:hover{color:var(--ink);border-color:var(--accent)}
+.sb-head .tag{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:5px}
+.sb-search{width:100%;margin-top:11px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+.sb-nav{padding:10px 8px 40px}
+.sb-nav a.home{display:block;padding:7px 12px;font-size:13px;color:var(--mut);border-radius:6px}
+.sb-nav a.home:hover{background:var(--panel);color:var(--ink)}
+.sb-nav a.home.active{color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam{margin:2px 0}
+.sb-fam>summary{list-style:none;cursor:pointer;padding:8px 12px;border-radius:7px;font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sb-fam>summary::-webkit-details-marker{display:none}
+.sb-fam>summary:hover{background:var(--panel)}
+.sb-fam .cnt{font-size:10.5px;opacity:.7;font-family:var(--mono);font-weight:400}
+.sb-fam .fname{line-height:1.25}
+.sb-fam ul{list-style:none;padding:2px 0 8px}
+.sb-fam li a{display:block;padding:5px 12px 5px 20px;font-size:13.5px;color:var(--mut);border-radius:6px;line-height:1.35;border-left:2px solid transparent}
+.sb-fam li a:hover{background:var(--panel);color:var(--ink)}
+.sb-fam li a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accsoft);font-weight:600}
+.sb-fam li a.summ{font-style:italic;opacity:.9}
+.sb-fam li a .yr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.75}
+.main{flex:1;min-width:0}
+.mwrap{max-width:820px;margin:0 auto;padding:0 40px}
+.mobbar{display:none}
+@media(max-width:900px){:root{--sbw:0px}
+ .sidebar{position:fixed;left:-88vw;width:86vw;flex-basis:86vw;transition:.2s;z-index:50;box-shadow:0 0 40px rgba(0,0,0,.25)}
+ .sidebar.open{left:0}
+ .mobbar{display:flex;position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:11px 18px;gap:12px;align-items:center;z-index:40}
+ .mobbar button{font-size:20px;background:none;border:none;cursor:pointer;color:var(--ink)}.mobbar b{font-size:14px}.mwrap{padding:0 20px}}
+.hero{padding:46px 0 24px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.02em;line-height:1.14}
+.hero .sub{color:var(--mut);margin-top:.6em;font-size:clamp(15px,1.5vw,18px);max-width:70ch}
+.hero .stat{margin-top:1.2em;display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--mut)}
+.hero .stat b{color:var(--ink);font-size:15px}
+.intro{padding:26px 0 4px}
+.intro h2{font-size:20px;letter-spacing:-.01em;margin-bottom:.5em}
+.intro p{font-size:15.5px;margin:.5em 0;color:var(--ink)}
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+.callout.warnbox{border-left:3px solid var(--warn)}
+.callout.goodbox{border-left:3px solid var(--good)}
+.callout h3{font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:.5em}
+section.fam{padding:28px 0 6px;border-top:1px solid var(--line)}
+.fam h2{font-size:clamp(18px,2vw,24px);letter-spacing:-.01em}.fam h2 a{color:inherit}
+.fam .desc{color:var(--mut);margin:.3em 0 1.05em;font-size:14.5px}
+.fam .more{font-size:13px;font-family:var(--mono)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px 17px;color:inherit;transition:.15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .w{font-weight:640;font-size:15px;line-height:1.3}
+.card .t{color:var(--mut);font-size:13px;margin-top:.5em}
+.badges{margin-top:.7em;display:flex;gap:6px;flex-wrap:wrap}
+.b{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+.b.y{background:var(--accsoft);color:var(--accent);border-color:var(--accbd)}
+.b.g{color:var(--good)}.b.w{color:var(--warn)}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--mut);padding:26px 0 0}
+article{padding:12px 0 10px}
+article h1{font-size:clamp(21px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em}
+.pmeta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--mut);margin:.7em 0 0;align-items:center}
+.tldr{background:var(--tldrbg);border:1px solid var(--accbd);border-radius:12px;padding:15px 18px;margin:20px 0;font-size:16.5px;line-height:1.6}
+.field{padding:17px 0;border-top:1px solid var(--line)}
+.field h3{font-size:12px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45em}
+.field p{font-size:15.5px}
+.summ-body p{font-size:15.5px;margin:.7em 0}
+.ov-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.ov-head{padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.ov-wrap{background:var(--bg);padding:14px 16px;overflow-x:auto}
+.ov-wrap svg{display:block;max-width:100%;height:auto;margin:0 auto}
+.mm-card{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--panel)}
+.mm-head{display:flex;justify-content:space-between;align-items:center;padding:9px 15px;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);border-bottom:1px solid var(--line)}
+.mm-toggle{background:none;border:1px solid var(--line);border-radius:6px;width:24px;height:24px;cursor:pointer;color:var(--mut);font-size:15px;line-height:1}
+.mm-toggle:hover{color:var(--ink);border-color:var(--accent)}
+.mm-wrap{background:var(--bg);padding:2px}
+.markmap{width:100%;height:360px;font-size:13px;color:transparent}
+.markmap>svg{width:100%;height:100%;color:var(--ink)}
+.markmap svg text{fill:var(--ink)}
+.markmap svg a{fill:var(--accent)}
+pre.mm-fallback{white-space:pre-wrap;color:var(--ink);font-size:13.5px;line-height:1.5;padding:16px 18px;margin:0;font-family:var(--mono)}
+.ls-wide{max-width:1180px}
+.ls-stage{border:1px solid var(--line);border-radius:12px;background:var(--bg);padding:10px;overflow-x:auto}
+.ls-node{cursor:pointer}
+.ls-node:hover rect,.ls-node:focus rect{stroke:var(--accent);stroke-width:2}
+.ls-node:focus{outline:none}
+.ls-panel{margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 18px;min-height:60px}
+.ls-panel .lp-h{font-size:16px}.ls-panel .lp-n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-left:6px}
+.ls-panel .lp-r{color:var(--mut);font-size:13.5px;margin:.3em 0 .6em}
+.ls-panel .lp-list{list-style:none;padding:0;max-height:320px;overflow-y:auto;column-gap:26px}
+.ls-panel .lp-list li{padding:3px 0;font-size:14px;line-height:1.4}
+.ls-panel .lp-y{font-family:var(--mono);font-size:11px;color:var(--mut);display:inline-block;min-width:38px}
+.ls-panel .lp-neg{color:var(--warn)}
+.ls-panel .lp-empty{color:var(--mut);font-size:13.5px;font-style:italic}
+@media(min-width:720px){.ls-panel .lp-list{column-count:2}}
+.rm-timeline{margin:20px 0;display:flex;flex-direction:column;gap:0}
+.rm-phase{display:flex;gap:18px;position:relative;padding-bottom:26px}
+.rm-phase:not(:last-child)::before{content:"";position:absolute;left:23px;top:44px;bottom:0;width:2px;background:var(--line)}
+.rm-badge{flex:0 0 auto;width:48px;height:48px;border-radius:50%;background:var(--accsoft);color:var(--accent);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:15px;z-index:1}
+.rm-body{flex:1;min-width:0;padding-top:2px}
+.rm-when{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;text-transform:uppercase}
+.rm-title{font-size:clamp(18px,2vw,23px);margin:.15em 0 .3em;letter-spacing:-.01em}
+.rm-goal{color:var(--ink);font-size:15.5px;margin-bottom:.6em}
+.rm-acts{margin:.4em 0 .8em}
+.rm-acts li{padding-left:1.2em;position:relative;margin:.42em 0;font-size:15px}
+.rm-acts li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+.rm-succ{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:9px 13px;font-size:13.5px;color:var(--mut)}
+.rm-succ span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--good);margin-right:8px}
+.cmp-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:8px 0}
+table.cmp{border-collapse:collapse;min-width:900px;font-size:13px}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
+table.cmp th{background:var(--panel);font-weight:600;position:sticky;top:0}
+table.cmp .ch-n{font-size:12px;line-height:1.25}
+table.cmp .ch-s{font-family:var(--mono);font-size:10px;color:var(--mut);font-weight:400;margin-top:2px}
+table.cmp td.rowlab,table.cmp th.rowlab{position:sticky;left:0;background:var(--sidebar);font-weight:600;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--mut);min-width:120px;z-index:1}
+table.cmp .ours{background:var(--accsoft)}
+table.cmp th.ours{color:var(--accent);border-bottom:2px solid var(--accent)}
+table.cmp td.neg{color:var(--bad)}
+table.cmp tr:last-child td{border-bottom:none}
+.hero .cmp-link{display:inline-block;margin-top:1em;font-size:14px;font-family:var(--mono)}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:22px 0 60px;border-top:1px solid var(--line);margin-top:14px;font-size:13.5px}.nav .sp{flex:1}
+footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px solid var(--line);margin-top:24px}
+</style></head><body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
+   <div class="sb-tools"><a class="langbtn" href="../../papers/context-folding.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
+  <div class="tag">187 篇论文 · 11 个族</div>
+  <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
+ <nav class="sb-nav" id="sb-nav"></nav>
+</aside>
+<div class="main"><div class="mobbar"><button id="mob-toggle">☰</button><b>多模型协作图谱</b></div>
+<div class="mwrap">
+<div class="crumb"><a href="../index.html">多模型协作图谱</a> &nbsp;·&nbsp; <a href="../families/F.html">强弱协作提效</a></div>
+<article><h1>Scaling Long-Horizon LLM Agent via Context-Folding (2025)</h1>
+<div class="pmeta"><span class="b">M327</span><span class="b y">ICML 2026</span><span class="b g">已核实</span> <a href="https://arxiv.org/abs/2510.11967" target="_blank" rel="noopener">原文 ↗</a></div>
+<div class="tldr">把子任务分支到独立上下文中执行，完成后只把紧凑的返回摘要折叠回父轨迹。</div>
+
+<div class="mm-card">
+<div class="mm-head"><span>思维导图</span><button class="mm-toggle" data-t="fold">–</button></div>
+<div class="mm-wrap"><div class="markmap"># Scaling Long-Horizon LLM Agent via Context-Folding
+## 一句话 
+- 把子任务分支到独立上下文中执行，完成后只把紧凑的返回摘要折叠回父轨迹。
+## 问题
+- 避免已完成的子任务轨迹永久占据父上下文。
+## 洞见
+- 把子轨迹视为有作用域的调用帧，只向父轨迹返回结果。
+## 方法
+- Context-Folding 在独立上下文执行分支，返回紧凑摘要，并用 FoldGRPO 训练折叠行为。
+## 设置
+- 在长程 agent 基准上比较平铺轨迹、手工压缩与学习式折叠。
+## 结果
+- 论文报告活跃上下文约缩小 10 倍，并改善长程扩展能力。
+## 挑战
+- 选择折叠边界，并生成足以支持后续验证的返回状态。
+## 局限
+- 返回摘要有损；若没有证据或验证信号，隐藏分支的错误可能被保留下来。</div></div></div>
+<div class="field"><h3>背景</h3><p>长程 agent 把局部子任务细节与全局任务状态混在同一序列中。</p></div><div class="field"><h3>问题</h3><p>避免已完成的子任务轨迹永久占据父上下文。</p></div><div class="field"><h3>动机 / 分析</h3><p>许多中间工具调用只在局部分支运行期间有价值。</p></div><div class="field"><h3>关键洞见</h3><p>把子轨迹视为有作用域的调用帧，只向父轨迹返回结果。</p></div><div class="field"><h3>挑战</h3><p>选择折叠边界，并生成足以支持后续验证的返回状态。</p></div><div class="field"><h3>方法</h3><p>Context-Folding 在独立上下文执行分支，返回紧凑摘要，并用 FoldGRPO 训练折叠行为。</p></div><div class="field"><h3>实验设置</h3><p>在长程 agent 基准上比较平铺轨迹、手工压缩与学习式折叠。</p></div><div class="field"><h3>结果</h3><p>论文报告活跃上下文约缩小 10 倍，并改善长程扩展能力。</p></div><div class="field"><h3>局限</h3><p>返回摘要有损；若没有证据或验证信号，隐藏分支的错误可能被保留下来。</p></div><div class="field"><h3>与领域的关系</h3><p>轨迹压缩中最清晰的宏观轮次 branch-and-return 形式。</p></div>
+<div class="nav"><a href="focusagent.html">← FocusAgent: Context-Aware Active Obser</a><span class="sp"></span><a href="agentfold.html">AgentFold: Long-Horizon Web Agents wit →</a></div></article></div>
+</div></div>
+<script src="../nav.js"></script>
+<script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图"};
+(function(){
+ var cur=(location.pathname.split('/').pop()||'index.html');
+ var side=document.getElementById('sb-nav');
+ var homeActive=(cur==='index.html'&&!/\/(papers|families)\//.test(location.pathname))?' active':'';
+ var html='<a class="home'+homeActive+'" href="'+BASE+'index.html">'+T.overview+'</a>';
+ html+='<a class="home'+(cur==='comparison.html'?' active':'')+'" href="'+BASE+'comparison.html">'+T.compare+'</a>';
+ html+='<a class="home'+(cur==='roadmap.html'?' active':'')+'" href="'+BASE+'roadmap.html">'+T.roadmap+'</a>';
+ html+='<a class="home'+(cur==='landscape.html'?' active':'')+'" href="'+BASE+'landscape.html">'+T.landscape+'</a>';
+ html+=NAV.map(function(f){
+   var code=f.code.split('.')[0];
+   var summ='<li><a class="summ'+((cur===code+'.html')?' active':'')+'" href="'+BASE+'families/'+code+'.html">▸ '+T.fam_overview+'</a></li>';
+   var items=f.items.map(function(p){
+     var yr=p.y?(' <span class="yr">'+p.y+'</span>'):'';
+     var act=(p.slug+'.html'===cur)?' class="active"':'';
+     return '<li><a href="'+BASE+'papers/'+p.slug+'.html"'+act+' data-s="'+(p.w+' '+(p.t||'')).toLowerCase().replace(/"/g,'')+'">'+p.w+yr+'</a></li>';
+   }).join('');
+   var open=(f.items.some(function(p){return p.slug+'.html'===cur;})||cur===code+'.html')?' open':'';
+   return '<details class="sb-fam"'+open+'><summary><span class="fname">'+f.name+'</span><span class="cnt">'+f.items.length+'</span></summary><ul>'+summ+items+'</ul></details>';
+ }).join('');
+ side.innerHTML=html;
+ var box=document.getElementById('sb-search');
+ if(box)box.addEventListener('input',function(){var s=box.value.trim().toLowerCase();
+   document.querySelectorAll('.sb-fam').forEach(function(d){var any=false;
+     d.querySelectorAll('li a').forEach(function(a){if(a.classList.contains('summ')){a.parentNode.style.display=s?'none':'';return;}
+       var ok=!s||a.dataset.s.indexOf(s)>=0;a.parentNode.style.display=ok?'':'none';if(ok)any=true;});
+     d.style.display=any?'':'none';if(s)d.open=true;});});
+ var mb=document.getElementById('mob-toggle');
+ if(mb)mb.addEventListener('click',function(){document.querySelector('.sidebar').classList.toggle('open');});
+ var tb=document.getElementById('theme-btn');
+ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('mmc-theme',t);}catch(e){}tb.textContent=t==='dark'?'☀':'☾';}
+ if(tb){var ct=document.documentElement.getAttribute('data-theme')||'light';tb.textContent=ct==='dark'?'☀':'☾';
+   tb.addEventListener('click',function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');});}
+ var a=document.querySelector('.sb-fam li a.active');if(a)a.scrollIntoView({block:'center'});
+})();
+</script>
+
+<script>window.markmap={autoLoader:{manual:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18/dist/index.js"></script>
+<script>
+(function(){
+ // fold/unfold toggle
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.mm-toggle'); if(!b)return;
+   var w=b.closest('.mm-card').querySelector('.mm-wrap');
+   var folded=w.style.display==='none';
+   w.style.display=folded?'':'none'; b.textContent=folded?'–':'+';
+ });
+ // fallback: if after 6s a mindmap box has no <svg>, show the outline as text
+ setTimeout(function(){
+   document.querySelectorAll('.mm-wrap').forEach(function(w){
+     if(!w.querySelector('svg')){
+       var src=w.querySelector('.markmap'); if(src){var pre=document.createElement('pre');
+         pre.className='mm-fallback'; pre.textContent=src.textContent.trim(); src.replaceWith(pre);}
+     }
+   });
+ },6000);
+})();
+</script>
+</body></html>
