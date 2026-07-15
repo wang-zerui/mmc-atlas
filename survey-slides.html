@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Multi-Model Collaboration in Agentic Systems — Survey</title>
+<style>
+  :root{
+    --bg:#fff;--panel:#f6f7f9;--panel2:#eef3fc;--ink:#14181f;--mut:#5c6672;
+    --line:#e2e6ec;--accent:#2563d8;--good:#177a45;--warn:#9a6a10;--bad:#c0392b;
+    --purple:#7656b5;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow:hidden}
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{position:absolute;inset:0;padding:5vh 7vw;display:none;flex-direction:column;animation:fade .32s ease}
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+  h1{font-size:clamp(28px,4vw,56px);line-height:1.1;font-weight:700;letter-spacing:-.025em}
+  h2{font-size:clamp(22px,2.65vw,37px);line-height:1.18;font-weight:680;letter-spacing:-.018em;margin-bottom:.45em}
+  h3{font-size:clamp(14px,1.35vw,18px);line-height:1.3}
+  p,li{font-size:clamp(14px,1.27vw,18px);line-height:1.55}
+  b{font-weight:680}.mut{color:var(--mut)}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.accent{color:var(--accent)}
+  .kicker{font-family:var(--mono);font-size:clamp(10px,.88vw,13px);font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin-bottom:1.05em}
+  .lead{font-size:clamp(16px,1.65vw,23px);line-height:1.48;max-width:70ch}
+  .title-wrap{margin:auto 0}.title-sub{font-size:clamp(16px,1.65vw,23px);color:var(--mut);margin-top:1em;max-width:48ch}
+  .grid{display:grid;gap:16px;margin:auto 0}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:30px;flex:1;align-items:center;min-height:0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 20px}
+  .card.blue{background:var(--panel2);border-color:#bfd0f2}.card.green{background:#eef7f1;border-color:#c6dfd0}.card.amber{background:#fbf5e9;border-color:#ead9b4}.card.red{background:#fbeeed;border-color:#ecc8c4}
+  .card h3{font-family:var(--mono);font-weight:680;color:var(--accent);margin-bottom:.55em}.card p,.card li{font-size:clamp(12px,1.08vw,15.5px);line-height:1.48}
+  ul{list-style:none}.bullets li{position:relative;padding-left:1.2em;margin:.48em 0}.bullets li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+  .metric{display:flex;flex-direction:column;justify-content:center;min-height:126px}.metric .n{font-family:var(--mono);font-size:clamp(30px,4vw,55px);font-weight:760;line-height:1;color:var(--accent)}.metric .l{font-size:clamp(12px,1.05vw,15px);color:var(--mut);margin-top:.55em;line-height:1.35}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:clamp(10px,.82vw,12px);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--mut);background:var(--bg)}
+  .badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;border-radius:5px;padding:3px 7px;margin-bottom:7px}.b-good{color:var(--good);background:#e7f4ec}.b-warn{color:var(--warn);background:#f8efd9}.b-bad{color:var(--bad);background:#f8e7e5}.b-blue{color:var(--accent);background:#e8effc}
+  .foot{position:absolute;left:7vw;right:7vw;bottom:20px;border-top:1px solid var(--line);padding-top:9px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--mut)}
+  .prog{position:fixed;left:0;top:0;height:3px;background:var(--accent);transition:width .28s;z-index:20}
+  .hint{position:fixed;right:20px;bottom:17px;font-family:var(--mono);font-size:10.5px;color:var(--mut);opacity:.55;z-index:21}
+  .mono{font-family:var(--mono)}
+  table{width:100%;border-collapse:collapse;font-size:clamp(11px,1vw,14px)}th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}th{font-size:.8em;text-transform:uppercase;letter-spacing:.045em;color:var(--mut)}td.n{text-align:right;font-family:var(--mono);font-weight:650}tr.hl td{background:#eef7f1;color:var(--good);font-weight:650}
+  .bar{display:grid;grid-template-columns:minmax(120px,34%) 1fr 35px;gap:10px;align-items:center;margin:6px 0}.bar .lab{text-align:right;font-size:clamp(11px,.93vw,13px)}.track{height:19px;border:1px solid var(--line);background:var(--panel);border-radius:5px;overflow:hidden}.fill{height:100%;background:var(--accent)}.bar .val{font-family:var(--mono);font-size:11px;text-align:right;color:var(--mut)}
+  .axis{font-family:var(--mono);font-size:10px;fill:var(--mut)}.node{fill:var(--panel);stroke:var(--line);stroke-width:1.2}.node-blue{fill:#eef3fc;stroke:var(--accent);stroke-width:1.5}.node-green{fill:#eef7f1;stroke:var(--good);stroke-width:1.5}.node-dash{fill:#fff;stroke:var(--accent);stroke-dasharray:5 4}.svg-t{font-family:var(--sans);fill:var(--ink)}.svg-m{font-family:var(--mono);fill:var(--mut)}.edge{fill:none;stroke:#8b93a0;stroke-width:1.7}.edge-blue{stroke:var(--accent);stroke-width:2.5}.edge-warn{stroke:var(--warn);stroke-width:1.8;stroke-dasharray:6 4}
+  .family-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin:auto 0}.fam{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:11px 12px;min-height:76px}.fam .code{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:750}.fam b{display:block;font-size:clamp(11px,1vw,14px);margin:.25em 0}.fam small{font-family:var(--mono);font-size:9.5px;color:var(--mut)}
+  .topic-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:.55em 0}.topic{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 8px;font-size:clamp(10px,.88vw,12.5px)}.topic em{font-family:var(--mono);font-size:.8em;color:var(--accent);font-style:normal;margin-left:4px}
+  .quote{font-size:clamp(21px,2.7vw,38px);line-height:1.3;font-weight:650;letter-spacing:-.02em;max-width:30ch}.formula{font-family:var(--mono);font-size:clamp(14px,1.35vw,19px);padding:13px 16px;border-radius:9px;background:#111827;color:#f4f7fb;display:inline-block}
+  .flow{display:flex;align-items:stretch;gap:10px;margin:auto 0}.flow .step{flex:1;border:1px solid var(--line);border-radius:11px;padding:15px;background:var(--panel);position:relative}.flow .step:not(:last-child)::after{content:"→";position:absolute;right:-17px;top:42%;z-index:2;color:var(--accent);font-size:19px;font-weight:700}.flow .step b{display:block;color:var(--accent);font-size:clamp(12px,1.1vw,16px);margin-bottom:.4em}.flow .step p{font-size:clamp(11px,.94vw,13.5px);color:var(--mut)}
+  .flow.vertical{flex-direction:column;gap:12px}.flow.vertical .step:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-20px}
+  .callout{border-left:4px solid var(--accent);padding:9px 14px;background:var(--panel);border-radius:0 8px 8px 0;font-size:clamp(13px,1.18vw,17px)}
+  .source{font-family:var(--mono);font-size:9.5px;color:var(--mut);margin-top:.65em}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  @media(max-width:800px){.g4,.family-grid{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.split,.g2{grid-template-columns:1fr;gap:12px}.slide{padding:4vh 5vw}.foot{left:5vw;right:5vw}.hide-small{display:none}}
+  @media print{body{overflow:visible}.deck{height:auto}.slide,.slide.active{display:flex;position:relative;height:100vh;page-break-after:always;animation:none}.hint,.prog{display:none}}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="deck" id="deck">
+
+<!-- 01 -->
+<section class="slide active">
+  <div class="title-wrap">
+    <div class="kicker">Multi-Model Collaboration Atlas · Survey deck · 2026-07-15</div>
+    <h1>Multi-Model Collaboration<br>in Agentic Systems</h1>
+    <p class="title-sub">A definition-first survey of routing, orchestration, verification, trajectory compression, and the runtimes that connect them.</p>
+  </div>
+  <div class="foot"><span>253 papers · 11 families · 51 leaf topics</span><span>01 / 15</span></div>
+</section>
+
+<!-- 02 -->
+<section class="slide">
+  <div class="kicker">Corpus · at a glance</div>
+  <h2>A broad map, with paper-level evidence underneath</h2>
+  <div class="grid g4">
+    <div class="card metric"><span class="n">253</span><span class="l">deduplicated papers and system references</span></div>
+    <div class="card metric"><span class="n">11</span><span class="l">mechanism families from routing to infrastructure</span></div>
+    <div class="card metric"><span class="n">51</span><span class="l">exclusive leaf topics for fine-grained browsing</span></div>
+    <div class="card metric"><span class="n">137</span><span class="l">works tagged to the 2026 wave</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card"><span class="badge b-good">214 verified</span><p>Primary-source-backed cards with explicit method, setup, result, and limitation fields.</p></div>
+    <div class="card"><span class="badge b-warn">38 pending audit</span><p>Kept visible, but venue or headline details still need a deeper source audit.</p></div>
+    <div class="card"><span class="badge b-blue">1 analysis item</span><p>Derived synthesis is labeled separately from claims made by the papers themselves.</p></div>
+  </div>
+  <div class="foot"><span>Corpus state · July 2026</span><span>02 / 15</span></div>
+</section>
+
+<!-- 03 -->
+<section class="slide">
+  <div class="kicker">Definition · what counts</div>
+  <h2>Collaboration requires composition, not merely plurality</h2>
+  <div class="split">
+    <div>
+      <p class="quote">Two or more generative model instances contribute to one task outcome through an explicit interaction protocol.</p>
+      <div class="formula" style="margin-top:1em">instances + topology + exchange → outcome</div>
+    </div>
+    <div class="grid" style="margin:0">
+      <div class="card green"><h3>Included</h3><p>Distinct checkpoints, role-differentiated calls on one checkpoint, or replicated samples whose outputs are explicitly composed.</p></div>
+      <div class="card"><h3>Seven axes</h3><p>Heterogeneity · topology · coupling · awareness · interaction unit · exchanged state · objective.</p></div>
+      <div class="card red"><h3>Excluded</h3><p>Pure RAG, non-generative tools, human-only collaboration, and within-checkpoint MoE routing.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>The agentic, tool-using, long-horizon setting is primary — not exclusive</span><span>03 / 15</span></div>
+</section>
+
+<!-- 04 -->
+<section class="slide">
+  <div class="kicker">Landscape · one control loop</div>
+  <h2>Where collaboration enters an Agentic / Chat Workflow</h2>
+  <svg viewBox="0 0 1050 520" width="100%" style="max-height:68vh;margin:auto" role="img" aria-label="Five-layer multi-model collaboration landscape">
+    <defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L7 3L0 6Z" fill="#8b93a0"/></marker><marker id="arrb" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L7 3L0 6Z" fill="#2563d8"/></marker></defs>
+    <rect x="15" y="15" width="1020" height="82" rx="14" class="node-blue"/><text x="35" y="41" class="svg-m" font-size="13" fill="var(--accent)">CONTROL PLANE</text>
+    <g text-anchor="middle"><rect x="110" y="51" width="175" height="34" rx="8" class="node"/><text x="197" y="73" class="svg-t" font-size="13">Signal & budget</text><rect x="330" y="51" width="175" height="34" rx="8" class="node"/><text x="417" y="73" class="svg-t" font-size="13">Route work</text><rect x="550" y="51" width="175" height="34" rx="8" class="node"/><text x="637" y="73" class="svg-t" font-size="13">Orchestrate</text><rect x="770" y="51" width="175" height="34" rx="8" class="node"/><text x="857" y="73" class="svg-t" font-size="13">Accept · Retry · Stop</text></g>
+    <rect x="15" y="112" width="1020" height="174" rx="14" class="node-blue"/><text x="35" y="139" class="svg-m" font-size="15" fill="var(--accent)">AGENTIC / CHAT WORKFLOW</text>
+    <g text-anchor="middle"><rect x="40" y="166" width="135" height="48" rx="9" class="node"/><text x="107" y="194" class="svg-t" font-size="13">Query & intent</text><rect x="205" y="166" width="135" height="48" rx="9" class="node"/><text x="272" y="187" class="svg-t" font-size="13">Context &</text><text x="272" y="203" class="svg-t" font-size="13">memory</text><rect x="370" y="166" width="135" height="48" rx="9" class="node"/><text x="437" y="187" class="svg-t" font-size="13">Models, agents</text><text x="437" y="203" class="svg-t" font-size="13">& tools</text><rect x="535" y="166" width="135" height="48" rx="9" class="node"/><text x="602" y="187" class="svg-t" font-size="13">Draft, fold</text><text x="602" y="203" class="svg-t" font-size="13">& handoff</text><rect x="700" y="166" width="135" height="48" rx="9" class="node"/><text x="767" y="187" class="svg-t" font-size="13">Aggregate</text><text x="767" y="203" class="svg-t" font-size="13">& debate</text><rect x="865" y="166" width="135" height="48" rx="9" class="node"/><text x="932" y="187" class="svg-t" font-size="13">Verify</text><text x="932" y="203" class="svg-t" font-size="13">& judge</text></g>
+    <g class="edge edge-blue" marker-end="url(#arrb)"><line x1="175" y1="190" x2="203" y2="190"/><line x1="340" y1="190" x2="368" y2="190"/><line x1="505" y1="190" x2="533" y2="190"/><line x1="670" y1="190" x2="698" y2="190"/><line x1="835" y1="190" x2="863" y2="190"/></g>
+    <rect x="70" y="235" width="910" height="27" rx="13" class="node-dash"/><text x="525" y="253" text-anchor="middle" class="svg-m" font-size="11" fill="var(--accent)">MESSAGES · SHARED STATE · PROTOCOLS</text>
+    <rect x="15" y="301" width="1020" height="64" rx="14" class="node"/><text x="35" y="326" class="svg-m" font-size="12">INTERVENTION GRANULARITY</text><text x="525" y="347" text-anchor="middle" class="svg-t" font-size="14">Query-level &nbsp;&nbsp;·&nbsp;&nbsp; Turn & subtask &nbsp;&nbsp;·&nbsp;&nbsp; Trajectory & round &nbsp;&nbsp;·&nbsp;&nbsp; Token & step</text>
+    <rect x="15" y="380" width="1020" height="64" rx="14" class="node-green"/><text x="35" y="405" class="svg-m" font-size="12" fill="var(--good)">ROUTING GOALS · MULTI-LABEL</text><text x="525" y="427" text-anchor="middle" class="svg-t" font-size="14">Quality · cost · latency · reliability · adaptation · agentic success</text>
+    <rect x="15" y="459" width="1020" height="48" rx="14" class="node-dash"/><text x="35" y="489" class="svg-m" font-size="12">INFRASTRUCTURE</text><text x="610" y="489" text-anchor="middle" class="svg-t" font-size="13">training · agent-native runtime · scheduling · evaluation</text>
+  </svg>
+  <div class="foot"><span>Counts in the landscape are multi-label and are not additive</span><span>04 / 15</span></div>
+</section>
+
+<!-- 05 -->
+<section class="slide">
+  <div class="kicker">Taxonomy · 11 families</div>
+  <h2>The corpus spans mechanisms, systems, and evaluation</h2>
+  <div class="split">
+    <div class="chart">
+      <div class="bar"><span class="lab">A · Routing</span><span class="track"><i class="fill" style="display:block;width:100%"></i></span><span class="val">50</span></div>
+      <div class="bar"><span class="lab">F · Efficiency</span><span class="track"><i class="fill" style="display:block;width:88%"></i></span><span class="val">44</span></div>
+      <div class="bar"><span class="lab">I · Infrastructure</span><span class="track"><i class="fill" style="display:block;width:46%"></i></span><span class="val">23</span></div>
+      <div class="bar"><span class="lab">S · Surveys</span><span class="track"><i class="fill" style="display:block;width:44%"></i></span><span class="val">22</span></div>
+      <div class="bar"><span class="lab">B · Ensembles</span><span class="track"><i class="fill" style="display:block;width:40%"></i></span><span class="val">20</span></div>
+      <div class="bar"><span class="lab">C · Orchestration</span><span class="track"><i class="fill" style="display:block;width:38%"></i></span><span class="val">19</span></div>
+      <div class="bar"><span class="lab">E · Verification</span><span class="track"><i class="fill" style="display:block;width:38%"></i></span><span class="val">19</span></div>
+      <div class="bar"><span class="lab">H · Training</span><span class="track"><i class="fill" style="display:block;width:36%"></i></span><span class="val">18</span></div>
+      <div class="bar"><span class="lab">D · Debate</span><span class="track"><i class="fill" style="display:block;width:34%"></i></span><span class="val">17</span></div>
+      <div class="bar"><span class="lab">Z · Evaluation</span><span class="track"><i class="fill" style="display:block;width:24%"></i></span><span class="val">12</span></div>
+      <div class="bar"><span class="lab">G · Protocols</span><span class="track"><i class="fill" style="display:block;width:18%"></i></span><span class="val">9</span></div>
+    </div>
+    <div class="family-grid">
+      <div class="fam"><span class="code">A</span><b>Routing & cascades</b><small>choose / escalate</small></div><div class="fam"><span class="code">B</span><b>Ensembling</b><small>vote / rank / fuse</small></div><div class="fam"><span class="code">C</span><b>Orchestration</b><small>roles / subagents</small></div><div class="fam"><span class="code">D</span><b>Debate</b><small>critique / refine</small></div>
+      <div class="fam"><span class="code">E</span><b>Verification</b><small>gate / judge</small></div><div class="fam"><span class="code">F</span><b>Efficiency</b><small>draft / fold</small></div><div class="fam"><span class="code">G</span><b>Protocols</b><small>message / state</small></div><div class="fam"><span class="code">H</span><b>Optimization</b><small>learn the graph</small></div>
+      <div class="fam"><span class="code">I</span><b>Infrastructure</b><small>serve / schedule</small></div><div class="fam"><span class="code">Z</span><b>Evaluation</b><small>benchmark / fail</small></div><div class="fam"><span class="code">S</span><b>Surveys</b><small>field maps</small></div>
+    </div>
+  </div>
+  <div class="foot"><span>Family counts are exclusive and sum to 253</span><span>05 / 15</span></div>
+</section>
+
+<!-- 06 -->
+<section class="slide">
+  <div class="kicker">Fine-grained topics · below the family level</div>
+  <h2>Leaf topics make “multi-agent” concrete</h2>
+  <div class="split">
+    <div class="card blue">
+      <h3>C · Agent orchestration · 19 papers</h3>
+      <div class="topic-row"><span class="topic">Agent teams <em>9</em></span><span class="topic">Subagents <em>2</em></span><span class="topic">Frameworks & handoffs <em>3</em></span><span class="topic">Dynamic orchestration <em>5</em></span></div>
+      <p class="mut">This separates persistent named-role teams from lead-agent delegation and from runtime-adaptive topology.</p>
+    </div>
+    <div class="card">
+      <h3>F · Efficiency & context · 44 papers</h3>
+      <div class="topic-row"><span class="topic">Speculative decoding <em>20</em></span><span class="topic">Prompt compression <em>2</em></span><span class="topic">Active context <em>6</em></span><span class="topic">Trajectory folding <em>10</em></span><span class="topic">Agent memory <em>5</em></span><span class="topic">Strong→weak <em>1</em></span></div>
+      <p class="mut">The same family contains lossless token coupling and lossy semantic state reduction — the distinction matters.</p>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h3>51 leaf topics</h3><p>Every paper receives one primary leaf label, so leaf counts are additive.</p></div>
+    <div class="card"><h3>Interactive cards</h3><p>Each topic expands into paper links with a TL;DR, venue, year, and caveat flag.</p></div>
+    <div class="card"><h3>Why this level?</h3><p>“Agent teams,” “subagents,” and “multi-agent RL” answer different technical questions.</p></div>
+  </div>
+  <div class="foot"><span>The public Landscape exposes all 51 leaves</span><span>06 / 15</span></div>
+</section>
+
+<!-- 07 -->
+<section class="slide">
+  <div class="kicker">Evidence synthesis · three regimes</div>
+  <h2>What robustly works — and what needs a signal</h2>
+  <div class="grid g3">
+    <div class="card green"><span class="badge b-good">Structural guarantee</span><h3 style="color:var(--good)">Most reliable</h3><p>Exact draft–verify coupling and workflow-aware runtime reuse deliver gains because correctness or reuse is structurally constrained.</p><p class="source">Speculative decoding · Faster Cascades · vLLM/SGLang · M005–M007, M021, M109–M112</p></div>
+    <div class="card blue"><span class="badge b-blue">Informative signal</span><h3>Conditional</h3><p>Calibrated routing, honest heterogeneity, and reliable verification work when difficulty, uncertainty, diversity, or validity is actually observable.</p><p class="source">UCCI · SeqRoute · Switchcraft · AgentV-RL · M121, M124, M125, M160, M186–M187</p></div>
+    <div class="card red"><span class="badge b-bad">Failure zone</span><h3 style="color:var(--bad)">High risk</h3><p>Homogeneous debate, naive agent scaling, and un-signaled combination often disappear at matched compute — or destroy correct answers.</p><p class="source">M115 · M135 · M153 · M158 · M159 · M163</p></div>
+  </div>
+  <p class="callout" style="margin-top:18px"><b>Central claim:</b> composition without a structural guarantee or an informative control signal does not reliably beat the single best model at matched compute.</p>
+  <div class="foot"><span>This is the load-bearing synthesis of the survey</span><span>07 / 15</span></div>
+</section>
+
+<!-- 08 -->
+<section class="slide">
+  <div class="kicker">Router · the largest family</div>
+  <h2>Routing is becoming a stateful control policy</h2>
+  <div class="flow">
+    <div class="step"><b>Query classifier</b><p>Choose one strong or weak model from static features.</p></div>
+    <div class="step"><b>Calibrated cascade</b><p>Use confidence, risk, and budget to accept or escalate.</p></div>
+    <div class="step"><b>Multi-turn policy</b><p>Re-route from execution state, memory, and remaining budget.</p></div>
+    <div class="step"><b>Agent / tool / subset</b><p>Select workers, tools, complementary sets, and topology.</p></div>
+    <div class="step"><b>Serving-aware control</b><p>Jointly optimize model, latency, capacity, and stopping.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h3>Open pools</h3><p>Cold start, unseen models, sparse feedback, and capability drift.</p></div>
+    <div class="card"><h3>Risk & guarantees</h3><p>Conformal gates, calibrated uncertainty, distribution shift, and denial-of-wallet attacks.</p></div>
+    <div class="card"><h3>Agentic objective</h3><p>Optimize task completion across turns — not static answer quality alone.</p></div>
+  </div>
+  <p class="callout" style="margin-top:14px">The bottleneck is no longer router architecture. It is <b>trustworthy signals, labels, and verification</b>.</p>
+  <div class="foot"><span>50 papers · 6 router leaf topics</span><span>08 / 15</span></div>
+</section>
+
+<!-- 09 -->
+<section class="slide">
+  <div class="kicker">Orchestration & debate · the negative evidence</div>
+  <h2>More agents are not automatically more intelligence</h2>
+  <div class="grid g4">
+    <div class="card metric red"><span class="n" style="color:var(--bad)">−41.1%</span><span class="l">teams vs their own best identified expert</span></div>
+    <div class="card metric amber"><span class="n" style="color:var(--warn)">2.1–3.4×</span><span class="l">debate tokens for equal or worse accuracy than isolated self-correction</span></div>
+    <div class="card metric red"><span class="n" style="color:var(--bad)">29%</span><span class="l">strict conformity flips — mostly harmful</span></div>
+    <div class="card metric"><span class="n">2 ≈ 16</span><span class="l">diverse agents can match many homogeneous agents</span></div>
+  </div>
+  <div class="split" style="margin-top:18px">
+    <div class="card green"><h3 style="color:var(--good)">When orchestration helps</h3><ul class="bullets"><li>Roles or capabilities are genuinely heterogeneous</li><li>Topology adapts to task structure</li><li>Workers return verifiable, scoped artifacts</li><li>A controller can stop or reject bad collaboration</li></ul></div>
+    <div class="card red"><h3 style="color:var(--bad)">When it backfires</h3><ul class="bullets"><li>Homogeneous peers converge on the same error</li><li>Consensus dilutes the strongest expert</li><li>Extra context and calls masquerade as mechanism gains</li><li>No signal says whose answer should dominate</li></ul></div>
+  </div>
+  <div class="foot"><span>M153 · M156–M164 · compute-matched evidence</span><span>09 / 15</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <div class="kicker">Verification · the strongest quality lever</div>
+  <h2>A verifier helps only if its own validity is measured</h2>
+  <div class="split">
+    <div>
+      <svg viewBox="0 0 500 280" width="100%" role="img" aria-label="Candidates pass through process and agentic verifiers to an accept retry stop decision">
+        <defs><marker id="vA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0L7 3L0 6Z" fill="#8b93a0"/></marker></defs>
+        <rect x="18" y="104" width="105" height="55" rx="10" class="node"/><text x="70" y="129" text-anchor="middle" class="svg-t" font-size="14">Candidate</text><text x="70" y="146" text-anchor="middle" class="svg-m" font-size="10">answer / trace</text>
+        <rect x="168" y="38" width="145" height="52" rx="10" class="node-blue"/><text x="240" y="61" text-anchor="middle" class="svg-t" font-size="13">Process verifier</text><text x="240" y="77" text-anchor="middle" class="svg-m" font-size="10">step / reward signal</text>
+        <rect x="168" y="111" width="145" height="52" rx="10" class="node-blue"/><text x="240" y="134" text-anchor="middle" class="svg-t" font-size="13">Judge / jury</text><text x="240" y="150" text-anchor="middle" class="svg-m" font-size="10">rank / compare / aggregate</text>
+        <rect x="168" y="184" width="145" height="52" rx="10" class="node-blue"/><text x="240" y="207" text-anchor="middle" class="svg-t" font-size="13">Agentic verifier</text><text x="240" y="223" text-anchor="middle" class="svg-m" font-size="10">tools / environment evidence</text>
+        <rect x="360" y="104" width="122" height="64" rx="10" class="node-green"/><text x="421" y="130" text-anchor="middle" class="svg-t" font-size="13">Accept · retry</text><text x="421" y="149" text-anchor="middle" class="svg-t" font-size="13">escalate · stop</text>
+        <g class="edge" marker-end="url(#vA)"><path d="M123 132L166 66"/><path d="M123 132L166 137"/><path d="M123 132L166 208"/><path d="M313 64L358 126"/><path d="M313 137H358"/><path d="M313 210L358 148"/></g>
+      </svg>
+    </div>
+    <div class="grid" style="margin:0">
+      <div class="card green"><h3 style="color:var(--good)">Positive</h3><p>Process supervision, compute-optimal search, disjoint-family panels, and environment-aware verifiers can materially improve selection.</p></div>
+      <div class="card red"><h3 style="color:var(--bad)">Caveat</h3><p>On ~541K judgments, exact-match agreement inflated quality by <b>33–41 percentage points</b> versus chance-corrected κ.</p></div>
+      <div class="card amber"><h3 style="color:var(--warn)">Systems interaction</h3><p>KV reuse that helps generators can weaken cross-candidate attention and silently break judges.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>M070–M078 · M181–M189 · M226</span><span>10 / 15</span></div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <div class="kicker">Trajectory compression · 2025–26 deepening pass</div>
+  <h2>Reduce the state that the next agent call must consume</h2>
+  <div class="flow">
+    <div class="step"><b>Filter / prune</b><p>Drop irrelevant observations, screenshots, logs, or history.</p></div>
+    <div class="step"><b>Running state</b><p>Maintain a compact learned summary as the trajectory grows.</p></div>
+    <div class="step"><b>Fold</b><p>Compress local subtrajectories and bridge into a rebuilt state.</p></div>
+    <div class="step"><b>Recover</b><p>Keep raw evidence external and retrieve it when needed.</p></div>
+    <div class="step"><b>Control primitive</b><p>Route among compaction strategies or parallelize compaction.</p></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card green"><span class="badge b-good">Lossless</span><p>Exact draft–verify methods preserve the target distribution.</p></div>
+    <div class="card amber"><span class="badge b-warn">Recoverable</span><p>Raw evidence exists outside the prompt, but retrieval can still fail.</p></div>
+    <div class="card red"><span class="badge b-bad">Lossy</span><p>Most semantic summaries and folds trade context size for possible omission.</p></div>
+  </div>
+  <p class="callout" style="margin-top:14px"><b>Scope boundary:</b> agent trajectory compression carries observations/actions/tool results across calls. CoT shortening such as ThoughtFold is adjacent efficient reasoning, not the same object.</p>
+  <div class="foot"><span>21 strict trajectory papers · 20 speculative-decoding papers</span><span>11 / 15</span></div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <div class="kicker">Terminal frontier · three different collaboration claims</div>
+  <h2>Runtime orchestration and data synthesis must not be conflated</h2>
+  <div class="grid g3">
+    <div class="card blue"><span class="badge b-blue">Runtime · heterogeneous</span><h3>Fugu</h3><p>A learned orchestrator selects one frontier worker or dynamically composes several. Fugu-Ultra reports <b>82.1</b> on Terminal-Bench 2.1.</p><p class="source">Core multi-model orchestration claim · M389</p></div>
+    <div class="card"><span class="badge b-warn">Upstream synthesis · homogeneous roles</span><h3>TermiGen</h3><p>Claude-role agents generate environments and error-recovery trajectories. The evaluated terminal agent is a single fine-tuned Qwen model.</p><p class="source">31.3 ± 1.8 on Terminal-Bench 2.0 · M390</p></div>
+    <div class="card"><span class="badge b-warn">Upstream synthesis · stagewise models</span><h3>SkillSynth</h3><p>A planner–constructor–verifier harness turns skill graphs into executable tasks and trajectories; multi-model use is in synthesis, not runtime task solving.</p><p class="source">Qwen3-32B + SS: 33.8 ± 3.1 TB1; 29.6 ± 1.6 TB2 · M391</p></div>
+  </div>
+  <p class="callout" style="margin-top:18px">Ask two separate questions: <b>Who collaborates during benchmark execution?</b> And <b>who collaborated to create the training data?</b></p>
+  <div class="foot"><span>Same benchmark family · different causal mechanism</span><span>12 / 15</span></div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <div class="kicker">Infrastructure · from requests to programs</div>
+  <h2>Agent-native serving treats the workflow as a first-class object</h2>
+  <div class="split">
+    <div class="flow vertical">
+      <div class="step"><b>Request engine</b><p>Paged/radix KV, batching, and prefill/decode disaggregation.</p></div>
+      <div class="step"><b>Workflow-aware serving</b><p>Reuse prefixes and retain state across tool stalls, rounds, and graph branches.</p></div>
+      <div class="step"><b>Agent-native runtime</b><p>Schedule by program progress, critical path, SLO, model placement, and recovery state.</p></div>
+    </div>
+    <div class="grid" style="margin:0">
+      <div class="card"><h3>KV & prefix reuse · 7 papers</h3><p>PrefillShare, RelayCaching, KVFlow, TokenCake, Continuum, HeraSys, TokenDance.</p></div>
+      <div class="card blue"><h3>Agent-native runtimes · 7</h3><p>Parrot, Agentix, ThunderAgent, Pythia, Sherlock, stateful and software-defined serving.</p></div>
+      <div class="card"><h3>Workflow scheduling · 5</h3><p>LLM-as-Scheduler, Helium, Scepsy, Murakkab, Astraea.</p></div>
+      <div class="card red"><h3>Boundary failure · 1</h3><p>Generator-friendly cache reuse can invalidate LLM-judge behavior.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>23 infrastructure papers in the exclusive taxonomy</span><span>13 / 15</span></div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <div class="kicker">Evaluation & open problems</div>
+  <h2>The field needs causal, process-level evaluation</h2>
+  <div class="split">
+    <div>
+      <table>
+        <thead><tr><th>Benchmark family</th><th>What it isolates</th></tr></thead>
+        <tbody><tr><td>RouterBench / LLMRouterBench</td><td>cost–quality frontier and router reliability</td></tr><tr><td>TwinRouterBench</td><td>step-level routing in live SWE trajectories</td></tr><tr><td>MultiAgentBench / MASBENCH</td><td>coordination KPIs and when MAS helps</td></tr><tr><td>AgentCollabBench</td><td>process failures under a fixed protocol</td></tr><tr><td>MAST / TraceElephant / TELBench</td><td>which agent and which step caused failure</td></tr><tr><td>JudgeBench / RewardBench 2</td><td>judge validity on hard pairs</td></tr></tbody>
+      </table>
+    </div>
+    <div class="grid" style="margin:0">
+      <div class="card"><h3>01 · Compute matching</h3><p>Compare against the single best model at equal tokens, calls, samples, and ideally FLOPs.</p></div>
+      <div class="card"><h3>02 · Complementarity</h3><p>Predict when heterogeneity helps versus creates negative synergy.</p></div>
+      <div class="card"><h3>03 · Semantic protocols</h3><p>Transport is standardizing; clarification and repair are not.</p></div>
+      <div class="card"><h3>04 · Learn when to stop</h3><p>No canonical RL method trains the orchestration stopping decision.</p></div>
+      <div class="card"><h3>05 · Failure attribution</h3><p>Move from final score to causal responsibility across the trace.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>A collaboration gain is not causal until the extra compute is controlled</span><span>14 / 15</span></div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <div class="kicker">Takeaways</div>
+  <h2>Five conclusions from the evidence</h2>
+  <div class="grid" style="margin:auto 0;gap:11px">
+    <div class="card"><h3>1 · Collaboration is a control problem</h3><p>Route, orchestrate, verify, and stop — around an execution loop with shared state.</p></div>
+    <div class="card"><h3>2 · More calls are not a mechanism</h3><p>Matched-compute evidence often removes the apparent gain from teams, debate, and voting.</p></div>
+    <div class="card"><h3>3 · Guarantees and signals are the durable levers</h3><p>Exact verification, reliable uncertainty, honest diversity, and workflow-aware reuse.</p></div>
+    <div class="card"><h3>4 · Agentic work changes the unit of optimization</h3><p>The target becomes a stateful trajectory, workflow, or program — not one static answer.</p></div>
+    <div class="card blue"><h3>5 · Read the paper-level evidence</h3><p>The Atlas exposes every family, leaf topic, TL;DR, result, limitation, and source.</p></div>
+  </div>
+  <p class="lead" style="margin-top:16px"><a href="https://wang-zerui.github.io/mmc-atlas/">wang-zerui.github.io/mmc-atlas/</a></p>
+  <div class="foot"><span>Multi-Model Collaboration Atlas</span><span>15 / 15</span></div>
+</section>
+
+</div>
+<div class="hint">← → / space to navigate · F for fullscreen</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const prog=document.getElementById('prog');
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    prog.style.width=((i+1)/slides.length*100)+'%';
+    history.replaceState(null,'','#'+(i+1));
+  }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(i+1)}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(i-1)}
+    else if(e.key==='Home'){show(0)}
+    else if(e.key==='End'){show(slides.length-1)}
+    else if(e.key.toLowerCase()==='f'){
+      if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+  let sx=0;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(dx<0?i+1:i-1)},{passive:true});
+  const start=parseInt(location.hash.slice(1),10);show(Number.isFinite(start)?start-1:0);
+</script>
+</body>
+</html>
