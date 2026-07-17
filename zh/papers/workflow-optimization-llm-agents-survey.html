@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/workflow-optimization-llm-agents-survey.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">253 篇论文 · 11 个族</div>
+  <div class="tag">257 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 是综述而非实证研究；为无确认发表场所、且未给出数量化覆盖的 arXiv preprint（cs.AI/cs.CL）。</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 智能体工作流将 LLM 调用、检索、工具使用、代码执行、记忆更新与验证组合成可执行流水线，作者称之为 agentic computation graphs (ACGs)。</p></div><div class="field"><h3>问题</h3><p>设计与优化这些工作流的方法零散且难以比较，缺乏共享词汇与可复现的评估标准。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要一个统一的定位框架，使工作流优化文献可比，并规范此类系统的评估方式。</p></div><div class="field"><h3>关键洞见</h3><p>按工作流结构何时确定来组织方法，即部署前静态确定 vs 每次运行动态确定，能厘清设计空间，并将可复用模板与运行特定的已实现图及执行轨迹区分开。</p></div><div class="field"><h3>挑战</h3><p>它论证仅有任务指标不足，呼吁采用结构感知的评估，兼顾图级属性、执行成本、鲁棒性与跨输入的结构变化。</p></div><div class="field"><h3>方法</h3><p>它沿三个维度综述该领域：结构何时确定（静态 vs 动态）、工作流哪部分被优化、以及哪些评估信号指导优化（任务指标、验证器信号、偏好、轨迹派生反馈），并区分三种产物类型（可复用模板、运行特定的已实现图、执行轨迹）。</p></div><div class="field"><h3>实验设置</h3><p>作为综述，它回顾近期工作流优化方法（2026 年 3 月投稿，覆盖至 2025 年底/2026 年初），而非开展新实验。</p></div><div class="field"><h3>结果</h3><p>提出结构感知的评估视角与统一定位框架，旨在实现更可比的文献分析与更可复现的评估。</p></div><div class="field"><h3>局限</h3><p>是综述而非实证研究；为无确认发表场所、且未给出数量化覆盖的 arXiv preprint（cs.AI/cs.CL）。</p></div><div class="field"><h3>与领域的关系</h3><p>本图谱中的 2026 年工作流优化综述，与 harness 综述 M318 及编排 RL 综述 M316 互补，聚焦多智能体流水线如何被构建与改进。</p></div>
-<div class="nav"><a href="technical-taxonomy-agent-communication-protocols.html">← A Technical Taxonomy of LLM Agent Comm</a><span class="sp"></span><a href="multi-agent-collaboration-mechanisms-survey.html">Multi-Agent Collaboration Mechanisms:  →</a></div></article></div>
+<div class="nav"><a href="technical-taxonomy-agent-communication-protocols.html">← A Technical Taxonomy of LLM Agent Comm</a><span class="sp"></span><a href="game-theoretic-lens-llm-mas.html">Game-Theoretic Lens on LLM-based Multi →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};
