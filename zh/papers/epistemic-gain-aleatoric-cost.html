@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/epistemic-gain-aleatoric-cost.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 摘要未给出具体数值结果；范围限于数学推理，且该方法需要估计不确定性分量并进行额外的 MARL 训练。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体 debate 表现出一些未获解释的行为，例如准确率随 token 熵上升，以及同质与异质智能体分组之间的显著差异，这些都缺乏有原则的说明。</p></div><div class="field"><h3>问题</h3><p>多智能体 debate 中的信息共享如何影响个体推理，以及在什么时候交换信息是帮助而非损害一个智能体？</p></div><div class="field"><h3>动机 / 分析</h3><p>若没有一个有原则的度量来衡量一个智能体从同伴信息中获得什么、失去什么，debate 设计就只能停留在启发式；不确定性分解可以把这一权衡操作化。</p></div><div class="field"><h3>关键洞见</h3><p>debate 的预测不确定性可分解为认知不确定性（epistemic uncertainty，来自同伴信息的潜在增益）与偶然不确定性（aleatoric uncertainty，引入的代价/噪声），有效的 debate 意味着在保持 aleatoric cost 受控的同时最大化 epistemic gain。</p></div><div class="field"><h3>挑战</h3><p>在实践中估计这两个不确定性分量，并把该分解转化为一个能同时提升个体准确率与 debate 生产力的训练信号。</p></div><div class="field"><h3>方法</h3><p>提出一个贝叶斯框架，将答案级预测不确定性分离为 epistemic 与 aleatoric 分量，分别映射到 debate 的增益与代价；随后引入一个不确定性引导的多智能体强化学习（MARL）算法，在降低 aleatoric cost 的同时更好地利用 epistemic 信息。</p></div><div class="field"><h3>实验设置</h3><p>数学推理 debate 场景，考察同质 vs. 异质智能体分组以及 token 熵/准确率关系（摘要未给出具体 benchmark 数值）。</p></div><div class="field"><h3>结果</h3><p>表明有效的 debate 需要在受控的 aleatoric cost 下获得高 epistemic gain；不确定性引导的 MARL 方法提升了个体智能体准确率，并使 debate 过程更具生产力，为 MAD 提供了一个可操作的贝叶斯视角。摘要未报告具体数值指标。</p></div><div class="field"><h3>局限</h3><p>摘要未给出具体数值结果；范围限于数学推理，且该方法需要估计不确定性分量并进行额外的 MARL 训练。</p></div><div class="field"><h3>与领域的关系</h3><p>是对负面 debate 分析（M158、M159、M161）的建设性、不确定性理论式补充；其 epistemic/aleatoric 拆分形式化了异质性何时有益（对比 M160）与何时同伴噪声占主导。</p></div>
-<div class="nav"><a href="diversity-collapse-in-multi-agent-llm-systems.html">← Diversity Collapse in Multi-Agent LLM </a><span class="sp"></span><a href="multiagent-debate.html">Multiagent Debate (Du et al. 2023) →</a></div></article></div>
+<div class="nav"><a href="diversity-collapse-in-multi-agent-llm-systems.html">← Diversity Collapse in Multi-Agent LLM </a><span class="sp"></span><a href="agent-coevo.html">Agent-CoEvo: Repository Issue Resoluti →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

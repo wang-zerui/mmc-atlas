@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/adas.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 摘要未报告具体的数值幅度；搜索的算力开销大，所发现 agent 的质量取决于 meta agent 的编码能力及评估器的可靠性。</div></div></div>
 <div class="field"><h3>背景</h3><p>在机器学习史上，人工设计的组件最终都会被学习得到的组件取代；而 agentic 系统当时仍靠人工，从 Chain-of-Thought、Self-Reflection 等人工设计模块拼装而成。</p></div><div class="field"><h3>问题</h3><p>设计强大的 agentic 系统（提示词、工具使用、工作流及其组合）需要大量人类专业知识和反复试错，限制了可探索的设计空间。</p></div><div class="field"><h3>动机 / 分析</h3><p>如果用代码表达 agent 并让 meta agent 对其编程，搜索空间就变为图灵完备，理论上可涵盖任意 agentic 系统，从而实现新设计的自动发现。</p></div><div class="field"><h3>关键洞见</h3><p>用代码定义 agent 让 meta agent 能够发明、运行并精炼全新的 agent，而不断扩充的既往发现档案库让它能在早期设计之上逐步构建出更优的设计。</p></div><div class="field"><h3>挑战</h3><p>如何高效搜索无界的代码空间、可靠地评估候选 agent，并确保所发现的 agent 具有泛化能力而非对搜索 benchmark 过拟合。</p></div><div class="field"><h3>方法</h3><p>Meta Agent Search：一个 meta agent（GPT-4 级别）以代码迭代编写新 agent，在目标任务上评估它们（用 GPT-3.5 评估），并将成功的设计加入档案库，为后续迭代提供种子（约 25 次迭代量级）。</p></div><div class="field"><h3>实验设置</h3><p>在编程、科学与数学领域上运行，并测试所发现 agent 在留出领域及不同底层模型间的迁移能力。</p></div><div class="field"><h3>结果</h3><p>所发现的 agent 大幅超越最先进的人工设计 agent，并在跨领域、跨模型迁移时仍保持优越性能；摘要以定性方式报告这些增益，未给出单一标志性指标。</p></div><div class="field"><h3>局限</h3><p>摘要未报告具体的数值幅度；搜索的算力开销大，所发现 agent 的质量取决于 meta agent 的编码能力及评估器的可靠性。</p></div><div class="field"><h3>与领域的关系</h3><p>作为代码空间搜索方法，是 GPTSwarm 等图搜索方法及基于 MCTS 的 AFlow 的对照对象；AFlow 明确报告在 MATH-lv5/MBPP 上大幅超越 ADAS；它也是整体式 MAS 优化器（OMAC、MAS-Orchestra）的先驱。</p></div>
-<div class="nav"><a href="skillsynth.html">← Toward Scalable Terminal Task Synthesi</a><span class="sp"></span><a href="aflow.html">AFlow (Zhang et al. 2024) →</a></div></article></div>
+<div class="nav"><a href="terminaltraj.html">← TerminalTraj: Scaling Agentic Data Syn</a><span class="sp"></span><a href="aflow.html">AFlow (Zhang et al. 2024) →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

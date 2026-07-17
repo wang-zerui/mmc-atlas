@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/hydra-production-router.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 这是未经独立审计的作者生产报告；专有流量、标签、模型目录与 baseline 细节限制了复现。</div></div></div>
 <div class="field"><h3>背景</h3><p>生产 router 需要在不断变化的异构模型目录上运行，同时满足严格的质量、成本与延迟要求。</p></div><div class="field"><h3>问题</h3><p>简单的强—弱二元 router 可能遗漏绝大部分可实现节省，并把路由逻辑过度绑定到固定模型对。</p></div><div class="field"><h3>动机 / 分析</h3><p>真实部署需要证明：考虑模型目录变化、CPU 推断开销和质量约束后，路由仍然值得，而不只是静态学术 benchmark 上有效。</p></div><div class="field"><h3>关键洞见</h3><p>这组负面对照说明，路由选项的数量与异构性，以及与模型目录解耦的预测，会实质改变生产成本—质量前沿。</p></div><div class="field"><h3>挑战</h3><p>router 必须低开销地预测质量和成本，支持动态模型目录，并提供不同 operating point 而不损害用户体验。</p></div><div class="field"><h3>方法</h3><p>HyDRA 将与目录解耦的预测器和异构模型池动态选择结合，并部署到 GitHub Copilot VS Code Chat 的 auto-mode。</p></div><div class="field"><h3>实验设置</h3><p>报告相对旧内部 binary router 的同质量节省、最高质量与激进节省 operating point，以及 CPU 预测中位延迟。</p></div><div class="field"><h3>结果</h3><p>主摘要报告：同质量节省 54.1%，旧 binary router 为 9.1%；最高质量 75.4，相对 Sonnet 的 74.2 仍节省 12.9%；牺牲 3.2 个质量点可节省 72.5%；CPU 预测中位延迟 86 ms。</p></div><div class="field"><h3>局限</h3><p>这是未经独立审计的作者生产报告；专有流量、标签、模型目录与 baseline 细节限制了复现。</p></div><div class="field"><h3>与领域的关系</h3><p>归入 Z，因为旧生产 router 的 9.1% 是“合理 router 可能实际收益很小”的稀有证据；HyDRA 的正面架构仍与 A 类路由相邻。</p></div>
-<div class="nav"><a href="routerwise.html">← RouterWise: Joint Resource Allocation </a><span class="sp"></span><a href="why-do-multi-agent-llm-systems-fail.html">Why Do Multi-Agent LLM Systems Fail? / →</a></div></article></div>
+<div class="nav"><a href="routerwise.html">← RouterWise: Joint Resource Allocation </a><span class="sp"></span><a href="usacoarena.html">USACOArena: An Interactive Arena for C →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

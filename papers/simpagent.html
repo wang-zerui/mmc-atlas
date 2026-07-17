@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">Multi-Model Collaboration Atlas</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="Collapse navigation" aria-label="Collapse navigation" aria-expanded="true" data-collapse="Collapse navigation" data-expand="Expand navigation">‹</button><a class="langbtn" href="../zh/papers/simpagent.html">中文</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 papers · 11 families</div>
+  <div class="tag">280 papers · 11 families</div>
   <input class="sb-search" id="sb-search" placeholder="Filter papers…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## Limitations
 - Domain-specific to GUI observations; semantic pruning is lossy and the paper is an unaccepted preprint.</div></div></div>
 <div class="field"><h3>Background</h3><p>GUI trajectories accumulate screenshots, accessibility elements, and action history.</p></div><div class="field"><h3>Problem</h3><p>Reduce redundant visual and historical context without making an agent&#x27;s behavior inconsistent.</p></div><div class="field"><h3>Motivation / Analysis</h3><p>Long GUI contexts consume compute and can distract the policy with stale elements.</p></div><div class="field"><h3>Key Insight</h3><p>Current-screen simplification and history compression should be coordinated through behavioral consistency.</p></div><div class="field"><h3>Challenges</h3><p>Pruned interface elements may later become necessary, and overly short histories can break action continuity.</p></div><div class="field"><h3>Method</h3><p>SimpAgent masks low-value GUI elements and compresses action history using a consistency-guided objective.</p></div><div class="field"><h3>Experimental Setup</h3><p>GUI-agent benchmarks comparing task performance and inference FLOPs with uncompressed baselines.</p></div><div class="field"><h3>Results</h3><p>The abstract reports roughly 27% lower FLOPs while maintaining competitive GUI-agent behavior.</p></div><div class="field"><h3>Limitations</h3><p>Domain-specific to GUI observations; semantic pruning is lossy and the paper is an unaccepted preprint.</p></div><div class="field"><h3>Relation to the Field</h3><p>Joint observation-and-history pruning in the filtering branch of trajectory compression.</p></div>
-<div class="nav"><a href="conflayers.html">← ConfLayers (Amer et al. 2026)</a><span class="sp"></span><a href="pal-ui.html">PAL-UI: Progressive Agent Learning for →</a></div></article></div>
+<div class="nav"><a href="terminus-4b.html">← Terminus-4B: A Small Terminal-Executio</a><span class="sp"></span><a href="pal-ui.html">PAL-UI: Progressive Agent Learning for →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "Overview", "fam_overview": "overview", "compare": "Comparison vs surveys", "roadmap": "Technical roadmap", "landscape": "Field landscape", "router_table": "Router paper table", "venues": "ICML / ICLR papers"};

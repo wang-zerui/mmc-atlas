@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/simpagent.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 方法针对 GUI 观测；语义剪枝是有损的，且目前只是未录用预印本。</div></div></div>
 <div class="field"><h3>背景</h3><p>GUI 轨迹会累积截图、可访问性元素和动作历史。</p></div><div class="field"><h3>问题</h3><p>减少冗余视觉与历史上下文，同时不破坏 agent 行为的一致性。</p></div><div class="field"><h3>动机 / 分析</h3><p>长 GUI 上下文消耗算力，并可能让策略被过期元素干扰。</p></div><div class="field"><h3>关键洞见</h3><p>当前屏幕简化与历史压缩应通过行为一致性协同。</p></div><div class="field"><h3>挑战</h3><p>被剪掉的界面元素之后可能又有用，过短历史也会破坏动作连续性。</p></div><div class="field"><h3>方法</h3><p>SimpAgent 遮蔽低价值 GUI 元素，并以一致性引导目标压缩动作历史。</p></div><div class="field"><h3>实验设置</h3><p>在 GUI-agent 基准上比较任务表现与推理 FLOPs。</p></div><div class="field"><h3>结果</h3><p>摘要报告 FLOPs 约降低 27%，同时保持有竞争力的 GUI-agent 表现。</p></div><div class="field"><h3>局限</h3><p>方法针对 GUI 观测；语义剪枝是有损的，且目前只是未录用预印本。</p></div><div class="field"><h3>与领域的关系</h3><p>轨迹压缩中过滤分支的观测与历史联合剪枝。</p></div>
-<div class="nav"><a href="conflayers.html">← ConfLayers (Amer et al. 2026)</a><span class="sp"></span><a href="pal-ui.html">PAL-UI: Progressive Agent Learning for →</a></div></article></div>
+<div class="nav"><a href="terminus-4b.html">← Terminus-4B: A Small Terminal-Executio</a><span class="sp"></span><a href="pal-ui.html">PAL-UI: Progressive Agent Learning for →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

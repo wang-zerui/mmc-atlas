@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/sakana-fugu.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 这是公司技术报告而非同行评审论文；worker agents 与训练数据并未完全开放，且若干跨模型基线来自供应商报告，而非在统一受控 harness 中重跑。</div></div></div>
 <div class="field"><h3>背景</h3><p>不同供应商的前沿 LLM 越来越呈现领域专长，而 agent scaffold 还能通过工具、交互轨迹与环境反馈进一步放大模型能力。</p></div><div class="field"><h3>问题</h3><p>单一模型或手写固定 scaffold 难以可靠利用一个持续变化的前沿 agent 池中细粒度、依 query 而变的互补性。</p></div><div class="field"><h3>动机 / 分析</h3><p>把编排视为一条可学习的扩展轴，有机会在无需训练更大基础模型的情况下，把现有专长模型组合成更强系统。</p></div><div class="field"><h3>关键洞见</h3><p>Orchestrator 模型可以读取每个 query，按需合成 agentic scaffold——选择 worker、角色、工具、通信与结果综合方式——而不是只在少量固定 workflow 之间选择。</p></div><div class="field"><h3>挑战</h3><p>学习有效的异构组合、控制多 Agent 执行的延迟与 token 成本，以及在 worker 池持续变化且部分闭源时进行公平评测。</p></div><div class="field"><h3>方法</h3><p>Fugu 系列通过大规模微调、进化搜索与强化学习训练。Fugu 每个 query 选择一个 worker 以控制延迟；Fugu-Ultra 则可动态组合多个前沿 agent worker，优先追求质量。</p></div><div class="field"><h3>实验设置</h3><p>覆盖 coding、reasoning、science 与 agentic benchmarks，包括 Terminal-Bench 2.1、SWE-Bench Pro、LiveCodeBench、GPQA-Diamond、Humanity&#x27;s Last Exam、CharXiv Reasoning、SciCode 与 CTI-REALM。</p></div><div class="field"><h3>结果</h3><p>报告 Fugu-Ultra 在 Terminal-Bench 2.1 上为 82.1，Fugu 为 80.2。报告同时说明，概览图中的非 Fugu 对比成绩取自各模型供应商。</p></div><div class="field"><h3>局限</h3><p>这是公司技术报告而非同行评审论文；worker agents 与训练数据并未完全开放，且若干跨模型基线来自供应商报告，而非在统一受控 harness 中重跑。</p></div><div class="field"><h3>与领域的关系</h3><p>这是运行时异构多模型协作的直接案例：不同于同质角色扮演团队，它在一组具备不同专长的前沿 agent worker 上学习 query-adaptive scaffold。</p></div>
-<div class="nav"><a href="understanding-agent-scaling-in-llm-based-multi-a.html">← Understanding Agent Scaling in LLM-Bas</a><span class="sp"></span><a href="anthropic-multi-agent-research-system.html">Anthropic Multi-Agent Research System  →</a></div></article></div>
+<div class="nav"><a href="understanding-agent-scaling-in-llm-based-multi-a.html">← Understanding Agent Scaling in LLM-Bas</a><span class="sp"></span><a href="boad.html">BOAD: Bandit-Optimized Agent Design fo →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

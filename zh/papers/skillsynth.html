@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/skillsynth.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 其多 Agent 系统用于合成训练任务，而不是联合解决 Terminal-Bench 实例。多个模型家族分布在抽取、teacher 与 evaluation 阶段，但这是分阶段用模，不是同一任务上的运行时异构协作。</div></div></div>
 <div class="field"><h3>背景</h3><p>单纯扩大合成 terminal 任务的数量，并不能保证训练轨迹覆盖真实命令行技能的多样且连贯的组合。</p></div><div class="field"><h3>问题</h3><p>单技能生成缺少长程组合，而随机拼接技能往往产生不连贯 workflow 和低质量可执行任务。</p></div><div class="field"><h3>动机 / 分析</h3><p>在 workflow 层显式控制轨迹多样性，应当能生成更难、更有训练价值的 terminal 任务，并提升小模型的数据效率。</p></div><div class="field"><h3>关键洞见</h3><p>把技能表示成语义场景之间的转换，在图上采样不重复路径，再把路径作为任务合成的显式高层规范。</p></div><div class="field"><h3>挑战</h3><p>构造干净的技能图、保持所采样技能之间的顺序连贯性、生成完整 container/verifier 产物，以及自动修复 instruction 与 test 的错位。</p></div><div class="field"><h3>方法</h3><p>一个场景中介图组织 57,214 个技能与 82,073 个去重场景。多 Agent harness 将规划与构造分离，执行 oracle 检查与 LLM rubric 验证，并将诊断反馈到最多三轮 repair cycle。</p></div><div class="field"><h3>实验设置</h3><p>合成 3,721 个任务实例并保留 3,560 个可用任务；MiniMax M2.7 采样 10,680 条教师轨迹，随后微调 Qwen3-8B/14B/32B，并通过 Terminus 2 与 Harbor 在 Terminal-Bench 1.0/2.0 上评测。</p></div><div class="field"><h3>结果</h3><p>Harness 报告 95.7% oracle pass rate，并恢复 721 个首轮失败任务。使用 SkillSynth 轨迹训练的 Qwen3-32B 在 TB 1.0 达到 33.8 ± 3.1，在 TB 2.0 达到 29.6 ± 1.6。</p></div><div class="field"><h3>局限</h3><p>其多 Agent 系统用于合成训练任务，而不是联合解决 Terminal-Bench 实例。多个模型家族分布在抽取、teacher 与 evaluation 阶段，但这是分阶段用模，不是同一任务上的运行时异构协作。</p></div><div class="field"><h3>与领域的关系</h3><p>以显式 workflow 多样性控制补充 TermiGen：两者都依赖多 Agent 验证与修复来生成 terminal 训练数据，而 SkillSynth 把采样技能路径作为高层轨迹规范。</p></div>
-<div class="nav"><a href="termigen.html">← TermiGen: High-Fidelity Environment an</a><span class="sp"></span><a href="adas.html">ADAS / Meta Agent Search (Hu et al. 20 →</a></div></article></div>
+<div class="nav"><a href="termigen.html">← TermiGen: High-Fidelity Environment an</a><span class="sp"></span><a href="terminaltraj.html">TerminalTraj: Scaling Agentic Data Syn →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

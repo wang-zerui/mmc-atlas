@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/multiagent-debate.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - debate 的推理成本随智能体数量与轮数成倍增加；摘要未量化各任务上的收益，且后续工作（Huang et al.</div></div></div>
 <div class="field"><h3>背景</h3><p>LLM 在单次推理上已相当强大，但仍会产生幻觉和推理错误；此前的测试时方法（CoT、self-consistency）都依赖单一模型自身的采样。本工作借鉴 Minsky 的 &#x27;society of minds&#x27;（心智社会）思想，将多个模型实例作为相互交互的智能体。</p></div><div class="field"><h3>问题</h3><p>如何在不进行微调、也不借助外部工具的前提下，于推理阶段提升黑盒 LLM 在数学、策略与事实类任务上的表现？</p></div><div class="field"><h3>动机 / 分析</h3><p>如果多个模型实例先各自独立推理、再相互批判，那么只出现在某一条推理链上的特异性错误应能在 debate 过程中被纠正，从而得到更稳健的共识答案。</p></div><div class="field"><h3>关键洞见</h3><p>让每个智能体在多轮中接触到其他智能体的推理，能促使其修正并收敛；该流程可跨模型工作（例如 ChatGPT + Bard），并随智能体数量与轮数增加而扩展提升。</p></div><div class="field"><h3>挑战</h3><p>需管理多轮 debate 累积的上下文长度，确保智能体真正进行修正而非盲目附和，并让同一套 prompt/流程在多样化任务上保持通用。</p></div><div class="field"><h3>方法</h3><p>N 个模型实例各自生成一个初始回答；在随后的每一轮中，每个智能体都会看到其他智能体的答案与推理，并据此产出更新后的回答；经过固定轮数后取收敛的答案。所有任务都使用完全相同的流程与 prompt，且可直接应用于现有的黑盒模型。</p></div><div class="field"><h3>实验设置</h3><p>在数学推理、策略推理以及事实有效性/幻觉类任务上进行评测；对智能体数量与轮数进行消融，并展示了跨模型 debate。</p></div><div class="field"><h3>结果</h3><p>摘要报告称 debate &#x27;显著增强了数学与策略推理能力&#x27;，并提升事实准确性、减少错误/幻觉答案；性能随智能体数量与轮数增加而提升，且在不同模型间（ChatGPT+Bard）均成立。各基准上的具体数值见正文，而非摘要。</p></div><div class="field"><h3>局限</h3><p>debate 的推理成本随智能体数量与轮数成倍增加；摘要未量化各任务上的收益，且后续工作（Huang et al. 2023）质疑在与 self-consistency 匹配采样预算的条件下这些收益是否仍然成立。</p></div><div class="field"><h3>与领域的关系</h3><p>本族群中奠基性的 debate 方法；被 &#x27;LLMs Cannot Self-Correct Reasoning Yet&#x27;（M059）以及 2026 年的负面结果论文（M158、M159）直接复现与批判，并被 Sparse Communication Topology（M063）在效率上加以扩展。</p></div>
-<div class="nav"><a href="epistemic-gain-aleatoric-cost.html">← Epistemic Gain, Aleatoric Cost: Uncert</a><span class="sp"></span><a href="reconcile.html">ReConcile (Chen et al. 2023) →</a></div></article></div>
+<div class="nav"><a href="agent-coevo.html">← Agent-CoEvo: Repository Issue Resoluti</a><span class="sp"></span><a href="reconcile.html">ReConcile (Chen et al. 2023) →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

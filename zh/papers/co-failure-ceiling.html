@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/co-failure-ceiling.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 这是一篇 2026 年的预印本（cs.AI/cs.LG，无 venue）；结论以可核查任务为中心，并取决于其估计与评判设置。</div></div></div>
 <div class="field"><h3>背景</h3><p>多模型系统（routing、voting、cascades、fusion、mixture-of-agents）被广泛宣称优于单个模型。</p></div><div class="field"><h3>问题</h3><p>尚不清楚组合模型何时真正有帮助，且常用的诊断指标（平均成对误差相关性 rho）可能会对可达到的收益产生误导。</p></div><div class="field"><h3>动机 / 分析</h3><p>一个能在构建 router 之前就计算出来的、有原则的上限指标，可以告诉从业者可达到的最大收益，并防止在组合上过度投入。</p></div><div class="field"><h3>关键洞见</h3><p>beta，即所有模型都错的比率，将任何单一答案策略的准确率上限约束在 1 - beta；rho 无法识别 beta，因为具有相同边缘分布和成对相关性的分布可以有不同的全错比率，因此单因子模型低估了全错的尾部。</p></div><div class="field"><h3>挑战</h3><p>在有限样本下估计 beta，并区分真正的互补性与格式诱发的共同失败。</p></div><div class="field"><h3>方法</h3><p>引入 beta 作为上限指标，提供一个关于 beta 的 Clopper-Pearson 有限样本界作为训练 router 之前的证书，并与一个经 tetrachoric 校准的单因子模型以及一个 67 模型的 Gaussian copula 进行对比。</p></div><div class="field"><h3>实验设置</h3><p>来自 21 家提供方的 67 个模型，在开放式数学、执行判定的代码，以及一个 GPQA-Diamond 格式测试（选择题 vs 自由作答）上进行评测，并使用一个五评委面板（kappa 0.73-0.92）。</p></div><div class="field"><h3>结果</h3><p>在开放式数学上观测到 beta = 0.052，而预测为 0.023（约 2.5x 的低估，90% CI 为 1.7-3.4）；代码的 beta = 0.079；将 GPQA-Diamond 改为自由作答重新提问后 beta 升至 0.127；在质量匹配的条件下，低 rho 的异质集成击败了高 rho 的 Self-MoA，而在可核查的任务上，缺乏路由信号时组合很少能超过单个最优模型（已与摘要核实）。</p></div><div class="field"><h3>局限</h3><p>这是一篇 2026 年的预印本（cs.AI/cs.LG，无 venue）；结论以可核查任务为中心，并取决于其估计与评判设置。</p></div><div class="field"><h3>与领域的关系</h3><p>一个对 MoA (M001)、voting（M017、M018、M040）和 Self-MoA (M036) 予以限定的理论上限；其“低相关性胜过高相关性”的发现支持了 Heter-MAD (M043) 以及 Beyond Majority Voting 的相关性感知 (M132)。</p></div>
-<div class="nav"><a href="attention-moa.html">← Attention-MoA (Wen et al. 2026)</a><span class="sp"></span><a href="self-moa.html">Self-MoA / Rethinking Mixture-of-Agent →</a></div></article></div>
+<div class="nav"><a href="attention-moa.html">← Attention-MoA (Wen et al. 2026)</a><span class="sp"></span><a href="multi-llmseccodeeval.html">Multi-LLMSecCodeEval: Evaluating Multi →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

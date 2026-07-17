@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/murakkab.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 官方摘要给出资源倍率，但没有一个通用质量数字；收益依赖可用配置空间。</div></div></div>
 <div class="field"><h3>背景</h3><p>协作式 Agent workflow 协调多个模型与工具，但云框架常把它暴露成与固定模型、硬件绑定的不透明调用序列。</p></div><div class="field"><h3>问题</h3><p>runtime 无法联合权衡准确率、延迟、能耗、成本、模型分配和硬件放置。</p></div><div class="field"><h3>动机 / 分析</h3><p>workflow 逻辑应保持稳定，而执行配置可随资源与 SLO 调整。</p></div><div class="field"><h3>关键洞见</h3><p>把声明式 workflow specification 与模型/硬件配置解耦，再做全栈优化。</p></div><div class="field"><h3>挑战</h3><p>跨层决策要在动态负载下重配置，同时保持 workflow 语义。</p></div><div class="field"><h3>方法</h3><p>Murakkab 结合声明式抽象、profile-guided optimizer 与 adaptive runtime，编排 component、映射模型和硬件并动态重配置。</p></div><div class="field"><h3>实验设置</h3><p>OSDI 2026 在多种协作 workflow 上对比 SOTA system。</p></div><div class="field"><h3>结果</h3><p>报告在满足 SLO 时，GPU 使用最高降低 2.8x、能耗 3.7x、成本 4.3x。</p></div><div class="field"><h3>局限</h3><p>官方摘要给出资源倍率，但没有一个通用质量数字；收益依赖可用配置空间。</p></div><div class="field"><h3>与领域的关系</h3><p>与本 survey 特别贴近：它联合优化模型协作逻辑及其物理执行。</p></div>
-<div class="nav"><a href="pythia-agent-native-serving.html">← Pythia: Exploiting Workflow Predictabi</a><span class="sp"></span><a href="continuum-agent-scheduling.html">Continuum: Multi-Turn LLM Agent Schedu →</a></div></article></div>
+<div class="nav"><a href="pythia-agent-native-serving.html">← Pythia: Exploiting Workflow Predictabi</a><span class="sp"></span><a href="menvagent.html">MEnvAgent: Scalable Polyglot Execution →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

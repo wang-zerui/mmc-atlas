@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/self-moa.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 它同时也指出了混合不同模型确实有帮助的场景，因此单模型的处方并非普适；其性能仍受制于最佳模型的能力上限。</div></div></div>
 <div class="field"><h3>背景</h3><p>Mixture-of-Agents (MoA) 在模型多样性有益的假设下，聚合来自多个不同 LLM 的回答。</p></div><div class="field"><h3>问题</h3><p>混合不同的 LLM 是否真的有益，还是会因纳入较弱模型而稀释质量？</p></div><div class="field"><h3>动机 / 分析</h3><p>MoA 的性能对 proposer 输出的质量高度敏感，因此混入低质量模型带来的损害可能超过多样性带来的帮助。</p></div><div class="field"><h3>关键洞见</h3><p>多样性与质量之间存在权衡：混合不同的 LLM 往往会降低集成的平均质量，因此聚合来自单一强模型的大量采样反而可能更优。</p></div><div class="field"><h3>挑战</h3><p>判断多样性何时有帮助、何时有害，以及在不超出上下文限制的前提下扩展单模型聚合。</p></div><div class="field"><h3>方法</h3><p>Self-MoA 仅聚合来自单一最佳 LLM 的输出；一个序列化变体（Self-MoA-Seq）跨轮次增量式地聚合输出，在放宽上下文约束的同时，其效果与一次性聚合全部输出相当。</p></div><div class="field"><h3>实验设置</h3><p>在 AlpacaEval 2.0、MMLU、CRUX 和 MATH 上与标准混合 MoA 进行对比，并系统研究了多样性与质量之间的权衡。</p></div><div class="field"><h3>结果</h3><p>Self-MoA 在 AlpacaEval 2.0 上比标准混合 MoA 高出 6.6%，在 MMLU/CRUX/MATH 上平均高出 3.8%，并在应用于一个顶尖模型时创下新的 AlpacaEval 2.0 SOTA（已在摘要中确认）。</p></div><div class="field"><h3>局限</h3><p>它同时也指出了混合不同模型确实有帮助的场景，因此单模型的处方并非普适；其性能仍受制于最佳模型的能力上限。</p></div><div class="field"><h3>与领域的关系</h3><p>对 MoA (M001) 多样性前提的直接反驳；其「单模型加扰动」的主题被 Self-Consistent MoA (M117) 进一步推进，而 Co-Failure Ceiling (M135) 则主张低相关性的异质集成能够击败 Self-MoA。</p></div>
-<div class="nav"><a href="co-failure-ceiling.html">← Co-Failure Ceiling: When Does Combinin</a><span class="sp"></span><a href="llm-ensemble-survey.html">LLM Ensemble Survey (Chen et al. 2025) →</a></div></article></div>
+<div class="nav"><a href="multi-llmseccodeeval.html">← Multi-LLMSecCodeEval: Evaluating Multi</a><span class="sp"></span><a href="llm-ensemble-survey.html">LLM Ensemble Survey (Chen et al. 2025) →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

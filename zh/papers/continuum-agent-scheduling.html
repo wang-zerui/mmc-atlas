@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/continuum-agent-scheduling.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 2025 首发且仍为 preprint；大倍率对 workload 与基线敏感。</div></div></div>
 <div class="field"><h3>背景</h3><p>使用工具的 Agent 在 LLM turn 之间暂停，而普通引擎在队列变满时会驱逐已完成 request 的 KV。</p></div><div class="field"><h3>问题</h3><p>立即驱逐破坏多轮复用，无限 pin 又增加排队与显存压力。</p></div><div class="field"><h3>动机 / 分析</h3><p>工具时长、重载成本和排队延迟共同决定是否值得保留状态。</p></div><div class="field"><h3>关键洞见</h3><p>给暂停 Agent 的 KV 一个明确 TTL，而不是永久活跃或立刻删除。</p></div><div class="field"><h3>挑战</h3><p>工具时间高度波动，保留策略要在难预测时仍稳健。</p></div><div class="field"><h3>方法</h3><p>Continuum 计算重载与排队感知 TTL，暂时 pin KV，过期自动驱逐，并结合 program-level FCFS。</p></div><div class="field"><h3>实验设置</h3><p>SWE-Bench、BFCL、OpenHands 类 Agent 与多个模型规模。</p></div><div class="field"><h3>结果</h3><p>报告平均 job completion time 改善超过 8x，同时吞吐提升。</p></div><div class="field"><h3>局限</h3><p>2025 首发且仍为 preprint；大倍率对 workload 与基线敏感。</p></div><div class="field"><h3>与领域的关系</h3><p>把工具暂停变成 Agent 基础设施中的一等状态生命周期事件。</p></div>
-<div class="nav"><a href="murakkab.html">← Murakkab: Resource-Efficient Agentic W</a><span class="sp"></span><a href="tokencake.html">TokenCake: A KV-Cache-centric Serving  →</a></div></article></div>
+<div class="nav"><a href="menvagent.html">← MEnvAgent: Scalable Polyglot Execution</a><span class="sp"></span><a href="tokencake.html">TokenCake: A KV-Cache-centric Serving  →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

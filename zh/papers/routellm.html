@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/routellm.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">261 篇论文 · 11 个族</div>
+  <div class="tag">280 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 聚焦于强 vs 弱的二元路由，而非多模型选择；性能取决于偏好数据的质量。</div></div></div>
 <div class="field"><h3>背景</h3><p>部署时必须在能力强但昂贵的 LLM 与便宜但较弱的 LLM 之间取舍；固定单一选择会在简单查询上浪费金钱，或在困难查询上失败。</p></div><div class="field"><h3>问题</h3><p>学习一个 router，针对每个查询判断需要用弱模型还是强模型，从而优化成本与质量的权衡。</p></div><div class="field"><h3>动机 / 分析</h3><p>以往的路由工作缺乏有原则的训练数据，没有清晰地把路由与奖励/偏好建模区分开，也未证明在底层模型更换时的迁移能力。</p></div><div class="field"><h3>关键洞见</h3><p>人类偏好数据（两个模型答案中哪个更好）是训练 router 的强信号，而数据增强能让 router 更鲁棒、更易迁移。</p></div><div class="field"><h3>挑战</h3><p>获取足够的带标注路由数据、避免把路由与奖励建模混为一谈，以及确保在测试时更换强/弱模型对后 router 仍然有效。</p></div><div class="field"><h3>方法</h3><p>一套训练框架利用经合成/增强技术扩充的人类偏好数据产出多种 router 架构；推理时 router 对查询打分，并将其分派给强或弱 LLM 以命中成本目标。</p></div><div class="field"><h3>实验设置</h3><p>在广受认可的基准（如 MT-Bench、MMLU、GSM8K）上使用强/弱模型对进行评估；基线包括随机路由和已有 router。同时通过更换模型对来测试迁移能力。</p></div><div class="field"><h3>结果</h3><p>在不损失响应质量的情况下将成本降低超过 2 倍；在更换强/弱模型时展现出很强的迁移学习能力。路由与奖励建模被明确区分开（已在 claim_checked 中核实）。</p></div><div class="field"><h3>局限</h3><p>聚焦于强 vs 弱的二元路由，而非多模型选择；性能取决于偏好数据的质量。</p></div><div class="field"><h3>与领域的关系</h3><p>一个典范性的、基于偏好训练的二元 router；与多模型 router（Zooter、RouterDC、GraphRouter）形成对照，并在后续基准（RouterBench、LLMRouterBench）中常被用作基线。</p></div>
-<div class="nav"><a href="robust-batch-llm-routing.html">← Robust Batch-Level LLM Routing under C</a><span class="sp"></span><a href="graphrouter.html">GraphRouter (Feng et al. 2024, ICLR 20 →</a></div></article></div>
+<div class="nav"><a href="mulvul.html">← MulVul: Multi-Agent Vulnerability Dete</a><span class="sp"></span><a href="graphrouter.html">GraphRouter (Feng et al. 2024, ICLR 20 →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};
