@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/multi-agent-set-valued-routing.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">257 篇论文 · 11 个族</div>
+  <div class="tag">261 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 仅 3,000 prompt、12 个固定 agent，且标签为启发式。</div></div></div>
 <div class="field"><h3>背景</h3><p>真实请求常同时需要多个专用 agent，但许多 benchmark 只给单标签。</p></div><div class="field"><h3>问题</h3><p>top-1 分类不能评估 agent 集合的覆盖、冗余和成本。</p></div><div class="field"><h3>动机 / 分析</h3><p>需要面向 set-valued agent routing 的公开数据与受约束效用指标。</p></div><div class="field"><h3>关键洞见</h3><p>集合预测比单意图标签更接近实际多 agent 编排。</p></div><div class="field"><h3>挑战</h3><p>启发式标签可能与真实任务成功不一致。</p></div><div class="field"><h3>方法</h3><p>构建平衡 WildChat 目录 benchmark，并比较 KNN、多标签模型、微调 encoder、zero-shot LLM 与 WAR。</p></div><div class="field"><h3>实验设置</h3><p>在无约束与成本约束设置中评估 12-agent 集合预测。</p></div><div class="field"><h3>结果</h3><p>监督 router 胜过 KNN 与 zero-shot；微调 encoder 无约束最强，WAR 改善受约束效用。</p></div><div class="field"><h3>局限</h3><p>仅 3,000 prompt、12 个固定 agent，且标签为启发式。</p></div><div class="field"><h3>与领域的关系</h3><p>为 FlexRouter 与 harness-native orchestration 等 agent-set router 提供评测基础。</p></div>
-<div class="nav"><a href="router-llm-fragility.html">← How Robust Are Router-LLMs? Analysis o</a><span class="sp"></span><a href="why-do-multi-agent-llm-systems-fail.html">Why Do Multi-Agent LLM Systems Fail? / →</a></div></article></div>
+<div class="nav"><a href="router-llm-fragility.html">← How Robust Are Router-LLMs? Analysis o</a><span class="sp"></span><a href="when-routing-collapses.html">When Routing Collapses: On the Degener →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};

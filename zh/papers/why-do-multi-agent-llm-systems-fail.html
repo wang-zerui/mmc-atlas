@@ -163,7 +163,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 <aside class="sidebar" id="sidebar">
  <div class="sb-head"><div class="sb-top"><a class="brand" href="../index.html">多模型协作图谱</a>
    <div class="sb-tools"><button class="navcollapse" id="nav-collapse" type="button" title="折叠导航" aria-label="折叠导航" aria-expanded="true" data-collapse="折叠导航" data-expand="展开导航">‹</button><a class="langbtn" href="../../papers/why-do-multi-agent-llm-systems-fail.html">EN</a><button class="themebtn" id="theme-btn" title="theme">☾</button></div></div>
-  <div class="tag">257 篇论文 · 11 个族</div>
+  <div class="tag">261 篇论文 · 11 个族</div>
   <input class="sb-search" id="sb-search" placeholder="筛选论文…" autocomplete="off"></div>
  <nav class="sb-nav" id="sb-nav"></nav>
 </aside>
@@ -194,7 +194,7 @@ footer.f{padding:28px 0 60px;color:var(--mut);font-size:12.5px;border-top:1px so
 ## 局限
 - 该分类法是描述性而非规定性的，不保证给出修复方案，且覆盖范围受限于所研究的 7 个框架和模型；LLM-judge 标注可能继承模型偏差。</div></div></div>
 <div class="field"><h3>背景</h3><p>多智能体 LLM 系统备受关注，但其相较单智能体在基准上的收益往往很小且不稳定，且此前缺乏对其为何失效的系统性理解。</p></div><div class="field"><h3>问题</h3><p>以往工作缺乏对 MAS 如何以及为何失败的扎实实证刻画；失败多以轶事方式讨论，而非通过有标注轨迹支撑的结构化分类法。</p></div><div class="field"><h3>动机 / 分析</h3><p>一套严谨的失败分类法加上带标签的数据集，能让研究者诊断 MAS 问题、有针对性地修复并衡量进展，而非将失败视为不透明的黑箱。</p></div><div class="field"><h3>关键洞见</h3><p>MAS 失败不仅是模型错误，更是组织层面的问题：它们聚集为系统设计缺陷、智能体间失配以及任务验证崩溃三类，因此更好的编排与验证与更强的模型同等重要。</p></div><div class="field"><h3>挑战</h3><p>人工分析冗长的多智能体轨迹成本高且主观；作者需要先建立可靠的标注者间一致性，再在不损失保真度的前提下扩大标注规模。</p></div><div class="field"><h3>方法</h3><p>专家分析 150 条轨迹，归纳出 14 模式 / 3 类别的分类法，随后用一个经人工标签验证的 LLM-as-a-Judge 流水线将标注扩展至 MAST-Data（来自 7 个 MAS 框架的 1600+ 条轨迹）。</p></div><div class="field"><h3>实验设置</h3><p>在 7 个流行的 MAS 框架及多个模型（GPT-4、Claude 3、Qwen2.5、CodeLlama）上，针对编程、数学和通用 agent 任务标注失败模式。</p></div><div class="field"><h3>结果</h3><p>得到分属 3 类的 14 种失败模式；标注者间一致性 Cohen&#x27;s kappa = 0.88；与任务验证相关的失败占比很大（验证类失败报告约为 ~13.48%），且数据集、分类法与标注器均公开发布。</p></div><div class="field"><h3>局限</h3><p>该分类法是描述性而非规定性的，不保证给出修复方案，且覆盖范围受限于所研究的 7 个框架和模型；LLM-judge 标注可能继承模型偏差。</p></div><div class="field"><h3>与领域的关系</h3><p>family Z 的基础性失败模式参考，补充了 AgentCollabBench 这类基准式诊断以及 TraceElephant 这类归因工作，并推动了对单智能体与多智能体之争的审视（Tran &amp; Kiela）。</p></div>
-<div class="nav"><a href="multi-agent-set-valued-routing.html">← Multi-Agent Routing as Set-Valued Pred</a><span class="sp"></span><a href="talk-isn-t-always-cheap.html">Talk Isn&#x27;t Always Cheap: Understanding →</a></div></article></div>
+<div class="nav"><a href="hydra-production-router.html">← HyDRA: Hybrid Dynamic Routing Architec</a><span class="sp"></span><a href="talk-isn-t-always-cheap.html">Talk Isn&#x27;t Always Cheap: Understanding →</a></div></article></div>
 </div></div>
 <script src="../nav.js"></script>
 <script>var BASE="../";var T={"overview": "总览", "fam_overview": "族综述", "compare": "综述对比", "roadmap": "技术路线图", "landscape": "领域全景图", "router_table": "Router 论文矩阵", "venues": "ICML / ICLR 论文"};
